@@ -1,0 +1,479 @@
+---
+title: "Übungen: Deskriptive Statistik"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    highlight: pygments
+    theme: yeti
+    code_download: false
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(jmv)
+library(knitr)
+```
+
+# Technische Vorbemerkung
+
+* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können als zip-File [hier](https://1drv.ms/u/s!AgeAm23J8ZSmi-xS3yns0gEsMv38Ow?e=n4j8EI) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
+    
+[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org
+   
+   
+
+# Deskriptive Statistik
+
+## Datensatz `physio.csv` {.tabset}
+
+Für diese Übung verwenden wir den Datenasatz `physio.csv`. Die Daten wurden
+bei Studierenden der Kohorten PHY13 bis PHY17 im Rahmen der Statistik-Einführung
+im 2. Semester auf freiwilliger Basis mittels eines Online-Formulars erhoben.
+
+
+### Codebook
+
+Variable |	Beschreibung | Skala | Werte
+-------- | ------------- | ----- | ------
+ID | ID |  | 1 ... n
+Kohorte |	Jahrgang Studierende | | PHY13 … PHY17
+Klasse | Klasse 1 oder 2 | | 1, 2
+Geschlecht | Geschlecht | | m = maennlich, w = weiblich
+Augenfarbe | Augenfarbe | | gruen, blau, braun
+Groesse	| Körpergrösse in cm | | 148 … 198
+Gewicht |	Körpergewicht in kg | |	47 … 105
+Statistik |	Das Fach Statistik interessiert mich | | (Likert-Skala) 1 = trifft überhaupt nicht zu, 2 = trifft eher nicht zu, 3 = egal, 4 = trifft eher zu, 5 = trifft vollstänig zu
+Schuhgroesse | Schuhgrösse in DE/EU-Einheiten | | 35, 36 … 48
+
+
+### Vorbereitung
+
+
+```{r}
+# library(readr)
+phydata <- read_csv("../data/physio.csv")
+```
+
+1. Öffnen Sie den Datansatz `physio.csv` in jamovi . 
+2. Bestimmen Sie die Variablenkategorien im Register Data > Setup    
+
+
+Datenkategorie | Measure type | Data type
+-------------- | ------------ | ---------
+qualitativ - nominal | nominal | text oder integer
+qualitativ - ordinal | ordinal | integer
+quantitativ - diskret | continuous | integer
+quantitativ - kontinuierlich | continuous | decimal
+
+**Tipp:** ID - Measure type: ID - Data type: Text
+
+```{r}
+phydata$ID <- factor(phydata$ID)
+phydata$Kohorte <- factor(phydata$Kohorte)
+phydata$Klasse <- factor(phydata$Klasse)
+phydata$Geschlecht <- factor(phydata$Geschlecht)
+phydata$Augenfarbe <- factor(phydata$Augenfarbe)
+
+glimpse(phydata)
+
+#saveRDS(phydata, file = "phydata.RDS")
+```
+
+4. Speichern sie die Datei aus jamovi als `physio.omv`.   
+
+## Übung 1 {.tabset}
+
+### Aufgaben
+
+```{r}
+head(phydata)
+```
+
+
+Beurteilen Sie in der Tabellenansicht der Daten
+
+1. Handelt es sich bei diesen Daten um eine Population oder eine Stichprobe? Begründen Sie.     
+2. Wo stehen die Beobachtungseinheiten?   
+3. Welche Beobachtungsmerkmale wurden erhoben?    
+4. Wo finden Sie die Merkmalsausprägungen?    
+5. Wenn Sie die Daten statistisch analysieren, sind die Ergebnisse für welche Grundgesamtheit gültig?  
+
+
+### Lösungen
+
+1. Eine Stichprobe aus der Population Studierende der Kohorten PHY13 bis PHY17.    
+2. in den Zeilen    
+3. siehe Spalten: Kohorte, Klasse, Geschlecht, Augenfarbe, Groesse, Gewicht, Statistik, Schuhgroesse    
+4. in den einzelnen Zellen der Tabelle     
+5. für die Population(s. oben)    
+
+<br/>  
+
+
+## Übung 2 {.tabset}
+
+### Aufgaben
+
+1. Wie viele Beobachtungseinheiten umfasst der Datensatz?  
+2. Wie viele weibliche und männliche Studierende umfasst der Datensatz? Geben sie die absoluten und die relativen Häufigkeiten an.    
+3. Stellen Sie die GeschlechterVerteilung im Datensatz grafisch dar.  
+   
+<br/>   
+
+### Lösungen
+
+1. Wie viele Beobachtungseinheiten umfasst der Datensatz? 
+
+Descriptives > ID als Variable wählen
+
+```{r}
+phydata %>% 
+  summarise(n = n()) %>% 
+  kable(., caption = "Anzahl der Beobachtungseinheiten in physio", align = "l")
+```
+   
+
+2. Wie viele weibliche und männliche Studierende umfasst der Datensatz? Geben sie die absoluten und die relativen Häufigkeiten an.   
+
+Descriptives > Geschlecht als Variable auswählen > Häkchen bei `Frequency tables` setzen  
+
+
+```{r}
+# table(phydata$Geschlecht)
+# prop.table(table(phydata$Geschlecht))
+
+descriptives(
+  data = phydata,
+  vars = Geschlecht,
+  n = TRUE,
+  missing = TRUE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE,
+  freq = TRUE
+)
+```
+   
+
+3. Stellen Sie die Verteilung nach Geschlecht grafisch dar
+
+Descriptives > Geschlecht als Variable auswählen > Häkchen bei `Frequency tables` setzen   
+Häkchen unter `Plots` > `Bar plot` setzen
+
+
+```{r}
+descriptives(
+  data = phydata,
+  vars = Geschlecht,
+  n = FALSE,
+  missing = FALSE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE,
+  freq = FALSE,
+  bar = TRUE
+)
+```
+
+Mit korrekter Beschriftung würde die Grafik etwa so aussehen (Farben sind unwichtig)
+
+```{r}
+ggplot(phydata, aes(x = Geschlecht, fill = Geschlecht)) +
+  geom_bar(show.legend = FALSE) +
+  ylab("Anzahl") +
+  ggtitle("Verteilung der physio-Daten nach Geschlecht\n(m = 45, w = 183)")
+```
+
+
+**Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie Grafiken und Tabellen möglichst aussagekräftig.**    
+
+<br/>
+
+
+## Übung 3 {.tabset}
+
+### Aufgaben
+
+1. Wie gross sind die absoluten und die relativen Häufigkeiten der drei Augenfarben?    
+2. Stellen Sie die Verteilung der Augenfarben in einer Grafik dar. Welches ist 
+häufigste Augenfarbe?   
+
+<br/>
+   
+   
+### Lösungen
+
+1. Wie gross sind die absoluten und die relativen Häufigkeiten der drei Augenfarben?  
+
+Descriptives > Augenfarbe als Variable auswählen > Häkchen bei `Frequency tables` setzen  
+
+```{r}
+# library(jmv)
+descriptives(
+  data = phydata, 
+  vars = Augenfarbe, 
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE,
+  freq = TRUE)
+```
+
+<br/>
+
+2. Stellen Sie die Verteilung der Augenfarben in einer Grafik dar. Welches ist 
+häufigste Augenfarbe?   
+
+Descriptives > Augenfarbe als Variable auswählen > Häkchen bei `Frequency tables` setzen   
+Häkchen unter `Plots` > `Bar plot` setzen
+
+```{r}
+descriptives(
+  data = phydata,
+  vars = Augenfarbe,
+  n = FALSE,
+  missing = FALSE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE,
+  freq = FALSE,
+  bar = TRUE
+)
+```
+
+
+Vollständig beschriftet könnte die Grafik etwa so aussehen:
+
+```{r}
+ggplot(phydata, aes(x = Augenfarbe)) +
+  geom_bar(show.legend = FALSE) +
+  ylab("Anzahl") +
+  ggtitle("Verteilung der Augenfarben im Datensatz physio.csv\n(blau = 99, braun = 78, grün = 51)")
+```
+
+
+**Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie Grafiken und Tabellen möglichst aussagekräftig.**   
+
+<br/>
+
+
+## Übung 4 {.tabset}
+
+### Aufgaben
+
+1. Wie gross sind die Studierenden im Datensatz physio.csv? Fassen Sie das Ergebnis 
+in einem Satz zusammen.   
+2. Stellen Sie die Verteilung der Körpergrösse in physio.csv anhand von zwei verschiedenen
+Grafiken dar. Beurteilen Sie die Symmetrie und interpretieren Sie die Verteilung.   
+3. Wie gross sind die Studierenden im Datensatz physio.csv? Trennen Sie nach Geschlecht und
+fassen Sie das Ergebnis in einem Satz zusammen.    
+4. Erstellen Sie zwei Grafiken zur Verteilung der Körpergrösse, nach Geschlecht
+getrennt.
+   
+<br/>   
+   
+### Lösungen
+
+1. Wie gross sind die Studierenden im Datensatz physio.csv? Fassen Sie das Ergebnis 
+in einem Satz zusammen.  
+
+Descriptives > Variable Groesse auswählen
+
+```{r}
+descriptives(
+  data = phydata, 
+  vars = Groesse,
+  sd = TRUE
+)
+```
+
+*Die durchschnittliche Körpergrösse der Studierenden in physio.csv beträgt 169 cm (s = 7.76)* 
+   
+   
+
+2. Stellen Sie die Verteilung der Körpergrösse in physio.csv anhand von zwei verschiedenen
+Grafiken dar. Beurteilen Sie die Symmetrie und interpretieren Sie die Verteilung.   
+
+Descriptives > Variable Groesse auswählen,    
+Plots > Häkchen bei `Histogram` und `Boxplot` setzen.   
+
+
+```{r}
+descriptives(
+  data = phydata,
+  vars = Groesse,
+  n = FALSE,
+  missing = FALSE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE,
+  freq = FALSE,
+  hist = TRUE,
+  box = TRUE
+)
+```
+   
+
+Vollständig beschriftet könnten die Grafiken etwa so aussehen:
+
+```{r}
+ggplot(phydata, aes(x = Groesse)) +
+  geom_histogram(binwidth = 4) +
+  ggtitle("Verteilung der Grösse der Studierenden im \nDatensatz physio.csv, n = 228")
+
+ggplot(phydata, aes(y = Groesse)) +
+  geom_boxplot(width = 1) +
+   ggtitle("Verteilung der Grösse der Studierenden im \nDatensatz physio.csv, n = 228")
+```
+
+*Wie beurteilen Sie die Symmetrie der Verteilung der Körpergrösse?*
+
+<br/>
+
+
+3. Wie gross sind die Studierenden im Datensatz physio.csv? Trennen Sie nach Geschlecht und
+fassen Sie das Ergebnis in einem Satz zusammen.
+
+Descriptives > Grösse als Variable auswählen, Geschlecht als `Split by`-Variable wählen
+
+```{r}
+descriptives(
+  data = phydata, 
+  formula = Groesse ~ Geschlecht,
+  sd = TRUE
+)
+```
+
+*Die durchschnittliche Körpergrösse der Studentinnen im Datensatz physio.csv beträgt 166.9 cm (s = 5.66 cm) und die der Studenten 179.9 cm (s = 6.39 cm).*   
+   
+<br/>
+   
+4. Erstellen Sie zwei Grafiken zur Verteilung der Körpergrösse, nach Geschlecht
+getrennt.  
+
+Descriptives > Grösse als Variable auswählen, Geschlecht als `Split by`-Variable wählen    
+Plots > Häkchen bei `Histogram` und `Boxplot` setzen.  
+
+```{r}
+descriptives(
+  data = phydata,
+  formula = Groesse ~ Geschlecht,
+  n = FALSE,
+  missing = FALSE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE,
+  freq = FALSE,
+  hist = TRUE,
+  box = TRUE
+)
+```
+
+Vollständig beschriftet könnte die Grafik so aussehen (das Histogramm kann in dieser Form in jamovi nicht dargestellt werden):   
+
+```{r}
+ggplot(phydata, aes(x = Groesse, fill = Geschlecht)) +
+  geom_histogram(binwidth = 4, position = "identity", alpha = .4) +
+  ylab("Anzahl") +
+  ggtitle("Verteilung der Grösse der Studierenden im Datensatz physio.csv \n(w = 183, m = 45)")
+
+ggplot(phydata, aes(y = Groesse, color = Geschlecht)) +
+  geom_boxplot(width = 1) +
+   ggtitle("Verteilung der Grösse der Studierenden im Datensatz physio.csv \n(w = 183, m = 45)")
+```
+
+**Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie Grafiken und Tabellen möglichst aussagekräftig.**  
+
+<br/>
+
+## Übung 5 {.tabset}
+
+### Aufgabe
+
+Untersuchen Sie den Zusammenhang zwischen Körpergrösse und Körpergewicht der 
+weiblichen Studierenden im Datensatz physio.csv.   
+
+<br/>
+   
+   
+### Lösung
+
+Vorgehen  
+
+1. Erstellen Sie einen Filter in jamovi > Data > Filters mit der Formel:
+**= Geschlecht == "w"**    
+2. Unter `Exploration` wählen Sie `Scatterplot`.    
+3. Erstellen Sie ein Punktediagramm (Scatterplot) mit den Variablen Y-Axis: Gewicht und
+X-Axis: Groesse    
+4. Beschreiben Sie den Zusammenhang zwischen Körpergewicht und Körpergrösse.   
+
+```{r}
+nw <- phydata %>% 
+  filter(Geschlecht == "w") %>% 
+  summarise(n())
+
+phydata %>% 
+  filter(Geschlecht == "w") %>% 
+  ggplot(., aes(x = Groesse, y = Gewicht)) +
+  geom_point(size = 2, alpha = .5) +
+  ggtitle(paste("Gewicht ~ Grösse für weibliche Studierende in physio.csv, n =", nw)) +
+  theme_classic()
+```
+
+
+**Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie Grafiken und Tabellen möglichst aussagekräftig.**  
+
+<br/>
+
+
+## Übung 6 {.tabset}
+
+### Aufgabe
+
+Untersuchen Sie den Zusammenhang zwischen Körpergrösse und Schuhgrösse aller
+Beobachtungseinheiten in physio.csv.   
+
+<br/>   
+
+
+### Lösung
+
+Vorgehen:   
+
+1. Falls noch nicht geschehen, den Filter für nur weibliche Studierende deaktivieren.    
+2. Erstellen Sie ein Punktediagramm für Y-Axis: Schuhgroesse und X-Axis: Groesse nach Geschlecht gruppiert (Group: Geschlecht).       
+3. Beschreiben Sie den Zusammenhang zwischen Schuhgrösse und Körpergrösse.  
+
+```{r}
+na <- summarise(phydata, n())
+
+ggplot(phydata, aes(x = Groesse, y = Schuhgroesse, color = Geschlecht)) +
+  geom_point(alpha = .5, size = 3) +
+  ggtitle(paste("Schuhgrösse ~ Körpergrösse im Datensatz physio.csv \n(w = ", nw, ", m = ", na - nw, ")")) +
+  theme_classic()
+```
+
+
+**Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie Grafiken und Tabellen möglichst aussagekräftig.**  
+
+<br/>
+
+
