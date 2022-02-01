@@ -1,0 +1,160 @@
+---
+title: "Übungen: Masszahlen"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 6
+    fig_width: 6
+    highlight: pygments
+    theme: yeti
+    code_download: false
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+
+library(tidyverse)
+library(jmv)
+library(knitr)
+
+phydata <- readRDS("../data/physio.rds")
+```
+
+# Technische Vorbemerkung
+
+* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen. Falls die Meldung erscheint *Github.com hat eine Verbindung verweigert* mit Rechtsklick den Link kopieren und in die Adressleiste im Browser einfügen.    
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
+    
+[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org
+   
+
+
+
+# Deskriptive Statistik: Masszahlen
+
+Verwenden Sie für diese Übungen den Datensatz physio.csv (bzw. physio.omv), 
+den Sie im ersten Übungsset erstellt haben.
+
+
+## Übung 1 {.tabset}
+
+### Aufgaben
+
+Analysieren Sie die Verteilung der Körpergrösse der Studentinnen in physio.csv.  
+
+1. Wie gross ist der Stichprobenumfang?    
+2. Geben Sie zwei Kennzahlen der mittleren Lage an.    
+3. Geben Sie zwei Kennzahlen der Streuung an.   
+4. Welche der genannten Kennzahlen sind robust gegen Extremwerte?   
+5. Welcher Wert liegt auf der 25%-Perzentile? Interpretieren Sie.    
+6. Welcher Wert liegt auf der 75%-Perzentile? Interpretieren Sie.    
+7. Wie gross ist die Variationsbreite (jamovi: Range)   
+8. Wie gross ist der Interquartilsabstand (jamovi: IQR)    
+9. Wie viele Werte liegen innerhalb des Interquartilsabstands?    
+10. Wie viele Studentinnen liegen über der 90%-Perzentile? (Tipp: Erstellen Sie einen Filter)  
+11. Erstellen Sie ein Histogramm für die Verteilung der Körpergrösse der Studentinnen.    
+12. Erstellen Sie einen Boxplot für die Verteilung der Körpergrösse der Studentinnen.
+.   
+    
+
+### Lösungen
+
+Bis auf Frage 10. können alle Fragen in einem Durchgang beantwortet werden:  
+
+- Erstellen Sie einen Filter in jamovi > Data > Filters mit der Formel:
+**= Geschlecht == "w"**    
+- Descriptives > wählen Sie Groesse als Variable aus > unter Statistics setzen 
+Sie Häkchen bei `N`(Stichprobenumfang), `Mean`, `Median`, `Std. deviation`, `Minimum`,
+`Maximum`, `IQR`, `Range`, bei `Percentiles` tragen Sie 25,75,90 ein.   
+- Descriptives > Plots > wählen Sie `Histogram`und `Box plot`.   
+- Lesen Sie den Output und beantworten Sie die Fragen.   
+- zu Frage 9: 50% der Werte liegen innerhalb des IQR = 183/2 ~ 92 Werte  
+- zu Frage 10: Der Wert auf der 90. Perzentile beträgt 174cm. Um herauszufinden, wie 
+viele Studentinnen grösser als 174cm sind, können Sie unter Data > Filters einen 
+neuen Filter erstellen **= Groesse > 174**. Der jamovi-Output wird gemäss dem 
+neuen Filter automatisch angepasst. *17 Studentinnen sind grösser als 174cm*.   
+
+
+```{r}
+phy_w <- phydata %>% 
+  filter(Geschlecht == "w")
+
+descriptives(
+  data = phy_w,
+  vars = Groesse,
+  range = TRUE,
+  iqr = TRUE,
+  pc = TRUE,
+  pcValues = "25,75,90",
+  hist = TRUE,
+  box = TRUE
+)
+
+# phy_w %>% 
+#   filter(Groesse > 174) %>% 
+#   summarise(n = n()) %>% 
+#   kable(., caption = "Anzahl Studentinnen über der 90%-Perzentile", align = "l")
+```
+
+<br/>   
+
+## Übung 2 {.tabset}
+
+### Aufgaben
+
+Analysieren Sie die Verteilung Körpergewichts der Studentinnen in physio.csv.  
+
+1. Wie gross ist der Stichprobenumfang?    
+2. Geben Sie zwei Kennzahlen der mittleren Lage an.    
+3. Geben Sie zwei Kennzahlen der Streuung an.   
+4. Welche der genannten Kennzahlen sind robust gegen Extremwerte?   
+5. Welcher Wert liegt auf der 25%-Perzentile? Interpretieren Sie.    
+6. Welcher Wert liegt auf der 75%-Perzentile? Interpretieren Sie.    
+7. Wie gross ist die Variationsbreite (jamovi: range)   
+8. Wie gross ist der Quartilsabstand (jamovi: IQR)    
+9. Wie viele Werte liegen innerhalb des Quartilsabstands?    
+10. Wie viele Studentinnen liegen unter der 25%-Perzentile? (Tipp: Erstellen Sie einen Filter)  
+11. Erstellen Sie ein Histogramm für die Verteilung des Körpergewichts der Studentinnen.    
+12. Erstellen Sie einen Boxplot für die Verteilung des Körpergewichts der Studentinnen.   
+13. Beurteilen Sie die Verteilungen in den beiden Grafiken.  
+
+<br/>
+
+
+### Lösungen
+
+Das Vorgehen ist gleich wie bei Aufgabe 1.  
+
+- zu Frage 10: Der Wert auf der 25. Perzentile beträgt 55kg. Um herauszufinden, wie 
+viele Studentinnen leichter als 55kg sind, können Sie unter Data > Filters einen 
+neuen Filter erstellen **= Gewicht < 55**. Der jamovi-Output wird gemäss dem 
+neuen Filter automatisch angepasst. *45 Studentinnen sind leichter als 55kg*.   
+
+
+
+```{r}
+descriptives(
+  data = phy_w,
+  vars = Gewicht,
+  range = TRUE,
+  iqr = TRUE,
+  pc = TRUE,
+  pcValues = "25,75",
+  hist = TRUE,
+  box = TRUE
+)
+
+# phy_w %>% 
+#   filter(Gewicht < 55) %>% 
+#   summarise(n = n()) %>% 
+#   kable(., caption = "Anzahl Studentinnen unter der 25%-Perzentile", align = "l")
+```
+
+
+**Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie Grafiken und Tabellen möglichst aussagekräftig.**  
+
+<br/>
