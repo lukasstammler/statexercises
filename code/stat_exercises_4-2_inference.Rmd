@@ -1,0 +1,154 @@
+---
+title: "Übungen zu Grundlagen der Inferenzstatistik, Teil 2"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 4
+    fig_width: 4
+    highlight: pygments
+    theme: yeti
+    code_download: true
+bibliography: skeleton.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+
+library(tidyverse)
+library(jmv)
+library(knitr)
+library(kableExtra)
+library(openintro)
+
+data(COL)
+```
+
+# Technische Vorbemerkung
+
+* Die Übungen sind für die Arbeit mit `jamovi` [@jamovi] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können [hier](https://github.com/lukasstammler/STAT/tree/main/Datasets) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in `jamovi`, die Datei im `jamovi`-Format `.omv` zu speichern.   
+* Die theoretischen Grundlagen zu diesen Übungen findest du unter [03 Grundlagen der Inferenzstatistik](https://rpubs.com/stammler/787481).
+    
+Notiz: Übungen zu Hypothesen, p-Werten, Power, Signifikanz-Relevanz
+   
+# Übungen zu Hypothesen  
+
+## Übung 1 {.tabset}
+
+### Aufgabe
+
+Eine Studienberaterin möchte wissen, wieviel Studierende im Monat für Wohnungsmiete budgetieren müssen. Einer Empfehlung der ETH Zürich entnimmt sie, dass die durchschnittlichen Wohnkosten der Studierenden auf CHF 840.-/Monat betragen (https://ethz.ch/content/dam/ethz/main/education/finanzielles/files-de/lebenshaltung.pdf). Formuliere die Null- und die Alternativhypothese.  
+
+### Antwort  
+
+$H_0:$ Die durchschnittlichen Mietkosten betragen CHF 840.-. $\mu = 840.-$   
+$H_A:$ Die durchschnittlichen Mietkosten unterscheiden sich von CHF 840.-. $\mu \neq 840.-$  
+
+Beachte, dass die Alternativhypothese zweiseitig formuliert ist. Einseitig formulierte Hypothesen wären:
+
+<br>
+
+## Übung 2 {.tabset}  
+
+### Aufgabe  
+
+Der Studienbeauftragte an der Universität Basel findet, dass der Betrag der ETH zu hoch angegeben ist. Welche Hypothesen formuliert er?   
+
+### Lösung
+
+$H_0:$ Die durchschnittlichen Mietkosten betragen CHF 840.-. $\mu = 840.-$
+$H_A:$ Die durchschnittlichen Mietkosten sind tiefer als CHF 840.-.
+
+Beachte, dass die Alternativhypothese einseitig formuliert ist.   
+
+<br>
+
+## Übung 3 {.tabset}
+
+Der Studienbeauftragte an der Universität Basel (>10'000 Studierende) führt eine Befragung an einer Zufallsstichprobe von 400 Studierenden durch. Das Resultat seiner Untersuchung ergibt, dass die durchschnittlichen Mietkosten $\bar{x} = 730.-$ mit einer Standardabweichung von $s = 100$ betragen.
+
+### Aufgabe
+
+(a) Sind die Voraussetzungen für ein Normalmodell erfüllt?   
+(b) Unterscheidet sich das Ergebnis von der Aussage der ETH Zürich?   
+
+### Lösung   
+
+(a) Sind die Voraussetzungen für ein Normalmodell erfüllt? Es handelt sich um eine Zufallsstichprobe, der Stichprobenumfang ist kleiner als 10% der Population und wir dürfen Unabhängigkeit der Daten annehmen. Da die Daten der einzelnen Studierenden nicht vorliegen, können wir nicht auf Normalverteilung prüfen. Wir können aber davon ausgehen, dass das Normalmodell gültig ist, da die Stichprobe recht gross ist.       
+(b) Unterscheidet sich das Ergebnis signifikant von der Aussage der ETH Zürich? Der Standardfehler für das Basler Ergebnis ist $SE=s/\sqrt{n} = 100/\sqrt(400) = 5$. Das 95%-Vertrauensintervall ist $CI_{95} = 730 \pm 1.96 \times 5 = [720.~~739.8]$. Dieses Vertrauensintervall beinhaltet den Nullwert von 840 nicht und wir haben Evidenz dafür, dass die Nullhypothese zu Gunsten der Alternativhypothese verworfen werden kann.  
+
+<br>
+
+## Übung 4 {.tabset}  
+
+### Aufgabe  
+
+Wenn der Studienbeauftragte die Nullhypothese verwirft, welchen Fehler kann er dann möglicherweise begehen?   
+
+### Lösung  
+
+Einen Fehler 1. Art: Er verwirft die Nullhypothese, obwohl sie wahr ist.  
+
+<br>
+
+## Übung 5 {.tabset}  
+
+Ein Fehler 1. Art am Gericht ist für den unschuldig Verurteilten eine gravierende Sache. 
+
+### Aufgabe 
+
+(a) Wie kann am Gericht die Wahrscheinlichkeit für Fehler 1. Art vermindert werden?  
+(b) Welche Auswirkungen hätte das für die Wahrscheinlichkeit, einen Fehler 2. Art zu begehen?  
+
+### Lösung   
+
+(a) Das Gericht könnte eine strengere Beweisführung verlangen. Z.B. würden starke Indizien nicht mehr für eine Verurteilung reichen, sondern die Schuld des Angeklagten müsste effektiv bewiesen werden.  
+(b) Die Wahrscheinlichkeit für Fehler 2. Art würde ansteigen, da auf Grund der strengeren Beweisführung und mangels harten Beweisen ein tatsächlich Schuldiger eher freigesprochen wird.  
+
+<br>
+
+## Übung 6 {.tabset}
+
+### Aufgabe
+
+Wenn wir alle Variablen der folgenden Datensätze auswerten und für jede Variable einen Hypothesentest durchführen, wie oft werden wir im durchschnitt einen Fehler 1. Art begehen? (Signifikanzniveau $\alpha = 0.05$)
+
+(a) Datensatz mit 20 Variablen  
+(b) Datensatz mit 60 Variablen
+(c) Datensatz mit 120 Variablen  
+
+### Lösung   
+
+Ein Signifikanzniveau $\alpha = 0.05$ bedeutet, dass wir in 5% der Entscheidungen einen Fehler 1. Art in Kauf nehmen. 
+
+(a) Datensatz mit 20 Variablen: 0.05 x 20 = 1  
+(b) Datensatz mit 60 Variablen: 0.05 x 60 = 3
+(c) Datensatz mit 120 Variablen: 0.05 x 120 = 6  
+
+# Übungen zum p-Wert
+
+## Übung 7 {.tabset}
+
+### Aufgabe
+
+In Übung 2 hat der Studienbeauftragte eine einseitig Alternativhypothese formuliert: $H_A: \mu < 840$. Seine Ergebnisse waren, dass die durchschnittlichen Mietkosten $\bar{x} = 730.-$ mit einer Standardabweichung von $s = 100$ betragen. Ist dies ein signifikanter Unterschied zu 840.-?  
+
+### Lösung
+
+
+
+
+
+
+
+
+
+
+
+
+
