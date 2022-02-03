@@ -8,9 +8,7 @@ output:
     fig_width: 4
     highlight: pygments
     theme: yeti
-    code_download: true
-bibliography: skeleton.bib
-link-citations: yes
+    code_download: false
 ---
 
 ```{r setup, include=FALSE}
@@ -29,12 +27,12 @@ data(COL)
 
 # Technische Vorbemerkung
 
-* Die Übungen sind für die Arbeit mit `jamovi` [@jamovi] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
-* Die Datensätze für alle Übungen können [hier](https://github.com/lukasstammler/STAT/tree/main/Datasets) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
-* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in `jamovi`, die Datei im `jamovi`-Format `.omv` zu speichern.   
-* Die theoretischen Grundlagen zu diesen Übungen findest du unter [03 Grundlagen der Inferenzstatistik](https://rpubs.com/stammler/787481).
+* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen. Falls die Meldung erscheint *Github.com hat eine Verbindung verweigert* mit Rechtsklick den Link kopieren und in die Adressleiste im Browser einfügen.    
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
     
-Notiz: Übungen zu Hypothesen, p-Werten, Power, Signifikanz-Relevanz
+[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org  
+    
    
 # Übungen zu Hypothesen  
 
@@ -44,12 +42,12 @@ Notiz: Übungen zu Hypothesen, p-Werten, Power, Signifikanz-Relevanz
 
 Eine Studienberaterin möchte wissen, wieviel Studierende im Monat für Wohnungsmiete budgetieren müssen. Einer Empfehlung der ETH Zürich entnimmt sie, dass die durchschnittlichen Wohnkosten der Studierenden auf CHF 840.-/Monat betragen (https://ethz.ch/content/dam/ethz/main/education/finanzielles/files-de/lebenshaltung.pdf). Formuliere die Null- und die Alternativhypothese.  
 
-### Antwort  
+### Lösung  
 
 $H_0:$ Die durchschnittlichen Mietkosten betragen CHF 840.-. $\mu = 840.-$   
 $H_A:$ Die durchschnittlichen Mietkosten unterscheiden sich von CHF 840.-. $\mu \neq 840.-$  
 
-Beachte, dass die Alternativhypothese zweiseitig formuliert ist. Einseitig formulierte Hypothesen wären:
+Die Alternativhypothese ist zweiseitig formuliert. 
 
 <br>
 
@@ -62,7 +60,7 @@ Der Studienbeauftragte an der Universität Basel findet, dass der Betrag der ETH
 ### Lösung
 
 $H_0:$ Die durchschnittlichen Mietkosten betragen CHF 840.-. $\mu = 840.-$
-$H_A:$ Die durchschnittlichen Mietkosten sind tiefer als CHF 840.-.
+$H_A:$ Die durchschnittlichen Mietkosten sind tiefer als CHF 840.-. $\mu < 840.-$
 
 Beachte, dass die Alternativhypothese einseitig formuliert ist.   
 
@@ -75,12 +73,17 @@ Der Studienbeauftragte an der Universität Basel (>10'000 Studierende) führt ei
 ### Aufgabe
 
 (a) Sind die Voraussetzungen für ein Normalmodell erfüllt?   
-(b) Unterscheidet sich das Ergebnis von der Aussage der ETH Zürich?   
+(b) Unterscheidet sich das Ergebnis von der Aussage der ETH Zürich, dass die durchschnittlichen Mietkosten CHF 840.- betragen?   
 
 ### Lösung   
 
-(a) Sind die Voraussetzungen für ein Normalmodell erfüllt? Es handelt sich um eine Zufallsstichprobe, der Stichprobenumfang ist kleiner als 10% der Population und wir dürfen Unabhängigkeit der Daten annehmen. Da die Daten der einzelnen Studierenden nicht vorliegen, können wir nicht auf Normalverteilung prüfen. Wir können aber davon ausgehen, dass das Normalmodell gültig ist, da die Stichprobe recht gross ist.       
-(b) Unterscheidet sich das Ergebnis signifikant von der Aussage der ETH Zürich? Der Standardfehler für das Basler Ergebnis ist $SE=s/\sqrt{n} = 100/\sqrt(400) = 5$. Das 95%-Vertrauensintervall ist $CI_{95} = 730 \pm 1.96 \times 5 = [720.~~739.8]$. Dieses Vertrauensintervall beinhaltet den Nullwert von 840 nicht und wir haben Evidenz dafür, dass die Nullhypothese zu Gunsten der Alternativhypothese verworfen werden kann.  
+(a) Sind die Voraussetzungen für ein Normalmodell erfüllt?   
+
+Es handelt sich um eine Zufallsstichprobe, der Stichprobenumfang ist kleiner als 10% der Population und wir dürfen Unabhängigkeit der Daten annehmen. Da die Daten der einzelnen Studierenden nicht vorliegen, können wir nicht auf Normalverteilung prüfen. Wir können aber davon ausgehen, dass das Normalmodell gültig ist, da die Stichprobe recht gross ist.   
+
+(b) Unterscheidet sich das Ergebnis signifikant von der Aussage der ETH Zürich?   
+
+Der Standardfehler für das Basler Ergebnis ist $SE=s/\sqrt{n} = 100/\sqrt(400) = 5$. Das 95%-Vertrauensintervall ist $CI_{95} = 730 \pm 1.96 \times 5 = [720.2~,~739.8]$. Dieses Vertrauensintervall beinhaltet den Nullwert von 840 nicht und wir haben Evidenz dafür, dass die Nullhypothese zu Gunsten der Alternativhypothese verworfen werden kann.  
 
 <br>
 
@@ -108,6 +111,7 @@ Ein Fehler 1. Art am Gericht ist für den unschuldig Verurteilten eine gravieren
 ### Lösung   
 
 (a) Das Gericht könnte eine strengere Beweisführung verlangen. Z.B. würden starke Indizien nicht mehr für eine Verurteilung reichen, sondern die Schuld des Angeklagten müsste effektiv bewiesen werden.  
+
 (b) Die Wahrscheinlichkeit für Fehler 2. Art würde ansteigen, da auf Grund der strengeren Beweisführung und mangels harten Beweisen ein tatsächlich Schuldiger eher freigesprochen wird.  
 
 <br>
@@ -136,19 +140,186 @@ Ein Signifikanzniveau $\alpha = 0.05$ bedeutet, dass wir in 5% der Entscheidunge
 
 ### Aufgabe
 
-In Übung 2 hat der Studienbeauftragte eine einseitig Alternativhypothese formuliert: $H_A: \mu < 840$. Seine Ergebnisse waren, dass die durchschnittlichen Mietkosten $\bar{x} = 730.-$ mit einer Standardabweichung von $s = 100$ betragen. Ist dies ein signifikanter Unterschied zu 840.-?  
+In Übung 2 und 3 hat der Studienbeauftragte eine einseitig Alternativhypothese formuliert: $H_A: \mu < 840$. Seine Ergebnisse waren, dass die durchschnittlichen Mietkosten $\bar{x} = 730.-, s = 100.-$ betragen. Ist dies ein signifikanter Unterschied zu 840.-? Signifikanzniveau $\alpha = 0.05$  
 
 ### Lösung
 
+**Variante 1:** Prüfung mittels 95%-Konfidenzintervall  
+
+Das 95%-Konfidenzintervall für die Mietkosten ergibt in Übung 3 mit [720.2, 739.8].  Der Nullwert von CHF 840.- ist in diesem Konfidenzintervall nicht enthalten und wir haben Evidenz dafür, dass sich die durchschnittlichen Mietkosten signifikant von 840.- unterscheiden.
+
+**Variante 2:** Prüfung mittels Teststatisik
 
 
+$$z = \frac{\bar{x}-\mu_0}{SE}$$
+
+Aus Übung 3 wissen wir, dass $\bar{x} = 730$ und $SE = 5$.
+
+$$z = \frac{730-840}{5} = \frac{-110}{5} = -22$$
+
+Ein z-Wert von -22 ist extrem klein und kann nicht in der z-Tabelle abgelesen werden. Die Berechnung der Wahrscheinlichkeit $p$ für $z=-22$ ergibt
+
+```{r}
+pnorm(-22)
+```
+
+*Die durchschnittlichen Mietzinsen, die Studierende bezahlen betragen CHF 730.- [720.2, 739.8]. Dieser Wert ist statistisch signifikant geringer als CHF 840.-, p < 0.001.*
 
 
+## Übung 8 {.tabset}
+
+Sie müssen eine neuen Physiotherapie-Methode anhand einer Stichprobe von $n = 25$ Patienten beurteilen: Die mittlere Veränderung auf der Schmerzskala (Skala von 0 bis 100) nach einwöchiger Physiotherapie mit der neuen Methode war $\bar{x} = -17.8$, mit einer Standardabweichung von $s = 10$.
+
+Ein Langzeiterfahrungswert mit der bisherigen Behandlung beträgt -15 auf der VAS-Skala.
+
+### Aufgabe
+
+Ist die neue Therapiemethode besser als die bisherige Referenztherapie? Formulieren sie die Hypothesen. Signifikanzniveau $\alpha = 0.05$
+
+### Lösung
+
+**Hypothesen**  
+
+$H_0: \bar{x} = -15$  
+$H_A: \bar{x} \neq -15$  
+
+<br/>
+
+**Variante 1:** Prüfung mittels 95% Konfidenzintervall
+
+1. Schritt: Berechnung des Standardfehlers
+
+$$SE = \frac{s}{\sqrt{n}} = \frac{10}{\sqrt{25}} = \frac{10}{5} = 2$$
+
+2. Schritt: Berechnung des 95% Konfidenzintervalls (mit z = 1.96)  
+
+$$CI_{95} = \bar{x} \pm 1.96 \times SE = -17.8 \pm 1.96 \times 2 = -17.8 \pm 3.92 = [-21.72, -13.88]$$
+
+3. Schritt: Interpretation   
+
+Die neue Methode reduziert die Schmerzen auf der VAS-Skala um durchschnittlich -17.8 [-21.72, -13.88] Punkte. Das 95%-Konfidenzintervall enthält den Referenzwert von -15 Punkten auf der VAS-Skala. Daher haben wir keine Evidenz für einen statistisch signifikanten Effekt der neuen Methode.
+
+<br/>
+
+**Variante 2:** Prüfung mittels Teststatistik
+
+$$z = \frac{\bar{x}-\mu_0}{SE} = \frac{-17.8 + 15}{2} = -1.4$$
+
+Wie wahrscheinlich wäre unter $H_0$ das beobachtete Ergebnis?
+
+```{r, echo=FALSE, fig.dim=c(6,5), fig.align='center'}
+t1 <- -1.4
+
+# coordinates to shade area below t1
+cord.x.lower <- c(-4, seq(-4, t1, .01), t1)
+cord.y.lower <- c(0, dnorm(seq(-4, t1, .01)), 0)
+
+# coordinates to shade area over -t1
+cord.x.upper <- c(-t1, seq(-t1, 4, .01), 4)
+cord.y.upper <- c(0, dnorm(seq(-t1, 4, .01)), 0)
+
+curve(dnorm(x,0,1),xlim=c(-4, 4),main='Fläche für t = -1.4 zweiseitig', col = "black")
+#polygon(cord.x,cord.y,col='lightblue', border = "black")
+polygon(cord.x.lower, cord.y.lower, col = "salmon", border = "black")
+polygon(cord.x.upper, cord.y.upper, col = "salmon", border = "black")
+points(x = t1, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
+```
 
 
+```{r, echo=TRUE}
+p <- 2 * (1- pnorm(abs(-1.4)))
+p
+```
 
+Die Wahrscheinlichkeit für eine Teststatistik so extrem oder noch extremer als die beobachtete beträgt $p = 0.162$.
 
+```{r, echo=FALSE, fig.dim=c(6,5), fig.align='center'}
+cord.x <- c(-1.96, seq(-1.96, 1.96,0.01),1.96) 
+cord.y <- c(0,dnorm(seq(-1.96, 1.96,0.01)),0) 
+curve(dnorm(x,0,1),xlim=c(-4,4),main='Annahme- und Verwerfungsbereich, 95%', col = "black")
+polygon(cord.x,cord.y,col='lightblue', border = "black")
+points(x = t1, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
+```
 
+Die Grenzen zwischen Annahmebereich (blaue Fläche) und Verwerfungsbereich (weisse Enden der Kurve) bei einem Signifikanzniveau $\alpha = 0.05$, liegt für die Standardnormalverteilung bei -1.96 und +1.96. Unsere Teststatistik $z = -1.4$ liegt innerhalb des Annahmebereichs und wir haben keine Evidenz gegen die Nullhypothese.
 
+<br/>
 
+## Übung 9 {.tabset}
 
+### Aufgabe
+
+Weil Sie sicher sind, dass die neue Methode besser ist, haben Sie die Studie mit einer neuen Stichprobe im Umfang von $n = 100$ erneut durchgeführt. Ihre Kennzahlen sind die gleichen wie in Übung 8, also $\bar{x} = -17.8$, $s = 10$. Der Referenzwert ist immer noch -15 und das Signifikanzniveau ist $\alpha = 0.05$.
+
+Welche Folgen hat die Erhöhung des Stichprobenumfangs für Ihre Schlussfolgerungen?   
+
+<br/>
+
+### Lösung
+
+**Hypothesen**  
+
+$H_0: \bar{x} = -15$  
+$H_A: \bar{x} \neq -15$  
+
+<br/>
+
+**Variante 1:** Prüfung mittels 95% Konfidenzintervall
+
+1. Schritt: Berechnung des Standardfehlers
+
+$$SE = \frac{s}{\sqrt{n}} = \frac{10}{\sqrt{100}} = \frac{10}{10} = 1$$
+Mit der vierfachen Stichprobengrösse halbiert sich der Standardfehler $SE = 1$!
+
+<br/>
+
+2. Schritt: Berechnung des 95% Konfidenzintervalls (mit z = 1.96)  
+
+$$CI_{95} = \bar{x} \pm 1.96 \times SE = -17.8 \pm 1.96 \times 1 = -17.8 \pm 1.96 = [-19.76, -15.84]$$
+
+3. Schritt: Interpretation   
+
+Die zweite Studie zur neuen Methode mit $n = 100$ reduziert die Schmerzen auf der VAS-Skala um durchschnittlich -17.8 [-19.76, -15.84] Punkte. Das 95%-Konfidenzintervall enthält den Referenzwert von -15 Punkten auf der VAS-Skala nicht. Damit haben wir Evidenz für einen statistisch signifikanten Effekt und verwerfen die Nullhypothese.
+
+<br/>
+
+**Variante 2:** Prüfung mittels Teststatistik
+
+$$z = \frac{\bar{x}-\mu_0}{SE} = \frac{-17.8 + 15}{1} = -2.8$$
+
+Wie wahrscheinlich wäre unter $H_0$ das beobachtete Ergebnis?  
+
+```{r, echo = FALSE, fig.dim=c(6,5), fig.align='center'}
+t2 <- -2.8
+# coordinates to shade area below t2
+cord.x.lower <- c(-4, seq(-4, t2, .01), t2)
+cord.y.lower <- c(0, dnorm(seq(-4, t2, .01)), 0)
+
+# coordinates to shade area over -t2
+cord.x.upper <- c(-t2, seq(-t2, 4, .01), 4)
+cord.y.upper <- c(0, dnorm(seq(-t2, 4, .01)), 0)
+
+curve(dnorm(x,0,1),xlim=c(-4, 4),main='Flaeche fuer t = -2.8 zweiseitig', col = "black")
+polygon(cord.x.lower, cord.y.lower, col = "salmon", border = "black")
+polygon(cord.x.upper, cord.y.upper, col = "salmon", border = "black")
+points(x = t2, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
+```
+
+```{r, echo=TRUE}
+p <- 2 * (1- pnorm(abs(-2.8)))
+p
+```
+
+Die Wahrscheinlichkeit für eine Teststatistik so extrem oder noch extremer als die beobachtete beträgt $p = 0.005$.
+
+```{r, echo = FALSE, fig.dim=c(6,5), fig.align='center'}
+cord.x <- c(-1.96, seq(-1.96, 1.96,0.01),1.96) 
+cord.y <- c(0,dnorm(seq(-1.96, 1.96,0.01)),0) 
+curve(dnorm(x,0,1),xlim=c(-4,4),main='95%-Annahme- und 5%-Verwerfungsbereich', col = "black")
+polygon(cord.x,cord.y,col='lightblue', border = "black")
+points(x = t2, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
+```
+
+Die Grenzen zwischen Annahmebereich (blaue Fläche) und Verwerfungsbereich (weisse Enden der Kurve) bei einem Signifikanzniveau $\alpha = 0.05$, liegt für die Standardnormalverteilung bei -1.96 und +1.96. Unsere Teststatistik $z = -2.8$ liegt innerhalb des Annahmebereichs und wir haben keine Evidenz gegen die Nullhypothese.
+
+<br/>
