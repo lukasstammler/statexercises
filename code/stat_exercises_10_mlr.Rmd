@@ -1,0 +1,337 @@
+---
+title: "stat_exercises_10_mlr"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 6
+    fig_width: 6
+    highlight: pygments
+    theme: yeti
+    code_download: false
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+
+library(tidyverse)
+library(jmv)
+library(knitr)
+library(kableExtra)
+library(openintro)
+library(patchwork)
+
+data(COL)
+```
+
+# Technische Vorbemerkung
+
+* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen. Falls die Meldung erscheint *Github.com hat eine Verbindung verweigert* mit Rechtsklick den Link kopieren und in die Adressleiste im Browser einfügen.    
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
+    
+[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org  
+
+# Übung 4 {.tabset}
+
+## Aufgabe   
+
+```{r}
+calories <- read_csv("calories5000.csv")
+calories$User_ID <- factor(calories$User_ID)
+calories$Gender <- factor(calories$Gender)
+
+calories <- calories %>% 
+  mutate(
+    Intensity = Duration * Heart_Rate
+  )
+
+# scatr::scat(
+#   data = calories,
+#   x = "Intensity",
+#   y = "Calories",
+#   group = "Gender",
+#   line = "linear"
+# )
+```
+
+Für diese Aufgabe verwenden wir den Datensatz `calories5000.csv` aus der Übung zu Korrelationen.
+
+Wir analysieren den Einfluss von Trainingsintensität und Geschlecht auf den Kalorienverbrauch.
+
+0. Laden Sie den Datensatz calories5000.omv in jamovi. Falls nicht schon vorhanden, berechnen Sie eine neue Variable `Intensity = Duration * Heart_Rate`.    
+1. Erstellen Sie ein Punktediagramm für die Männer und ein einfaches Regressionsmodell.   
+2. Erstellen sie ein Punktediagramm für die Frauen und ein einfaches Regressionsmodell.   
+3. Erstellen Sie ein Punktediagramm für Frauen und Männer gemeinsam und ein multiples Regressionsmodell.   
+4. Interpretieren Sie Ihre Ergebnisse.
+<br />
+<br />
+
+## Lösung
+
+1. Erstellen Sie ein Punktediagramm für die Männer und ein einfaches Regressionsmodell.   
+
+```{r}
+calories_m <- calories %>% 
+  filter(Gender == "male")
+
+ggplot(calories_m, aes(x = Intensity, y = Calories)) +
+  geom_point(color = "lightblue", alpha = .5) +
+  geom_smooth(method = "lm") +
+  ggtitle("Kalorienverbrauch vs. Trainingsintensität, Männer, n = 2468")
+
+m1 <- lm(data = subset(calories, Gender == "male"), Calories ~ Intensity)
+# summary(m1)
+
+jmv::linReg(
+  data = calories_m,
+  dep = Calories,
+  cov = Intensity,
+  blocks = list(
+    list(
+      "Intensity"
+    )
+  ),
+  refLevels = list()
+)
+
+extract_eq(m1, use_coefs = TRUE)
+```
+<br />
+
+2. Erstellen sie ein Punktediagramm für die Frauen und ein einfaches Regressionsmodell.  
+
+```{r}
+calories_w <- calories %>% 
+  filter(Gender == "female")
+
+ggplot(calories_w, aes(x = Intensity, y = Calories)) +
+  geom_point(color = "salmon", alpha = .5) +
+  geom_smooth(method = "lm") +
+  ggtitle("Kalorienverbrauch vs. Trainingsintensität, Frauen, n = 2532")
+
+jmv::linReg(
+  data = calories_w,
+  dep = Calories,
+  cov = Intensity,
+  blocks = list(
+    list(
+      "Intensity"
+    )
+  ),
+  refLevels = list()
+)
+
+m003 <- lm(data = subset(calories, Gender == "female"), Calories ~ Intensity)
+extract_eq(m003, use_coefs = TRUE)
+```
+
+<br />
+
+3. Erstellen Sie ein Punktediagramm für Frauen und Männer gemeinsam und ein multiples Regressionsmodell.   
+
+```{r}
+ggplot(calories, aes(x = Intensity, y = Calories, color = Gender)) +
+  geom_point(alpha = .5) +
+  geom_smooth(method = "lm") +
+  ggtitle("Kalorienverbrauch vs. Trainingsintensität,\nMänner (n = 2468) und Frauen (n = 2532)")
+
+jmv::linReg(
+    data = calories,
+    dep = Calories,
+    covs = Intensity,
+    factors = Gender,
+    blocks = list(
+        list(
+            "Intensity",
+            "Gender")),
+    refLevels = list(
+        list(
+            var="Gender",
+            ref="female")))
+
+m004 <- lm(data = calories, Calories ~ Intensity + Gender)
+extract_eq(m004, use_coefs = TRUE)
+```
+
+* Der Referenzlevel ist "female" (s. jamovi > Reference Levels)
+<br />
+
+4.Interpretieren Sie Ihre Ergebnisse.
+
+* Punktediagramme: Die Streuung der Punkte um die Regressionsgerade ist bei den Männern grösser als bei den Frauen. Wir erwarten daher einen etwas geringeren $r_p$ bei Männern als bei Frauen, was sich auch bestätigen lässt: Männer $r_p$ = .9622, Frauen $r_p$ = .9927. Bei den Männern, aber auch bei den Frauen in geringerem Masse, weist die Punktewolke eine leichte Krümmung v.a. bei Intensitäten > 2000 auf, was einen streng linearen Zusammenhang fraglich erscheinen lässt.
+
+* Die einfache lineare Regression zeigt, dass die Trainingsintensität bei Männern einen signifikanten Einfluss auf den Kalorienverbrauch hat. Die Steigerung der Intensität um einen Punkt erhöht den Kalorienverbrauch um .0693 [.0685, .0700] kcal, p < .0001. 92.6% der Varianz des Kalorienverbrauchs lassen sich durch die Trainingsintensität erklären ($R^2$ = .9258).
+
+* Die einfache lineare Regression zeigt, dass die Trainingsintensität bei Frauen einen signifikanten Einfluss auf den Kalorienverbrauch hat. Die Steigerung der Intensität um einen Punkt erhöht den Kalorienverbrauch um .0626 [.0623, .0629] kcal, p < .0001. 98.5% der Varianz des Kalorienverbrauchs lassen sich durch die Trainingsintensität erklären ($R^2$ = .9855).
+
+* Die multiple lineare Regression zeigt, dass sowohl das Geschlecht als auch die Trainingsintensität den Kalorienverbrauch signifikant beeinflussen. Die Steigerung der Trainingsintensität um eine Einheit erhöht den Kalorienverbrauch um .0659 [.0655, .0663] kcal (p < .0001), wobei Männer im Durchschnitt bei gleicher Intensität 2.571 [1.786, 3.355] kcal mehr verbrauchen (p < .0001). 95.0% der Varianz des Kalorienverbrauchs lassen sich auf Trainingsintensität und Geschlecht zurückführen $R^2 = .9497$.
+<br />
+<br />
+
+**Exkurs: Gültigkeit der linearen Modelle in dieser Übung**
+
+* Voraussetzung für die Gültigkeit eines linearen Modells sind    
+
+   1. linearer Zusammenhang zwischen der abhängigen und der unabhängigen Variable 
+   2. normalverteilte Residuen   
+   3. konstante Variabilität der Residuen
+<br />   
+   
+* Männer:    
+   1. der lineare Zusammenhang ist fraglich, zumindest in den Intensitätsbereichen > 2000.   
+   2. Die Verteilung der Residuen kann mit einem QQ-Plot dargestellt werden (jamovi > linear Regression > Assumption Checks): Die Normalverteilung ist fraglich. 
+   
+```{r}
+plot(m1, which = 2, col = "lightblue")
+```
+   
+   3. Die Variabilität der Residuen kann auch in jamovi dargestellt werden: Die Grafik zeigt von links nach rechts einen fächerförmigen Aspekt, der darauf hinweist, dass auch diese Bedingung nicht erfüllt ist.
+   
+```{r}
+plot(m1, which = 1, col = "lightblue")
+```
+   
+   4. Zusammenfassung: Die Gültigkeit des linearen Modells für Männer ist fraglich; die Resultate sind mit Vorsicht zu geniessen.
+   
+* Frauen: 
+   1. besserer linearer Zusammenhang   
+   2. die Residuen sind über einen weiteren Bereich normal verteilt als bei den Männern.
+   
+```{r}
+m2 <- lm(data = calories_w, Calories ~ Intensity)
+
+plot(m2, which = 2, col = "salmon")
+```
+   3. Auch hier fächerförmige Verteilung der Residuen, allerdings weniger ausgeprägt als bei den Männern.  
+   
+```{r}
+plot(m2, which = 1, col = "salmon")
+```
+   
+   4. Zusammenfassung: auch im Modell für Frauen sind die Bedingungen für ein gültiges lineares Modell nur unzureichend erfüllt. Damit gilt auch in diesem Fall, dass die Resultate mit Vorsicht genossen werden sollten.
+
+<br />
+<br />
+
+# Übung 5 {.tabset}
+
+```{r, warning=FALSE}
+# heart_data <- read_csv("heart_data.csv")
+# heart_data <- heart_data %>% 
+#   rename(ID = X1)
+# write_csv(heart_data, file = "heart_data.csv")
+
+heart_data <- read_csv("heart_data.csv")
+```
+
+Sie sind eine Public-Health-Forscherin und interessieren sich für Faktoren, die 
+einen Enfluss auf koronare Herzkrankheit haben. Dazu erheben sie in 498 Städten Daten 
+zu den prozentualen Bevölkerungsanteilen die Rauchen, mit dem Fahrrad zur Arbeit
+fahren (bike to work) und und zur prozentualen Häufigkeit der koronaren Herzkrankheit in diesen Städten.
+
+Für diese Übung verwenden wir den Datensatz ´heart_data.csv´. Er umfasst 50 Beobachtungseinheiten 
+und vier Variablen:
+
+- ID: Stadt anonymisiert, 1 ... 498
+- biking: prozentualer Anteil an Fahradfahrern, Fahradfahrerinnen   
+- smoking: prozentualer Antiel an Rauchern, Raucherinnen   
+- heart.disease: prozentualer Anteil an Menschen, die an koronarer Herzkrankheit leiden
+
+Quelle: https://www.scribbr.com/statistics/multiple-linear-regression/
+<br />
+<br />
+
+## Aufgabe
+
+1. Erstellen Sie ein multiples lineares Regressionsmodell, das den Einfluss von 
+Rauchen und Fahrradfahren auf die Häufigkeit von koronarer Herzkrankheit untersucht.   
+2. Prüfen Sie, ob ihr Modell die Voraussetzungen für lineare Regressionsmodelle erfüllt.
+<br />
+<br />
+<br />
+
+## Lösung
+
+Ihr multiples lineares Regressionsmodell hat die Form:   
+
+$$heart.disease = \alpha + \beta_1 \times biking + \beta_2 \times smoking$$
+
+
+
+```{r}
+jmv::linReg(
+  data = heart_data,
+  dep = heart.disease,
+  covs = vars(biking, smoking),
+  blocks = list(
+    list(
+      "biking",
+      "smoking")),
+  refLevels = list(),
+  # ci = TRUE
+)
+```
+
+Einsetzen der Koeffizienten (Estimators) in die Regressionsgleichung: 
+
+$$heart.disease = 14.98 - 0.200 \times biking + 0.178 \times smoking$$
+
+**Schlussfolgerung: In unserer Studie in 498 Städten fanden wir einen signifikanten
+Zusammenhang sowohl zwischen der Häufigkeit von bike to work und der Häufigkeit von 
+koronarer Herzkrankheit als auch zwischen dem prozentualen Anteil an Rauchern und der 
+Häufigkeit von korornarer Herzkrankheit (p < .0001 für beide Prädiktoren). Im Detail 
+fanden wir eine Abnahme um 0.2% in der Häufigkeit korononarer Herzkrankheiten für 
+jedes Prozent (1%) Steigerung in bike to work und eine Zunahme um 0.178% in der Häufigkeit 
+koronarer Herzkrankheiten für jedes Prozent Zunahme an Raucherinnen, Rauchern. Unser 
+Modell erklärt 98% der Variabilität von Häufigkeit koronarer Herzkrankheit ($R^2$ = .980)**  
+
+
+### Korrelationen
+
+Prüfen der Zusammenhänge zwischen der abhängigen und den unabhängigen Variablen
+
+```{r}
+jmv::corrMatrix(
+  data = heart_data,
+  vars = vars(heart.disease, biking, smoking)
+)
+
+ggplot(heart_data, aes(x = biking, y = heart.disease)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  ggtitle("Zusammenhang zwischen koronarer Herzkrankheit und Bike to Work, n = 498\nr(Pearson) = -.935, p < .0001")
+
+ggplot(heart_data, aes(x = smoking, y = heart.disease)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  ggtitle("Zusammenhang zwischen koronarer Herzkrankheit und Rauchen, n = 498\nr(Pearson) = .309, p < .0001")
+```
+
+### Gültigkeit des Regressionsmodells   
+
+Voraussetzung für die Gültigkeit sind:    
+- Die Residuen bilden eine horizontale Punktewolke und sind über den gesamten Bereich der unabhängigen Variable etwa gleich verteilt.   
+- Die Residuen sind normalverteilt (QQ-Plot)   
+
+```{r}
+jmv::linReg(
+  data = heart_data,
+  dep = heart.disease,
+  covs = vars(biking, smoking),
+  blocks = list(
+    list(
+      "biking",
+      "smoking")),
+  refLevels = list(),
+  # ci = TRUE
+  qqPlot = TRUE,
+  resPlots = TRUE
+)
+```
+<br />
+<br />
+<br />
+   
