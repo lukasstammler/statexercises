@@ -1,0 +1,229 @@
+---
+title: "Einfache lineare Regression - Teil 2"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 6
+    fig_width: 6
+    fig_align: "center"
+    highlight: pygments
+    theme: yeti
+    code_download: false
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+
+library(tidyverse)
+library(jmv)
+library(knitr)
+library(scatr)
+library(equatiomatic)
+library(openintro)
+```
+
+# Technische Vorbemerkung
+
+* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen. Falls die Meldung erscheint *Github.com hat eine Verbindung verweigert* mit Rechtsklick den Link kopieren und in die Adressleiste im Browser einfügen.    
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
+    
+[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org  
+
+<br/>
+
+# Übung 1 {.tabset}
+
+In den USA muss Starbucks auf der Menükarte die Kalorien für jede Auswahl angeben (in der Schweiz scheint das leider nicht der Fall zu sein). Gewisse Menschen achten auf eine kohlenhydratarme Ernährung (Low Carb) und es wäre interessant zu wissen, ob alleine anhand der Angabe der Kalorien eine Vorhersage über den Gehalt an Kohlenhydraten möglich ist. Auf https://www.starbucks.ch/de/nutrition können die Nährwertangaben eingesehen werden.  
+
+Im Streudiagramm ist die Beziehung zwischen der Anzahl Kalorien und dem Kohlenhydratgehalt (in g) dargestellt. Die beiden anderen Grafiken sind diagnostische Plots des Regressionsmodells (da jamovi etwas exzessiv diagnostische Plots erstellt, habe ich sie mit einem anderen Verfahren erstellt).   
+
+```{r, fig.align='center', fig.dim=c(4, 4)}
+starbucks <- read_csv("../data/starbucks.csv")
+
+scatr::scat(
+  data = starbucks,
+  x = "calories",
+  y = "carb",
+  line = "linear"
+)
+```
+
+```{r, fig.dim=c(8, 4), fig.align='center'}
+m_carb_cals <- lm(carb ~ calories, data = starbucks)
+
+par(mfrow = c(1, 2))
+
+plot(m_carb_cals$residuals ~ m_carb_cals$fitted.values,  #starbucks$calories
+     xlab = "Calories (fitted)", ylab = "Residuals", 
+     col = COL[1,2], pch = 19,
+     ylim = c(-30, 30), axes = FALSE,
+     main = "Residuen vs. gefittete Werte")
+axis(1)
+axis(2, at = seq(-20, 20, 20))
+box()
+abline(h = 0, lty = 2)
+
+# hist(m_carb_cals$residuals,
+#      col = COL[1], 
+#      xlab = "Residuals", ylab = "", main = "", 
+#      axes = FALSE, xlim = c(-40,40))
+# axis(1, at = seq(-40, 40, 20))
+# axis(2)
+
+qqnorm(m_carb_cals$residuals)
+qqline(m_carb_cals$residuals, col = "darkgreen")
+
+par(mfrow = c(1, 1))
+```
+
+## Aufgabe
+
+1. Beschreiben Sie die Beziehung zwischen der Anzahl Kalorien und dem Kohlenhydratgehalt (in g), für die Auswahl auf der Menükarte von Starbucks.   
+2. Welches ist die abhängige und welches die unabhängige Variable?   
+3. Erfüllen die Daten die Voraussetzungen für ein lineares Modell?   
+
+<br/>
+
+## Lösung
+
+1. Beschreiben Sie die Beziehung zwischen der Anzahl Kalorien und dem Kohlenhydratgehalt (in g), für die Auswahl auf der Menükarte von Starbucks.   
+
+- Es besteht ein positiver, mittelstarker, linearer Zusammenhang zwischen der Anzahl Kalorien und dem Kohlenhydratgehalt in g.   
+- Der Kohlenhydratgehalt für Angebote mit höherem Kaloriengehalt ist variabler als für Angebote mit geringerem Kaloriengehalt. Dies ist ein Hinweis auf eine nichtkonstante Varianz der Daten.   
+- Zudem scheint es zwei Cluster von Daten zu geben: Eine Gruppe von etwa einem Duzend Beobachtungen in der unteren linken Seite und eine grössere Gruppe auf der rechten Seite.  
+
+
+2. Welches ist die abhängige und welches die unabhängige Variable?   
+
+- Abhängige Variable: Kohlenhydratgehalt in g (carb), unabhängige Variable: Kaloriengehalt (calories)  
+
+
+3. Erfüllen die Daten die Voraussetzungen für ein lineares Modell?   
+
+- Der Zusammenhang scheint linear und die Residuen sind annähernd normalverteilt (QQ-Plot). Im Plot der Residuen vs gefittete Werte zeigt sich ein Muster zunehmender Streuung von links nach rechts. Damit ist die Bedingung für Homoskedastizität nicht erfüllt. Das bedeutet, dass die Regressionsgleichung und ihre Koeffizienten zwar gültig sind, Signifikanztests und Konfidenzintervalle können aber nicht mehr zuverlässig interpretiert werden.   
+
+<br/>
+
+# Übung 2 {.tabset}
+
+In den Übungen zur einfachen linearen Regression haben wir den Zusammenhang von Schlafdauer und Schlechte-Laune-Score von Dan anhand eines linearen Regressionsmodells analysiert. 
+
+```{r, fig.dim=c(4, 4), fig.align='center'}
+parenthood <- read_csv("../data/parenthood.csv")
+
+scatr::scat(
+  data = parenthood,
+  x = "dan.sleep",
+  y = "dan.grump",
+  line = "linear"
+)
+```
+
+
+```{r, fig.dim=c(8, 4), fig.align='center'}
+m_parent <- lm(dan.grump ~ dan.sleep, data = parenthood)
+#summary(m_parent)
+
+par(mfrow = c(1, 2))
+
+plot(m_parent$residuals ~ m_parent$fitted.values,
+     xlab = "Grump-Score (fitted)", ylab = "Residuals", 
+     col = COL[1,2], pch = 19,
+     ylim = c(-30, 30), axes = FALSE,
+     main = "Residuen vs. gefittete Werte")
+axis(1)
+axis(2, at = seq(-20, 20, 20))
+box()
+abline(h = 0, lty = 2)
+
+
+qqnorm(m_parent$residuals)
+qqline(m_parent$residuals, col = "darkgreen")
+
+par(mfrow = c(1, 1))
+```
+
+
+## Aufgabe
+
+1. Welches ist die abhängige und welches die unabhängige Variable?   
+2. Für welche Variable untersuchen wir den Residuen vs. gefittete Werte?  
+3. Erfüllen die Daten die Voraussetzungen für ein lineares Modell?   
+
+<br/>
+
+## Lösung 
+
+1. Welches ist die abhängige und welches die unabhängige Variable?   
+
+- Abhängige Variable: Schlechte-Laune-Score, unabhängige Variable: Dan's Schlafdauer  
+
+
+2. Für welche Variable untersuchen wir den Residuen vs. gefittete Werte?  
+
+- für die abhängige Variable   
+
+
+3. Erfüllen die Daten die Voraussetzungen für ein lineares Modell?   
+
+- Ja. Es besteht ein linearer negativer Zusammenhang zwischen Dan's Schlafdauer und ihrem Schlechte-Laune-Score. Die Residuen sind normal verteilt (QQ-Plot) und die Punkteverteilung im Plot Residuen vs. gefittete Werte zeigt die gleiche Streuung über den gesamten Wertebereich. Damit ist die Voraussetzung für Homoskedastizität erfüllt. Die Voraussetzungen für ein lineares Modell sind erfüllt.   
+
+<br/>  
+
+# Übung 3 {.tabset}
+
+In den Übungen zur einfachen linearen Regression haben wir den Zusammenhang von Herzgrösse und Körpergewicht von Hauskatzen anhand eines linearen Regressionsmodells analysiert. 
+
+```{r, fig.dim=c(4, 4), fig.align='center'}
+cats <- read_csv("../data/cats.csv")
+
+# str(cats)
+scatr::scat(
+  data = cats,
+  x = "Bwt",
+  y = "Hwt",
+  line = "linear"
+)
+```
+
+```{r, fig.dim=c(8, 4), fig.align='center'}
+m_cats <- lm(Hwt ~ Bwt, data = cats)
+
+par(mfrow = c(1, 2))
+
+plot(m_cats$residuals ~ m_cats$fitted.values,
+     xlab = "Hwt (fitted)", ylab = "Residuals", 
+     col = COL[1,2], pch = 19,
+     ylim = c(-30, 30), axes = FALSE,
+     main = "Residuen vs. gefittete Werte")
+axis(1)
+axis(2, at = seq(-20, 20, 20))
+box()
+abline(h = 0, lty = 2)
+
+
+qqnorm(m_cats$residuals)
+qqline(m_cats$residuals, col = "darkgreen")
+
+par(mfrow = c(1, 1))
+```
+
+## Aufgabe
+
+1. Erfüllen die Daten die Voraussetzungen für ein lineares Modell?
+
+<br/>
+<br/>
+
+## Lösung
+
+1. Erfüllen die Daten die Voraussetzungen für ein lineares Modell?  
+
+- Es besteht ein positiver, moderater, linearer Zusammenhang zwischen Körpergewicht und Herzgrösse bei Hauskatzen. Die Residuen sind normalverteilt und Plot der Residuen vs. gefittete Werte zeigt eine gleichmässige Verteilung der Punkte über den gesamten Datenbereich (Homoskedastizität). Die Voraussetzungen für ein lineares Modell sind erfüllt.
+
+<br/>
+<br/>

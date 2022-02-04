@@ -4,13 +4,11 @@ author: "Lukas Stammler"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    fig_height: 4
-    fig_width: 4
+    fig_height: 6
+    fig_width: 6
     highlight: pygments
     theme: yeti
-    code_download: true
-bibliography: skeleton.bib
-link-citations: yes
+    code_download: false
 ---
 
 ```{r setup, include=FALSE}
@@ -30,11 +28,11 @@ data(COL)
 
 # Technische Vorbemerkung
 
-* Die Übungen sind für die Arbeit mit `jamovi` [@jamovi] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
-* Die Datensätze für alle Übungen können [hier](https://github.com/lukasstammler/STAT/tree/main/Datasets) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
-* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in `jamovi`, die Datei im `jamovi`-Format `.omv` zu speichern.   
-* Die theoretischen Grundlagen zu diesen Übungen findest du unter [06 Korrelation](https://rpubs.com/stammler/810014).
-
+* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen. Falls die Meldung erscheint *Github.com hat eine Verbindung verweigert* mit Rechtsklick den Link kopieren und in die Adressleiste im Browser einfügen.    
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
+    
+[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org  
 
 # Übung 1 {.tabset}
 
@@ -163,7 +161,7 @@ c) Welche Grafik zeigt eine stärkere Korrelation? Begründe deine Antwort.
 
 a) Der Zusammenhang zwischen dem Alter von Mann und Frau ist stark, positiv und linear.  
 b) Der Zusammenhang zwischen der Körpergrösse von Mann und Frau ist schwach aber positiv.   
-c) Alter zwischen den Ehepartnern korreliert stärker (r = 939) als Körpergrösse (r = 0.306). Die Punkte im Altersplot streuen weniger um eine gedachte Gerade als die Punkte im Plot zur Körpergrösse.   
+c) Alter zwischen den Ehepartnern korreliert stärker (r = 0.939) als Körpergrösse (r = 0.306). Die Punkte im Altersplot streuen weniger um eine gedachte Gerade als die Punkte im Plot zur Körpergrösse.   
 <br>
 
 # Übung 3 {.tabset}
@@ -191,7 +189,7 @@ cor3 <- round(cor(x, y_3_weak_pos), 2)
 cor4 <- round(cor(x, y_4_weak_neg), 2)
 ```
 
-Welcher Korrelationskoeffizient passt zu welcher Grafik?
+Welcher Korrelationskoeffizient nach Pearson passt zu welcher Grafik?
 
 a) r = `r cor4`
 b) r = `r cor3`
@@ -238,11 +236,11 @@ Plot d) r = -0.7, moderat negativ linear
 
 # Übung 4 {.tabset}
 
+Besteht ein Zusammenhang zwischen Körpergrösse und Schuhgrösse bei den Physiotherapie-Studierenden. Arbeiten Sie mit dem Datensatz `physio.csv` bzw. `physio.omv`, den Sie bereits früher erstellt haben.
+
 ## Aufgabe
 
-Besteht ein Zusammenhang zwischen Körpergrösse und Schuhgrösse bei den Physiotherapie-Studierenden.
-
-0. Laden Sie den Datensatz `phydata.csv` bzw. `phydata.omv` in jamovi.   
+0. Laden Sie den Datensatz `physio.csv` bzw. `physio.omv` in jamovi.   
 1. Formulieren Sie Ihre Hypothesen.    
 2. Beschreiben Sie die interessierenden Variablen deskriptiv inkl. Grafik        
 3. Führen Sie eine Korrelationsanalyse durch.   
@@ -261,7 +259,7 @@ Besteht ein Zusammenhang zwischen Körpergrösse und Schuhgrösse bei den Physio
 2. Beschreiben Sie die interessierenden Variablen deskriptiv inkl. Grafik (verwenden Sie für die Grafik das jamovi-Modul `scatr`).
 
 ```{r, eval=TRUE}
-phy <- read_csv("../Datasets/phydata.csv")
+phy <- read_csv("../data/physio.csv")
 
 jmv::descriptives(
   data = phy,
@@ -296,20 +294,19 @@ corrMatrix(
 
 # Übung 5 {.tabset}
 
+Um Zusammenhänge richtig zu interpretieren ist es wichtig, stets die Grafiken anzuschauen. Um dies zu verdeutlichen analysieren wir den Datensatz `anscombe.csv`. Dieser besteht aus 4 x-y-Kombinationen (x1-y1, x2-y2 etc) die alle die gleichen statistischen Merkmale (Mittelwert, Standardabweichung, Korrelationskoeffizient nach Pearson etc. aufweisen) und trotzdem völlig unterschiedlich sind.   
+
 ```{r, eval=TRUE}
-# data(anscombe)
-# summary(anscombe)
-# write_csv(anscombe, file = "anscombe.csv")
-anscombe <- read_csv("../Datasets/anscombe.csv")
+anscombe <- read_csv("../data/anscombe.csv")
 ```
 
+Laden Sie den Datensatz `anscombe.csv` [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter.
 
-## Aufgabe
+<br/>
 
-Um Zusammenhänge richtig zu interpretieren ist es wichtig, stets die Grafiken anzuschauen. Um dies zu verdeutlichen analysieren wir den Datensatz `anscombe.csv`. Dieser besteht aus 4 x-y-Kombinationen (x1-y1, x2-y2 etc) die alle die gleichen statistischen Merkmale (Mittelwert, Standardabweichung, Korrelationskoeffizient nach Pearson etc. aufweisen) und trotzdem völlig unterschiedlich sind.
-<br />
+## Aufgabe  
 
-0. Laden Sie den Datensatz `anscombe.csv`. Download [hier](https://1drv.ms/u/s!AgeAm23J8ZSmi-xFGwGSXZw3ZfW0qw?e=Ljlkgk). Sie müssen die x-Variablen als *continuous* kategorisieren.          
+0. Laden Sie den Datensatz `anscombe.csv` in jamovi. Sie müssen die x-Variablen in jamovi als *continuous* kategorisieren.          
 1. Berechnen Sie Mittelwert und Standardabweichung für jede Variable. Was fällt Ihnen auf?     
 2. Berechnen Sie die Korrelationskoeffizienten nach Pearson $p$ für die 4 x-y-Paare.     
 3. Erstellen Sie für jedes x-y-Paar eine Grafik.
@@ -321,9 +318,6 @@ Um Zusammenhänge richtig zu interpretieren ist es wichtig, stets die Grafiken a
 1. Berechnen Sie Mittelwert und Standardabweichung für jede Variable. Was fällt Ihnen auf? 
 
 ```{r, eval=TRUE}
-# anscombe %>% 
-#   summarise(across(everything(), list(m = mean, s = sd)))
-
 jmv::descriptives(
   data = anscombe,
   vars = vars(x1, x2, x3, x4, y1, y2, y3, y4),
@@ -340,90 +334,78 @@ jmv::descriptives(
 * y-Variablen haben alle den gleichen Mittelwert 7.5 und die gleiche Standardabweichung 2.03
 <br />
 
-2. Berechnen Sie die Korrelationskoeffizienten nach Pearson für die 4 x-y-Paare.   
+2. Berechnen Sie die Korrelationskoeffizienten nach Pearson für die vier x-y-Paare.   
 
 * Erstellen Sie eine Korrelationsmatrix mit allen x- und y-Variablen. Lesen Sie den Korrelationskoeffizienten bei den zusammengehörenden Paaren x1-y1, x2-y2, x3-y3 und x4-y4
 
+```{r}
+jmv::corrMatrix(
+  data = anscombe,
+  vars = vars(x1, x2, x3, x4, y1, y2, y3, y4),
+  sig = FALSE
+)
+```
 
-Paar | $p$
----- | -----
+Paar | $r$
+|:---- |:-----|
 x1-y1 | .8164
 x2-y2 | .8162
 x3-y3 | .8163
 x4-y4 | .8165   
 
-* Bis auf die 4. Stelle nach dem Komma sind alle Korrelationskoeffizienten gleich und weisen auf einen starken Zusammenhang hin.  
+* Bis auf die 3. Stelle nach dem Komma sind alle Korrelationskoeffizienten gleich und weisen auf einen starken Zusammenhang hin.  
 * Der Rangkorrelationskoeffizient nach Spearman für das Paar x3-y3 ist $r_S = 0.991$. Haben Sie eine Erklärung dafür?   
 <br />
 
 3. Erstellen Sie für jedes x-y-Paar eine Grafik.   
 
 ```{r, eval=TRUE, fig.align='center'}
-# anscombe_m <- data.frame()
-# 
-# for(i in 1:4)
-#   anscombe_m <- rbind(anscombe_m, data.frame(set=i, x=anscombe[,i], y=anscombe[,i+4]))
-# 
-# write_csv(anscombe_m, file = "anscombe_m.csv")
-anscombe_m <- read_csv("../Datasets/anscombe_m.csv")
+anscombe_m <- read_csv("../data/anscombe_m.csv")
 
 ggplot(anscombe_m, aes(x, y)) + 
   # geom_point(size=5, color="red", fill="orange", shape=21) +
   geom_point(size=5, color="white", fill = "red", shape=21, alpha = .6) +
   geom_smooth(method="lm", fill=NA, fullrange=TRUE) + 
-  facet_wrap(~set, ncol=2)
-
-# anscombe_x <- anscombe_m %>% 
-#   group_by(set) %>% 
-#   mutate(row_nr = row_number()) %>% 
-#   pivot_wider(names_from = set, values_from = c(x, y), names_sep = ".") %>% 
-#   select(-row_nr)
-# 
-# cor(anscombe_x)
-# cor(anscombe_x, method = "spearman")
+  facet_wrap(~set, ncol=2) +
+  theme_minimal()
 ```
 
 1. Das erste Datenpaar entspricht recht gut einem linearen Zusammenhang.    
 2. Das zweite Datenpaar zeigt keinen linearen Zusammenhang.     
 3. Das dritte Datenpaar zeigt einen Ausreisser, der nicht mit einem linearen Modell vereinbar ist.   
 4. Das vierte Datenpaar zeigt ebenfalls einen Ausreisser, der nicht mit einem linearen Modell vereinbar ist.
-<br />
+
 <br />
 
 # Übung 6 {.tabset}
 
-```{r, eval=TRUE}
-# library(readr)
-# calories <- read_csv("C:/Users/balbu/switchdrive/Beruf/R/R_Projects/SG_PHY_StatExercises/PHY19/calories.csv")
-# calories5000 <- calories %>% 
-#   sample_n(5000, replace = FALSE)
-# write_csv(calories5000, file = "calories5000.csv")
+Wir arbeiten mit dem Datensatz `calories5000.csv` Laden Sie den Datensatz `calories5000.csv` [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter.   
 
-calories <- read_csv("../Datasets/calories5000.csv")
+Der Datensatz umfasst n = 5'000 Probanden.   
+
+Variable | Beschreibung  
+|:-------- |:------------| 
+User_ID | Benutzer anonym  
+Gender | Geschlecht, male, female  
+Age | Alter in Jahren  
+Height | Körpergrösse in cm  
+Weight | Körpergewicht in kg
+Duration | Durchschnittliche Trainingsdauer  
+Heart_Rate | Durchschnittliche Herzfrequenz während einem Training  
+Body_Temp | Durchschnittliche Körpertemperatur während einem Training      
+Calories | Durchschnittlicher Kalorienverbrauch pro Training     
+
+
+```{r, eval=TRUE}
+calories <- read_csv("../data/calories5000.csv")
 
 calories$User_ID <- factor(calories$User_ID)
 calories$Gender <- factor(calories$Gender)
 ```
 
+<br/>
 
 ## Aufgabe
-
-Wir arbeiten mit dem Datensatz `calories5000.csv` eines Fitness-Tracker-Anbieters. Download [hier](https://1drv.ms/u/s!AgeAm23J8ZSmi-xICkhvEY0P9gWqBw?e=lUMZcr)
-
-
-Der Datensatz umfasst n = 5'000 Probanden.
-
-Variable | Beschreibung
--------- | ------------
-User_ID | Benutzer anonym
-Gender | Geschlecht, male, female
-Age | Alter in Jahren
-Height | Körpergrösse in cm
-Weight | Körpergewicht in kg
-Duration | Durchschnittliche Trainingsdauer
-Heart_Rate | Durchschnittliche Herzfrequenz während einem Training
-Body_Temp | Durchschnittliche Körpertemperatur während einem Training    
-Calories | Durchschnittlicher Kalorienverbrauch pro Training    
 
 0. Laden Sie den Datensatz `calories5000.csv` in jamovi und kategorisieren Sie die Variablen. Speichern Sie den Datensatz als `calories5000.omv`, wir benötigen ihn wieder bei den Regressionsanalysen. 
 
@@ -432,6 +414,7 @@ Calories | Durchschnittlicher Kalorienverbrauch pro Training
    b) Körpertemperatur und Kalorienverbrauch?    
    c) Herzfrequenz und Körpertemperatur?     
    d) Alter und Trainingsdauer?    
+
 <br />
 
 2. Vermutlich besteht ein starker Zusammenhang zwischen der Trainingsintensität und dem Kalorienverbrauch. Können Sie mit aus den gegebenen Variablen eine neue, abgeleitete Variable für Trainingsintensität berechnen?   
@@ -452,11 +435,16 @@ scatr::scat(
   line = "linear"
 )
 
-cor.test(data = calories, ~ Heart_Rate + Calories)
-cor.test(data = calories, ~ Heart_Rate + Calories, method = "spearman")
+jmv::corrMatrix(
+  data = calories,
+  vars = vars(Heart_Rate, Calories),
+  spearman = TRUE,
+  ci = TRUE
+)
 ```
 
-**Es besteht ein signifikanter positiver Zusammenhang zwischen Herzfrequenz und Kalorienverbrauch, $p$ = .90, $r_S$ = .92, p < .0001. Auf Grund der Grafik ist ein vollkommen linearer Zusammenhang unsicher. Für $p$ ist ein linearer Zusammenhang voraussetzung, deshalb entscheiden wir uns für den $r_s$.**
+**Es besteht ein signifikanter positiver Zusammenhang zwischen Herzfrequenz und Kalorienverbrauch, $r$ = 0.898, $r_s$ = 0.916, p < .0001. Auf Grund der Grafik ist ein vollkommen linearer Zusammenhang unsicher. Für $r$ ist ein linearer Zusammenhang voraussetzung, deshalb entscheiden wir uns für den $r_s$.**  
+
 <br />
 
 
@@ -471,11 +459,16 @@ scatr::scat(
   line = "linear"
 )
 
-cor.test(data = calories, ~ Body_Temp + Calories)
-cor.test(data = calories, ~ Body_Temp + Calories, method = "spearman")
+jmv::corrMatrix(
+  data = calories,
+  vars = vars(Body_Temp, Calories),
+  spearman = TRUE,
+  ci = TRUE
+)
 ``` 
 
-**Es besteht ein signifikanter positiver Zusammenhang zwischen Körpertemperatur und Kalorienverbrauch, $p$ = .82, $r_s$ = .92, p < .0001. Der Zusammenhang ist eindeutig nicht linear und wir entscheiden uns für $r_s$.**    
+**Es besteht ein signifikanter positiver Zusammenhang zwischen Körpertemperatur und Kalorienverbrauch, $r$ = 0.82, $r_s$ = 0.92, p < .0001. Der Zusammenhang ist eindeutig nicht linear und wir entscheiden uns für $r_s$.**  
+
 <br />
 
    c) Herzfrequenz und Körpertemperatur?  
@@ -489,11 +482,16 @@ scatr::scat(
   line = "linear"
 )
 
-cor.test(data = calories, ~ Heart_Rate + Body_Temp)
-cor.test(data = calories, ~ Heart_Rate + Body_Temp, method = "spearman")
+jmv::corrMatrix(
+  data = calories,
+  vars = vars(Heart_Rate, Body_Temp),
+  spearman = TRUE,
+  ci = TRUE
+)
 ```
   
-**Es besteht ein signifikanter positiver Zusammenhang zwischen Körpertemperatur und Herzfrequenz, $p$ = .78, $r_s$ = .81, p < .0001. Der Zusammenhang ist eindeutig nicht linear und wir entscheiden uns für $r_s$.**    
+**Es besteht ein signifikanter positiver Zusammenhang zwischen Körpertemperatur und Herzfrequenz, $r$ = .77, $r_s$ = .81, p < .0001. Der Zusammenhang ist eindeutig nicht linear und wir entscheiden uns für $r_s$.**    
+
 <br />  
   
    d) Alter und Trainingsdauer?   
@@ -508,13 +506,17 @@ scatr::scat(
   line = "linear"
 )
 
-cor.test(data = calories, ~ Age + Duration)
-cor.test(data = calories, ~ Age + Duration, method = "spearman")
+jmv::corrMatrix(
+  data = calories,
+  vars = vars(Age, Duration),
+  spearman = TRUE,
+  ci = TRUE
+)
 ```   
 
    
-**Es besteht kein Zusammenhang zwischen Alter und Trainingsdauer, $p$ = .04, p = .0095; $r_s$ = .03, p = .0346.** 
-<br />
+**Es besteht kein Zusammenhang zwischen Alter und Trainingsdauer, $r$ = .04, p = .0095; $r_s$ = .03, p = .0144. Die signifikanten p-Werte sind etwas irritierend ;)**   
+
 <br />
 
 2. Vermutlich besteht ein starker Zusammenhang zwischen der Trainingsintensität und dem Kalorienverbrauch. Können Sie mit aus den gegebenen Variablen eine neue, abgeleitete Variable für Trainingsintensität berechnen?     
@@ -535,18 +537,25 @@ scatr::scat(
   line = "linear"
 )
 
-cor.test(data = calories, ~ Intensity + Calories)
-cor.test(data = calories, ~ Intensity + Calories, method = "spearman")
+
+jmv::corrMatrix(
+  data = calories,
+  vars = vars(Calories, Intensity),
+  spearman = TRUE,
+  ci = TRUE
+)
 ```
 
-**Es besteht ein signifikanter, linearer und postiver Zusammenhang zwischen Trainingsintensität und Kalorienverbrauch. Mit $p$ = .9743 [.9729, .9757], p < .0001 ist der Zusammenhang sehr stark.**
+**Es besteht ein signifikanter, linearer und postiver Zusammenhang zwischen Trainingsintensität und Kalorienverbrauch. Mit $r$ = 0.9743 [0.9729, 0.9754], p < .0001 ist der Zusammenhang stark.**  
+
 <br />
 
 # Übung 7 {.tabset}
 
-## Aufgabe
+Fragestellung: Besteht ein Zusammenhang zwischen dem Alter einer Person und ihrer Performance beim 100-Meter-Sprint. Um die Frage zu beantworten, messen wir von 6 Personen das Alter in Jahren, und die Zeit für 100 Meter in Sekunden.  
 
-Fragestellung: Besteht ein Zusammenhang zwischen dem Alter einer Person und ihrer Performance beim 100-Meter-Sprint. Um die Frage zu beantworten, messen wir von 6 Personen das Alter in Jahren, und die Zeit für 100 Meter in Sekunden.
+
+## Aufgabe
 
 0. Laden Sie den Datensatz `m100.csv` in jamovi.   
 1. Formulieren Sie Ihre Hypothesen.    
@@ -562,19 +571,29 @@ Fragestellung: Besteht ein Zusammenhang zwischen dem Alter einer Person und ihre
 
 2. Erstellen Sie ein Streudiagramm und führen Sie eine Korrelationsanalyse durch.   
 
-```{r}
-m100 <- read_delim("../Datasets/m100.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+```{r, fig.align='center'}
+m100 <- read_csv("../data/m100.csv")
 
-ggplot(m100, aes(x = ALTER_jahre, y = ZEIT_sec)) +
-  geom_point(col = COL[1], size = 2, alpha = .7)
+ggplot(m100, aes(x = jahre, y = sec)) +
+  geom_point(col = COL[1], size = 3, alpha = .7) +
+  theme_classic() +
+  ggtitle("Zeit für 100m-Sprint nach Alter (n = 6)") +
+  xlab("Alter (Jahre)") +
+  ylab("Zeit (sec)")
+# 
+# cor.test(m100$ALTER_jahre, m100$ZEIT_sec)
+# cor.test(m100$ALTER_jahre, m100$ZEIT_sec, method = "spearman")
 
-cor.test(m100$ALTER_jahre, m100$ZEIT_sec)
-cor.test(m100$ALTER_jahre, m100$ZEIT_sec, method = "spearman")
+jmv::corrMatrix(
+  data = m100,
+  vars = vars(jahre, sec),
+  spearman = TRUE
+)
 ```
 
 3. Interpretieren Sie ihr Resultat.
 
-**Die Daten zeigen keinen signifikanten Zusammenhang zwischen Alter und Laufzeit ($p$ = 0.730, p = 0.099). Aus dem Streudiagramm geht nicht eindeutig hervor ob der Zusammenhang zwischen Alter und Laufzeit linear ist. Die Messung der Laufzeit beim jüngsten Läufer ist vermutlich ein Ausreisser. Auch die Berechnung des Rangkorrelationskoeffizienten nach Spearman ergibt keinen signifikanten Zusammenhang zwischen Alter und Laufzeit ($r_S$ = 0.829, p = 0.058).**
+**Die Daten zeigen keinen signifikanten Zusammenhang zwischen Alter und Laufzeit $(r = 0.730, p = 0.099)$. Aus dem Streudiagramm geht nicht eindeutig hervor ob der Zusammenhang zwischen Alter und Laufzeit linear ist. Die Messung der Laufzeit beim jüngsten Läufer ist vermutlich ein Ausreisser. Auch die Berechnung des Rangkorrelationskoeffizienten nach Spearman ergibt keinen signifikanten Zusammenhang zwischen Alter und Laufzeit $(r_s = 0.829, p = 0.058)$.**
 <br>
 
 # Übung 8 {.tabset}
@@ -583,9 +602,11 @@ Hier ein Beispiel dafür, dass man mit Korrelationen jeden Unsinn "beweisen" kan
 
 2020 publizierte Pavlo Blavatskyy eine Studie, in der der Zusammenhang des BMI der Minister von 15 Postsowjet-Staaten und dem Korruptionslevel untersucht wurde. Er ermittelte mit Hilfe von Machine-Learning-Algorithmen anhand von Fotografien der Minister deren BMI und verglich diesen mit 5 Korruptionsindizes [@corruption]. 2021 wurde Blavatskyy der Ig-Nobelpreis [wikipedia](https://de.wikipedia.org/wiki/Ig-Nobelpreis) für diese Publikation verliehen [Improbable Research](https://www.improbable.com/2021-ceremony/winners/).
 
-Für diese Aufgabe wird nur der Korruptionsindex CPI von Transparancy International berücksichtigt (die anderen 4 stehen im Datensatz für eigene Analysen zur Verfügung). Der CPI 2020 umfasst 180 Länder, die auf einer Skala von 0 (hohes Maß an wahrgenommener Korruption) bis 100 (keine wahrgenommene Korruption) angeordnet werden. Weltweit erreichen mehr als zwei Drittel aller Länder eine Punktzahl von unter 50 Punkten, das heisst wengier als die Hälfte der möglichen Punktzahl. Der Durchschnitt liegt bei nur 43 Punkten.
+Für diese Aufgabe wird nur der Korruptionsindex CPI von Transparancy International berücksichtigt (die anderen 4 stehen im Datensatz für eigene Analysen zur Verfügung). *Der CPI 2020 umfasst 180 Länder, die auf einer Skala von 0 (hohes Maß an wahrgenommener Korruption) bis 100 (keine wahrgenommene Korruption) angeordnet werden*. Weltweit erreichen mehr als zwei Drittel aller Länder eine Punktzahl von unter 50 Punkten, das heisst wengier als die Hälfte der möglichen Punktzahl. Der Durchschnitt liegt bei nur 43 Punkten.
 
-Der Index fasst 13 Einzelindizes von 12 unabhängigen Institutionen zusammen und beruht auf Daten aus der Befragung von Expertinnen und Experten, Umfragen sowie weiteren Untersuchungen. Der Korruptionswahrnehmungsindex bezieht sich dabei auf den öffentlichen Sektor und erfasst keine Aktivitäten wie Steuerbetrug, Geldwäsche, illegale Finanzströme oder andere Formen der Korruption im privaten Sektor. [Transparency International](https://www.transparency.de/cpi/)
+Der Index fasst 13 Einzelindizes von 12 unabhängigen Institutionen zusammen und beruht auf Daten aus der Befragung von Expertinnen und Experten, Umfragen sowie weiteren Untersuchungen. Der Korruptionswahrnehmungsindex bezieht sich dabei auf den öffentlichen Sektor und erfasst keine Aktivitäten wie Steuerbetrug, Geldwäsche, illegale Finanzströme oder andere Formen der Korruption im privaten Sektor. [Transparency International](https://www.transparency.de/cpi/)  
+
+Wir arbeiten mit dem Datensatz `corruption.csv` Laden Sie den Datensatz `corruption.csv` [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter. 
 
 ## Aufgabe
 
@@ -595,7 +616,7 @@ Fragestellung: Besteht ein Zusammenhang zwischen dem BMI von Ministern ehemalige
 1. Formulieren Sie Ihre Hypothesen.    
 2. Erstellen Sie ein Streudiagramm und führen Sie eine Korrelationsanalyse durch.   
 3. Interpretieren Sie ihr Resultat.
-<br />
+
 <br />
 
 ## Lösung 
@@ -611,24 +632,24 @@ Fragestellung: Besteht ein Zusammenhang zwischen dem BMI von Ministern ehemalige
 ```{r plot_corruption, fig.align='center', fig.dim=c(7, 6)}
 # Blavatskyy, P. Obesity of politicians and corruption in post-Soviet countries. Econ Transit Institut Change. 2021; 29: 343– 356. https://doi.org/10.1111/ecot.12259
 
-corruption <- read_delim("../Datasets/corruption.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+corruption <- read_csv("../data/corruption.csv")
 
 scatr::scat(
   data = corruption,
   x = "Median_BMI",
   y = "Corruption_Perceptions_Index_2017",
   line = "linear"
-)
-ggplot(corruption, aes(x = Median_BMI, y = Corruption_Perceptions_Index_2017)) +
-  geom_point(color = "red", size = 2, alpha = .7) +
-  geom_smooth(method = "lm", se = FALSE) +
-  geom_text(aes(label = Country), check_overlap = TRUE)
+) 
 
-cor.test(data = corruption, ~ Median_BMI + Corruption_Perceptions_Index_2017)
+jmv::corrMatrix(
+  data = corruption,
+  vars = vars(Median_BMI, Corruption_Perceptions_Index_2017),
+  ci = TRUE
+)
 ```
 3. Interpretieren Sie ihr Resultat.
 
-**Die Daten zeigen einen signifikanten linearen Zusammenhang zwischen dem BMI und dem Korruptionsindex. Nimmt der BMI zu, sinkt der Korrupitionsindex. Mit $p$ = -0.9267 [-0.9758, -0.7891], p < .0001 ist der Zusammenhang sehr stark.**   
+**Die Daten zeigen einen signifikanten linearen Zusammenhang zwischen dem BMI und dem Korruptionsindex. Nimmt der BMI zu, sinkt der Korrupitionsindex (und verschlechtert sich damit). Mit $p$ = -0.927 [-0.976, -0.789], p < .0001 ist der Zusammenhang sehr stark.**   
 
 Je höher der Korruptionsindex, desto geringer ist die Korruption, d.h. es besteht ein negativer Zusammenhang zwischen Korruptionsindex und Korruption. Die Aussage ist wenig intuitiv und wird besser verständlich, wenn wir den Corruption_Perceptions_Index_2017 transformieren, so dass ein Korruptionsindex von 0 keiner Korruption und ein Korruptionsindex von 100 maximaler Korruption entspricht:  
 <br />
@@ -641,12 +662,18 @@ corruption <- corruption %>%
     Corruption_Perceptions_Index_2017_t = 100 - Corruption_Perceptions_Index_2017
   )
 
-ggplot(corruption, aes(x = Median_BMI, y = Corruption_Perceptions_Index_2017_t)) +
-  geom_point(color = "red", size = 2, alpha = .7) +
-  geom_smooth(method = "lm", se = FALSE) +
-  geom_text(aes(label = Country), check_overlap = TRUE)
+scatr::scat(
+  data = corruption,
+  x = "Median_BMI",
+  y = "Corruption_Perceptions_Index_2017_t",
+  line = "linear"
+) 
 
-cor.test(data = corruption, ~ Median_BMI + Corruption_Perceptions_Index_2017_t)
+jmv::corrMatrix(
+  data = corruption,
+  vars = vars(Median_BMI, Corruption_Perceptions_Index_2017_t),
+  ci = TRUE
+)
 ```
 
 Die Aussage dieser Grafik ist intuitiv besser verständlich: Es besteht ein starker positiver linearer Zusammenhang zwischen BMI und Korruption; mit zunehmendem BMI der Minister steigt auch die Korruption im Land. Der Korrelationskoeffizient wird durch diese Transformation nicht beeinflusst.  
@@ -656,15 +683,18 @@ Anmerkung: Die Art der Fragestellung, die Methodik der Studie und die Schlussfol
 
 # Übung 9 {.tabset}
 
-## Aufgabe
-
 Ist die Impfung gegen COVID-19 wirksam? Um diese Frage zu beantworten verwenden wir den Datensatz `impfquote_bag.csv` mit den Variablen `Impfquote`(% der kantonalen Bevölkerung, die mindestens einmal geimpft sind) und `inzsumTotal_last7d` (Covid-19 7-Tage-Inzidenz pro 100'000). Die Variable `geoRegion` gibt die jeweiligen Kantone an. (Die Daten stammen vom BAG. Sie wurden von Marius Brülhart aufbereitet und von [Der Bund](https://www.derbund.ch/dort-wo-viele-geimpft-sind-gibt-es-weniger-ansteckungen-115502688268) online publiziert).    
+
+
+## Aufgabe
 
 1. Formuliere eine Fragestellung.   
 2. Formuliere die Hypothesen.  
 3. Erstelle ein Streudiagramm.  
 4. Berechne den Korrelationskoeffizienten nach Pearson.  
 5. Interpretiere dein Resultat.
+
+<br/>
 
 ## Lösung  
 
@@ -680,7 +710,7 @@ $H_A:$ Es gibt einen Zusammenhang zwischen der kantonalen Impfquote und der kant
 
 ```{r impfquote, fig.dim = c(9, 6), fig.align='center'}
 # https://www.derbund.ch/dort-wo-viele-geimpft-sind-gibt-es-weniger-ansteckungen-115502688268, Stand 21.9.2021
-impfquote <- read_csv("../Datasets/impfquote_bag.csv")
+impfquote <- read_csv("../data/impfquote_bag.csv")
 
 ggplot(impfquote, aes(x = Impfquote, y = inzsumTotal_last7d)) +
   geom_smooth(method = "lm", se = FALSE, color = "darkgrey") +
@@ -689,14 +719,19 @@ ggplot(impfquote, aes(x = Impfquote, y = inzsumTotal_last7d)) +
   ggtitle("COVID-19-Inzidenz und Impfrate Schweiz, 21.9.2021", subtitle = "Quelle: Twitter@Marius Brülhart") +
   xlab("% Bevölkerung mind. einmal geimpft") +
   ylab("Covid-19-Inzidenz (7 Tage, pro 100'000)") +
-  theme_minimal()
+  theme_classic()
 
 cor.test(impfquote$Impfquote, impfquote$inzsumTotal_last7d)
+
+jmv::corrMatrix(
+  data = impfquote,
+  vars = vars(Impfquote, inzsumTotal_last7d),
+  ci = TRUE
+)
 ```
 
-5. Interpretiere dein Resultat: **Die Daten zeigen einen signifikanten linearen Zusammenhang zwischen kantonaler Impfquote und Covid-19 7-Tage-Inzidenz. Mit zunehmender Impfquote nimmt die Covid-19-Inzidenz ab ($p$ = -0.832 [-0.922  -0.657], p < 0.001)**   
+5. Interpretiere dein Resultat: **Die Daten zeigen einen signifikanten linearen Zusammenhang zwischen kantonaler Impfquote und Covid-19 7-Tage-Inzidenz. Mit zunehmender Impfquote nimmt die Covid-19-Inzidenz ab ($p$ = -0.832 [-0.922, -0.657], p < 0.0001)**   
 
 Haben wir damit bewiesen, dass die Impfung wirksam ist? Nein! Auch wenn der Zusammenhang stark und signifikant ist, kann anhand dieser Analyse kein kausaler Zusammenhang zwischen Impfquote und Covid-19-Inzidenz bewiesen werden werden! Die Korrelation kann jedoch als Hinweis für einen Kausalzusammenhang dienen. 
-<br>
 
-# Referenzen
+<br>
