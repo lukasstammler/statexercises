@@ -1,0 +1,946 @@
+Country,year,fert
+Albania,fert_1997,15.742
+Albania,fert_2000,15.6448
+Albania,fert_2002,15.58
+Albania,fert_2005,15.5944
+Albania,fert_2006,15.5992
+Algeria,fert_1997,11.771
+Algeria,fert_2000,9.8312
+Algeria,fert_2002,8.538
+Algeria,fert_2005,7.8192
+Algeria,fert_2006,7.5796
+Angola,fert_1997,145.314
+Angola,fert_2000,143.8236
+Angola,fert_2002,142.83
+Angola,fert_2005,139.6416
+Angola,fert_2006,138.5788
+Argentina,fert_1997,69.8
+Argentina,fert_2000,64.34
+Argentina,fert_2002,60.7
+Argentina,fert_2005,58.42
+Argentina,fert_2006,57.66
+Armenia,fert_1997,52.955
+Armenia,fert_2000,39.7106
+Armenia,fert_2002,30.881
+Armenia,fert_2005,30.0746
+Armenia,fert_2006,29.8058
+Aruba,fert_1997,35.063
+Aruba,fert_2000,31.1534
+Aruba,fert_2002,28.547
+Aruba,fert_2005,24.8828
+Aruba,fert_2006,23.6614
+Australia,fert_1997,19.252
+Australia,fert_2000,17.8996
+Australia,fert_2002,16.998
+Australia,fert_2005,15.3816
+Australia,fert_2006,14.8428
+Austria,fert_1997,15.712
+Austria,fert_2000,14.3776
+Austria,fert_2002,13.488
+Austria,fert_2005,12.3648
+Austria,fert_2006,11.9904
+Azerbaijan,fert_1997,41.008
+Azerbaijan,fert_2000,33.7378
+Azerbaijan,fert_2002,28.891
+Azerbaijan,fert_2005,28.9366
+Azerbaijan,fert_2006,28.9518
+Bahamas,fert_1997,63.36
+Bahamas,fert_2000,58.7838
+Bahamas,fert_2002,55.733
+Bahamas,fert_2005,54.0806
+Bahamas,fert_2006,53.5298
+Bahrain,fert_1997,21.142
+Bahrain,fert_2000,19.6738
+Bahrain,fert_2002,18.695
+Bahrain,fert_2005,17.5172
+Bahrain,fert_2006,17.1246
+Bangladesh,fert_1997,151.491
+Bangladesh,fert_2000,150.105
+Bangladesh,fert_2002,149.181
+Bangladesh,fert_2005,134.3652
+Bangladesh,fert_2006,129.4266
+Barbados,fert_1997,43.2
+Barbados,fert_2000,42.84
+Barbados,fert_2002,42.6
+Barbados,fert_2005,42.24
+Barbados,fert_2006,42.12
+Belarus,fert_1997,33.223
+Belarus,fert_2000,27.7978
+Belarus,fert_2002,24.181
+Belarus,fert_2005,22.618
+Belarus,fert_2006,22.097
+Belgium,fert_1997,9.496
+Belgium,fert_2000,8.8498
+Belgium,fert_2002,8.419
+Belgium,fert_2005,7.6738
+Belgium,fert_2006,7.4254
+Belize,fert_1997,106.26
+Belize,fert_2000,97.2162
+Belize,fert_2002,91.187
+Belize,fert_2005,83.7032
+Belize,fert_2006,81.2086
+Benin,fert_1997,150.947
+Benin,fert_2000,141.9632
+Benin,fert_2002,135.974
+Benin,fert_2005,126.5174
+Benin,fert_2006,123.3652
+Bhutan,fert_1997,73.15
+Bhutan,fert_2000,59.7886
+Bhutan,fert_2002,50.881
+Bhutan,fert_2005,42.4192
+Bhutan,fert_2006,39.5986
+Bolivia,fert_1997,86.9
+Bolivia,fert_2000,85.4
+Bolivia,fert_2002,84.4
+Bolivia,fert_2005,80.68
+Bolivia,fert_2006,79.44
+Bosnia and Herzegovina,fert_1997,29.84
+Bosnia and Herzegovina,fert_2000,25.808
+Bosnia and Herzegovina,fert_2002,23.12
+Bosnia and Herzegovina,fert_2005,21.4838
+Bosnia and Herzegovina,fert_2006,20.9384
+Botswana,fert_1997,73.26
+Botswana,fert_2000,66.0522
+Botswana,fert_2002,61.247
+Botswana,fert_2005,55.7756
+Botswana,fert_2006,53.9518
+Brazil,fert_1997,89.7
+Brazil,fert_2000,89.64
+Brazil,fert_2002,89.6
+Brazil,fert_2005,89.42
+Brazil,fert_2006,89.36
+Brunei,fert_1997,34.236
+Brunei,fert_2000,32.1438
+Brunei,fert_2002,30.749
+Brunei,fert_2005,28.6514
+Brunei,fert_2006,27.9522
+Bulgaria,fert_1997,47.677
+Bulgaria,fert_2000,45.181
+Bulgaria,fert_2002,43.517
+Bulgaria,fert_2005,41.6312
+Bulgaria,fert_2006,41.0026
+Burkina Faso,fert_1997,148.999
+Burkina Faso,fert_2000,145.4836
+Burkina Faso,fert_2002,143.14
+Burkina Faso,fert_2005,132.9088
+Burkina Faso,fert_2006,129.4984
+Burundi,fert_1997,54.944
+Burundi,fert_2000,54.944
+Burundi,fert_2002,54.944
+Burundi,fert_2005,54.944
+Burundi,fert_2006,54.944
+Cambodia,fert_1997,57.672
+Cambodia,fert_2000,52.6596
+Cambodia,fert_2002,49.318
+Cambodia,fert_2005,44.9494
+Cambodia,fert_2006,43.4932
+Cameroon,fert_1997,143.82
+Cameroon,fert_2000,139.4256
+Cameroon,fert_2002,136.496
+Cameroon,fert_2005,125.3102
+Cameroon,fert_2006,121.5816
+Canada,fert_1997,20.113
+Canada,fert_2000,16.0816
+Canada,fert_2002,13.394
+Canada,fert_2005,14.0432
+Canada,fert_2006,14.2596
+Cape Verde,fert_1997,102.5
+Cape Verde,fert_2000,97.2482
+Cape Verde,fert_2002,93.747
+Cape Verde,fert_2005,87.4788
+Cape Verde,fert_2006,85.3894
+Central African Rep.,fert_1997,150.732
+Central African Rep.,fert_2000,139.8984
+Central African Rep.,fert_2002,132.676
+Central African Rep.,fert_2005,122.125
+Central African Rep.,fert_2006,118.608
+Chad,fert_1997,193.407
+Chad,fert_2000,191.115
+Chad,fert_2002,189.587
+Chad,fert_2005,174.4838
+Chad,fert_2006,169.4494
+Channel Islands,fert_1997,13.776
+Channel Islands,fert_2000,12.6372
+Channel Islands,fert_2002,11.878
+Channel Islands,fert_2005,10.6984
+Channel Islands,fert_2006,10.3052
+Chile,fert_1997,66.9
+Chile,fert_2000,63.72
+Chile,fert_2002,61.6
+Chile,fert_2005,60.4
+Chile,fert_2006,60
+China,fert_1997,6.266
+China,fert_2000,3.8612
+China,fert_2002,2.258
+China,fert_2005,5.768
+China,fert_2006,6.938
+Colombia,fert_1997,84.4
+Colombia,fert_2000,78.7
+Colombia,fert_2002,74.9
+Colombia,fert_2005,69.08
+Colombia,fert_2006,67.14
+Comoros,fert_1997,67.716
+Comoros,fert_2000,62.2692
+Comoros,fert_2002,58.638
+Comoros,fert_2005,52.9326
+Comoros,fert_2006,51.0308
+"Congo, Dem. Rep.",fert_1997,230.48
+"Congo, Dem. Rep.",fert_2000,230.48
+"Congo, Dem. Rep.",fert_2002,230.48
+"Congo, Dem. Rep.",fert_2005,225.4952
+"Congo, Dem. Rep.",fert_2006,223.8336
+"Congo, Rep.",fert_1997,126.45
+"Congo, Rep.",fert_2000,127.7778
+"Congo, Rep.",fert_2002,128.663
+"Congo, Rep.",fert_2005,120.407
+"Congo, Rep.",fert_2006,117.655
+Costa Rica,fert_1997,86.9
+Costa Rica,fert_2000,81.26
+Costa Rica,fert_2002,77.5
+Costa Rica,fert_2005,73.78
+Costa Rica,fert_2006,72.54
+Cote d'Ivoire,fert_1997,159.103
+Cote d'Ivoire,fert_2000,143.3668
+Cote d'Ivoire,fert_2002,132.876
+Cote d'Ivoire,fert_2005,117.3786
+Cote d'Ivoire,fert_2006,112.2128
+Croatia,fert_1997,17.43
+Croatia,fert_2000,15.6906
+Croatia,fert_2002,14.531
+Croatia,fert_2005,13.6946
+Croatia,fert_2006,13.4158
+Cuba,fert_1997,67.9
+Cuba,fert_2000,57.34
+Cuba,fert_2002,50.3
+Cuba,fert_2005,48.32
+Cuba,fert_2006,47.66
+Cyprus,fert_1997,12.819
+Cyprus,fert_2000,10.2258
+Cyprus,fert_2002,8.497
+Cyprus,fert_2005,8.0272
+Cyprus,fert_2006,7.8706
+Czech Rep.,fert_1997,16.697
+Czech Rep.,fert_2000,13.5938
+Czech Rep.,fert_2002,11.525
+Czech Rep.,fert_2005,11.1776
+Czech Rep.,fert_2006,11.0618
+Denmark,fert_1997,8.007
+Denmark,fert_2000,7.1712
+Denmark,fert_2002,6.614
+Denmark,fert_2005,6.1646
+Denmark,fert_2006,6.0148
+Djibouti,fert_1997,31.081
+Djibouti,fert_2000,29.7778
+Djibouti,fert_2002,28.909
+Djibouti,fert_2005,25.3534
+Djibouti,fert_2006,24.1682
+Dominican Rep.,fert_1997,113.7
+Dominican Rep.,fert_2000,114.06
+Dominican Rep.,fert_2002,114.3
+Dominican Rep.,fert_2005,110.28
+Dominican Rep.,fert_2006,108.94
+Ecuador,fert_1997,85.4
+Ecuador,fert_2000,84.86
+Ecuador,fert_2002,84.5
+Ecuador,fert_2005,83.48
+Ecuador,fert_2006,83.14
+Egypt,fert_1997,53.34
+Egypt,fert_2000,50.5494
+Egypt,fert_2002,48.689
+Egypt,fert_2005,42.9272
+Egypt,fert_2006,41.0066
+El Salvador,fert_1997,95.2
+El Salvador,fert_2000,90.34
+El Salvador,fert_2002,87.1
+El Salvador,fert_2005,83.44
+El Salvador,fert_2006,82.22
+Equatorial Guinea,fert_1997,133.908
+Equatorial Guinea,fert_2000,130.8264
+Equatorial Guinea,fert_2002,128.772
+Equatorial Guinea,fert_2005,125.1918
+Equatorial Guinea,fert_2006,123.9984
+Eritrea,fert_1997,101.996
+Eritrea,fert_2000,92.4266
+Eritrea,fert_2002,86.047
+Eritrea,fert_2005,77.6614
+Eritrea,fert_2006,74.8662
+Estonia,fert_1997,30.48
+Estonia,fert_2000,25.9128
+Estonia,fert_2002,22.868
+Estonia,fert_2005,21.8792
+Estonia,fert_2006,21.5496
+Ethiopia,fert_1997,120.187
+Ethiopia,fert_2000,114.2794
+Ethiopia,fert_2002,110.341
+Ethiopia,fert_2005,100.2526
+Ethiopia,fert_2006,96.8898
+Fiji,fert_1997,52.893
+Fiji,fert_2000,46.1916
+Fiji,fert_2002,41.724
+Fiji,fert_2005,35.619
+Fiji,fert_2006,33.584
+Finland,fert_1997,9.621
+Finland,fert_2000,10.2048
+Finland,fert_2002,10.594
+Finland,fert_2005,9.8002
+Finland,fert_2006,9.5356
+France,fert_1997,7.226
+France,fert_2000,7.6814
+France,fert_2002,7.985
+France,fert_2005,7.325
+France,fert_2006,7.105
+French Polynesia,fert_1997,57.824
+French Polynesia,fert_2000,49.3388
+French Polynesia,fert_2002,43.682
+French Polynesia,fert_2005,37.8848
+French Polynesia,fert_2006,35.9524
+Gabon,fert_1997,114.134
+Gabon,fert_2000,103.2278
+Gabon,fert_2002,95.957
+Gabon,fert_2005,87.608
+Gabon,fert_2006,84.825
+Gambia,fert_1997,131.492
+Gambia,fert_2000,120.3176
+Gambia,fert_2002,112.868
+Gambia,fert_2005,107.4392
+Gambia,fert_2006,105.6296
+Georgia,fert_1997,55.616
+Georgia,fert_2000,43.2638
+Georgia,fert_2002,35.029
+Georgia,fert_2005,32.1112
+Georgia,fert_2006,31.1386
+Germany,fert_1997,12.784
+Germany,fert_2000,11.7034
+Germany,fert_2002,10.983
+Germany,fert_2005,9.9258
+Germany,fert_2006,9.5734
+Ghana,fert_1997,86.146
+Ghana,fert_2000,76.5016
+Ghana,fert_2002,70.072
+Ghana,fert_2005,60.9502
+Ghana,fert_2006,57.9096
+Greece,fert_1997,11.742
+Greece,fert_2000,10.6428
+Greece,fert_2002,9.91
+Greece,fert_2005,9.1
+Greece,fert_2006,8.83
+Grenada,fert_1997,61.458
+Grenada,fert_2000,55.2762
+Grenada,fert_2002,51.155
+Grenada,fert_2005,45.9038
+Grenada,fert_2006,44.1534
+Guam,fert_1997,78.24
+Guam,fert_2000,63.9786
+Guam,fert_2002,54.471
+Guam,fert_2005,52.7136
+Guam,fert_2006,52.1278
+Guatemala,fert_1997,121.1
+Guatemala,fert_2000,117.68
+Guatemala,fert_2002,115.4
+Guatemala,fert_2005,110.48
+Guatemala,fert_2006,108.84
+Guinea,fert_1997,178.615
+Guinea,fert_2000,172.9546
+Guinea,fert_2002,169.181
+Guinea,fert_2005,157.04
+Guinea,fert_2006,152.993
+Guinea-Bissau,fert_1997,197.38
+Guinea-Bissau,fert_2000,197.38
+Guinea-Bissau,fert_2002,197.38
+Guinea-Bissau,fert_2005,192.028
+Guinea-Bissau,fert_2006,190.244
+Guyana,fert_1997,78.3
+Guyana,fert_2000,73.6386
+Guyana,fert_2002,70.531
+Guyana,fert_2005,65.824
+Guyana,fert_2006,64.255
+Haiti,fert_1997,61.85
+Haiti,fert_2000,56.24
+Haiti,fert_2002,52.5
+Haiti,fert_2005,48.84
+Haiti,fert_2006,47.62
+Honduras,fert_1997,114.6
+Honduras,fert_2000,107.34
+Honduras,fert_2002,102.5
+Honduras,fert_2005,96.86
+Honduras,fert_2006,94.98
+"Hong Kong, China",fert_1997,6.048
+"Hong Kong, China",fert_2000,5.5776
+"Hong Kong, China",fert_2002,5.264
+"Hong Kong, China",fert_2005,5.3516
+"Hong Kong, China",fert_2006,5.3808
+Hungary,fert_1997,25.99
+Hungary,fert_2000,23.263
+Hungary,fert_2002,21.445
+Hungary,fert_2005,19.9906
+Hungary,fert_2006,19.5058
+Iceland,fert_1997,23.521
+Iceland,fert_2000,19.7638
+Iceland,fert_2002,17.259
+Iceland,fert_2005,15.7434
+Iceland,fert_2006,15.2382
+India,fert_1997,99.493
+India,fert_2000,81.1342
+India,fert_2002,68.895
+India,fert_2005,64.6482
+India,fert_2006,63.2326
+Indonesia,fert_1997,52.326
+Indonesia,fert_2000,49.3296
+Indonesia,fert_2002,47.332
+Indonesia,fert_2005,42.7864
+Indonesia,fert_2006,41.2712
+Iran,fert_1997,46.068
+Iran,fert_2000,32.9808
+Iran,fert_2002,24.256
+Iran,fert_2005,21.967
+Iran,fert_2006,21.204
+Iraq,fert_1997,46.182
+Iraq,fert_2000,NA
+Iraq,fert_2002,NA
+Iraq,fert_2005,NA
+Iraq,fert_2006,NA
+Ireland,fert_1997,17.1
+Ireland,fert_2000,18.5124
+Ireland,fert_2002,19.454
+Ireland,fert_2005,17.3738
+Ireland,fert_2006,16.6804
+Israel,fert_1997,17.77
+Israel,fert_2000,16.5934
+Israel,fert_2002,15.809
+Israel,fert_2005,14.7386
+Israel,fert_2006,14.3818
+Italy,fert_1997,6.409
+Italy,fert_2000,6.73
+Italy,fert_2002,6.944
+Italy,fert_2005,6.5672
+Italy,fert_2006,6.4416
+Jamaica,fert_1997,93.45
+Jamaica,fert_2000,90.3918
+Jamaica,fert_2002,88.353
+Jamaica,fert_2005,82.2966
+Jamaica,fert_2006,80.2778
+Japan,fert_1997,4.476
+Japan,fert_2000,4.0368
+Japan,fert_2002,3.744
+Japan,fert_2005,3.4482
+Japan,fert_2006,3.3496
+Jordan,fert_1997,39.18
+Jordan,fert_2000,31.9758
+Jordan,fert_2002,27.173
+Jordan,fert_2005,25.5926
+Jordan,fert_2006,25.0658
+Kazakhstan,fert_1997,40.04
+Kazakhstan,fert_2000,33.059
+Kazakhstan,fert_2002,28.405
+Kazakhstan,fert_2005,29.7682
+Kazakhstan,fert_2006,30.2226
+Kenya,fert_1997,104.2
+Kenya,fert_2000,104.2
+Kenya,fert_2002,104.2
+Kenya,fert_2005,103.8064
+Kenya,fert_2006,103.6752
+"Korea, Dem. Rep.",fert_1997,1.633
+"Korea, Dem. Rep.",fert_2000,1.5502
+"Korea, Dem. Rep.",fert_2002,1.495
+"Korea, Dem. Rep.",fert_2005,1.4638
+"Korea, Dem. Rep.",fert_2006,1.4534
+"Korea, Rep.",fert_1997,2.816
+"Korea, Rep.",fert_2000,3.0488
+"Korea, Rep.",fert_2002,3.204
+"Korea, Rep.",fert_2005,3.6774
+"Korea, Rep.",fert_2006,3.8352
+Kuwait,fert_1997,21.176
+Kuwait,fert_2000,16.985
+Kuwait,fert_2002,14.191
+Kuwait,fert_2005,13.591
+Kuwait,fert_2006,13.391
+Kyrgyzstan,fert_1997,37.624
+Kyrgyzstan,fert_2000,33.9496
+Kyrgyzstan,fert_2002,31.5
+Kyrgyzstan,fert_2005,31.3638
+Kyrgyzstan,fert_2006,31.3184
+Laos,fert_1997,90.492
+Laos,fert_2000,89.2302
+Laos,fert_2002,88.389
+Laos,fert_2005,78.6516
+Laos,fert_2006,75.4058
+Latvia,fert_1997,21.898
+Latvia,fert_2000,18.9034
+Latvia,fert_2002,16.907
+Latvia,fert_2005,15.3278
+Latvia,fert_2006,14.8014
+Lebanon,fert_1997,32.017
+Lebanon,fert_2000,28.9192
+Lebanon,fert_2002,26.854
+Lebanon,fert_2005,25.7188
+Lebanon,fert_2006,25.3404
+Lesotho,fert_1997,94.02
+Lesotho,fert_2000,91.3626
+Lesotho,fert_2002,89.591
+Lesotho,fert_2005,79.9148
+Lesotho,fert_2006,76.6894
+Liberia,fert_1997,226.712
+Liberia,fert_2000,226.712
+Liberia,fert_2002,226.712
+Liberia,fert_2005,221.9456
+Liberia,fert_2006,220.3568
+Libya,fert_1997,4.912
+Libya,fert_2000,4.2916
+Libya,fert_2002,3.878
+Libya,fert_2005,3.4472
+Libya,fert_2006,3.3036
+Lithuania,fert_1997,32.774
+Lithuania,fert_2000,25.9868
+Lithuania,fert_2002,21.462
+Lithuania,fert_2005,19.6572
+Lithuania,fert_2006,19.0556
+Luxembourg,fert_1997,10.225
+Luxembourg,fert_2000,11.1442
+Luxembourg,fert_2002,11.757
+Luxembourg,fert_2005,10.5378
+Luxembourg,fert_2006,10.1314
+"Macao, China",fert_1997,6.071
+"Macao, China",fert_2000,5.1764
+"Macao, China",fert_2002,4.58
+"Macao, China",fert_2005,4.7894
+"Macao, China",fert_2006,4.8592
+"Macedonia, FYR",fert_1997,32.213
+"Macedonia, FYR",fert_2000,27.9644
+"Macedonia, FYR",fert_2002,25.132
+"Macedonia, FYR",fert_2005,22.8352
+"Macedonia, FYR",fert_2006,22.0696
+Madagascar,fert_1997,155.119
+Madagascar,fert_2000,151.7314
+Madagascar,fert_2002,149.473
+Madagascar,fert_2005,139.453
+Madagascar,fert_2006,136.113
+Malawi,fert_1997,162.803
+Malawi,fert_2000,160.451
+Malawi,fert_2002,158.883
+Malawi,fert_2005,144.6966
+Malawi,fert_2006,139.9678
+Malaysia,fert_1997,16.058
+Malaysia,fert_2000,15.1502
+Malaysia,fert_2002,14.545
+Malaysia,fert_2005,13.5472
+Malaysia,fert_2006,13.2146
+Maldives,fert_1997,45.401
+Maldives,fert_2000,33.89
+Maldives,fert_2002,26.216
+Maldives,fert_2005,24.4436
+Maldives,fert_2006,23.8528
+Mali,fert_1997,206.954
+Mali,fert_2000,202.388
+Mali,fert_2002,199.344
+Mali,fert_2005,186.9372
+Mali,fert_2006,182.8016
+Malta,fert_1997,16.225
+Malta,fert_2000,16.165
+Malta,fert_2002,16.125
+Malta,fert_2005,13.9302
+Malta,fert_2006,13.1986
+Mauritania,fert_1997,97.432
+Mauritania,fert_2000,98.9818
+Mauritania,fert_2002,100.015
+Mauritania,fert_2005,90.8764
+Mauritania,fert_2006,87.8302
+Mauritius,fert_1997,39.114
+Mauritius,fert_2000,38.5416
+Mauritius,fert_2002,38.16
+Mauritius,fert_2005,40.0122
+Mauritius,fert_2006,40.6296
+Mexico,fert_1997,77.8
+Mexico,fert_2000,73.12
+Mexico,fert_2002,70
+Mexico,fert_2005,66.88
+Mexico,fert_2006,65.84
+"Micronesia, Fed. Sts.",fert_1997,44.822
+"Micronesia, Fed. Sts.",fert_2000,39.3794
+"Micronesia, Fed. Sts.",fert_2002,35.751
+"Micronesia, Fed. Sts.",fert_2005,29.9064
+"Micronesia, Fed. Sts.",fert_2006,27.9582
+Moldova,fert_1997,58.072
+Moldova,fert_2000,45.6928
+Moldova,fert_2002,37.44
+Moldova,fert_2005,33.9096
+Moldova,fert_2006,32.7328
+Mongolia,fert_1997,41.542
+Mongolia,fert_2000,46.426
+Mongolia,fert_2002,49.682
+Mongolia,fert_2005,46.7792
+Mongolia,fert_2006,45.8116
+Montenegro,fert_1997,22.607
+Montenegro,fert_2000,20.0984
+Montenegro,fert_2002,18.426
+Montenegro,fert_2005,17.2524
+Montenegro,fert_2006,16.8612
+Morocco,fert_1997,32.232
+Morocco,fert_2000,25.089
+Morocco,fert_2002,20.327
+Morocco,fert_2005,19.4498
+Morocco,fert_2006,19.1574
+Mozambique,fert_1997,117.057
+Mozambique,fert_2000,152.655
+Mozambique,fert_2002,176.387
+Mozambique,fert_2005,160.073
+Mozambique,fert_2006,154.635
+Myanmar,fert_1997,23.956
+Myanmar,fert_2000,20.9452
+Myanmar,fert_2002,18.938
+Myanmar,fert_2005,17.4236
+Myanmar,fert_2006,16.9188
+Namibia,fert_1997,91.696
+Namibia,fert_2000,78.9082
+Namibia,fert_2002,70.383
+Namibia,fert_2005,63.546
+Namibia,fert_2006,61.267
+Nepal,fert_1997,127.164
+Nepal,fert_2000,124.1706
+Nepal,fert_2002,122.175
+Nepal,fert_2005,117.6126
+Nepal,fert_2006,116.0918
+Netherlands,fert_1997,4.576
+Netherlands,fert_2000,5.041
+Netherlands,fert_2002,5.351
+Netherlands,fert_2005,4.949
+Netherlands,fert_2006,4.815
+Netherlands Antilles,fert_1997,43.523
+Netherlands Antilles,fert_2000,39.1094
+Netherlands Antilles,fert_2002,36.167
+Netherlands Antilles,fert_2005,32.2712
+Netherlands Antilles,fert_2006,30.9726
+New Caledonia,fert_1997,32.76
+New Caledonia,fert_2000,29.9334
+New Caledonia,fert_2002,28.049
+New Caledonia,fert_2005,26.9204
+New Caledonia,fert_2006,26.5442
+New Zealand,fert_1997,31.154
+New Zealand,fert_2000,28.7
+New Zealand,fert_2002,27.064
+New Zealand,fert_2005,24.3208
+New Zealand,fert_2006,23.4064
+Nicaragua,fert_1997,132.6
+Nicaragua,fert_2000,124.656
+Nicaragua,fert_2002,119.36
+Nicaragua,fert_2005,115.364
+Nicaragua,fert_2006,114.032
+Niger,fert_1997,228.832
+Niger,fert_2000,223.7866
+Niger,fert_2002,220.423
+Niger,fert_2005,205.975
+Niger,fert_2006,201.159
+Nigeria,fert_1997,165.894
+Nigeria,fert_2000,158.3112
+Nigeria,fert_2002,153.256
+Nigeria,fert_2005,136.6618
+Nigeria,fert_2006,131.1304
+Norway,fert_1997,12.526
+Norway,fert_2000,10.7806
+Norway,fert_2002,9.617
+Norway,fert_2005,8.8586
+Norway,fert_2006,8.6058
+Oman,fert_1997,45.9
+Oman,fert_2000,26.223
+Oman,fert_2002,13.105
+Oman,fert_2005,11.3242
+Oman,fert_2006,10.7306
+Pakistan,fert_1997,68.839
+Pakistan,fert_2000,40.7146
+Pakistan,fert_2002,21.965
+Pakistan,fert_2005,30.158
+Pakistan,fert_2006,32.889
+Panama,fert_1997,93.2
+Panama,fert_2000,90.68
+Panama,fert_2002,89
+Panama,fert_2005,85.16
+Panama,fert_2006,83.88
+Papua New Guinea,fert_1997,89.772
+Papua New Guinea,fert_2000,78.0462
+Papua New Guinea,fert_2002,70.229
+Papua New Guinea,fert_2005,58.5644
+Papua New Guinea,fert_2006,54.6762
+Paraguay,fert_1997,91.9
+Paraguay,fert_2000,86.14
+Paraguay,fert_2002,82.3
+Paraguay,fert_2005,76.3
+Paraguay,fert_2006,74.3
+Peru,fert_1997,80
+Peru,fert_2000,70.16
+Peru,fert_2002,63.6
+Peru,fert_2005,61.56
+Peru,fert_2006,60.88
+Philippines,fert_1997,46.858
+Philippines,fert_2000,49.7002
+Philippines,fert_2002,51.595
+Philippines,fert_2005,48.685
+Philippines,fert_2006,47.715
+Poland,fert_1997,19.569
+Poland,fert_2000,16.5498
+Poland,fert_2002,14.537
+Poland,fert_2005,13.7366
+Poland,fert_2006,13.4698
+Portugal,fert_1997,17.051
+Portugal,fert_2000,16.6436
+Portugal,fert_2002,16.372
+Portugal,fert_2005,14.6326
+Portugal,fert_2006,14.0528
+Puerto Rico,fert_1997,75.946
+Puerto Rico,fert_2000,65.7598
+Puerto Rico,fert_2002,58.969
+Puerto Rico,fert_2005,52.0012
+Puerto Rico,fert_2006,49.6786
+Qatar,fert_1997,23.436
+Qatar,fert_2000,21.18
+Qatar,fert_2002,19.676
+Qatar,fert_2005,18.344
+Qatar,fert_2006,17.9
+Romania,fert_1997,40.814
+Romania,fert_2000,37.826
+Romania,fert_2002,35.834
+Romania,fert_2005,33.7424
+Romania,fert_2006,33.0452
+Russia,fert_1997,35.664
+Russia,fert_2000,32.1468
+Russia,fert_2002,29.802
+Russia,fert_2005,28.635
+Russia,fert_2006,28.246
+Rwanda,fert_1997,57.577
+Rwanda,fert_2000,50.1478
+Rwanda,fert_2002,45.195
+Rwanda,fert_2005,42.0768
+Rwanda,fert_2006,41.0374
+Samoa,fert_1997,45.443
+Samoa,fert_2000,40.2746
+Samoa,fert_2002,36.829
+Samoa,fert_2005,31.045
+Samoa,fert_2006,29.117
+Sao Tome and Principe,fert_1997,94.577
+Sao Tome and Principe,fert_2000,85.8596
+Sao Tome and Principe,fert_2002,80.048
+Sao Tome and Principe,fert_2005,71.6894
+Sao Tome and Principe,fert_2006,68.9032
+Saudi Arabia,fert_1997,40.018
+Saudi Arabia,fert_2000,35.347
+Saudi Arabia,fert_2002,32.233
+Saudi Arabia,fert_2005,29.506
+Saudi Arabia,fert_2006,28.597
+Senegal,fert_1997,111.463
+Senegal,fert_2000,106.8088
+Senegal,fert_2002,103.706
+Senegal,fert_2005,93.9488
+Senegal,fert_2006,90.6964
+Serbia,fert_1997,27.974
+Serbia,fert_2000,26.8826
+Serbia,fert_2002,26.155
+Serbia,fert_2005,25.1572
+Serbia,fert_2006,24.8246
+Sierra Leone,fert_1997,191.62
+Sierra Leone,fert_2000,191.62
+Sierra Leone,fert_2002,191.62
+Sierra Leone,fert_2005,172.4704
+Sierra Leone,fert_2006,166.0872
+Singapore,fert_1997,7.44
+Singapore,fert_2000,6.3504
+Singapore,fert_2002,5.624
+Singapore,fert_2005,4.9562
+Singapore,fert_2006,4.7336
+Slovak Republic,fert_1997,27.527
+Slovak Republic,fert_2000,23.645
+Slovak Republic,fert_2002,21.057
+Slovak Republic,fert_2005,20.151
+Slovak Republic,fert_2006,19.849
+Slovenia,fert_1997,11.525
+Slovenia,fert_2000,8.3438
+Slovenia,fert_2002,6.223
+Slovenia,fert_2005,6.4672
+Slovenia,fert_2006,6.5486
+Solomon Islands,fert_1997,62.98
+Solomon Islands,fert_2000,55.921
+Solomon Islands,fert_2002,51.215
+Solomon Islands,fert_2005,45.2132
+Solomon Islands,fert_2006,43.2126
+Somalia,fert_1997,75.33
+Somalia,fert_2000,72.8148
+Somalia,fert_2002,71.138
+Somalia,fert_2005,68.1938
+Somalia,fert_2006,67.2124
+South Africa,fert_1997,80.585
+South Africa,fert_2000,74.6672
+South Africa,fert_2002,70.722
+South Africa,fert_2005,64.9956
+South Africa,fert_2006,63.0868
+Spain,fert_1997,7.99
+Spain,fert_2000,9.3118
+Spain,fert_2002,10.193
+Spain,fert_2005,9.6398
+Spain,fert_2006,9.4554
+Sri Lanka,fert_1997,29.417
+Sri Lanka,fert_2000,28.766
+Sri Lanka,fert_2002,28.332
+Sri Lanka,fert_2005,26.5278
+Sri Lanka,fert_2006,25.9264
+Saint Lucia,fert_1997,67.024
+Saint Lucia,fert_2000,64.3594
+Saint Lucia,fert_2002,62.583
+Saint Lucia,fert_2005,61.0152
+Saint Lucia,fert_2006,60.4926
+Saint Vincent and the Grenadines,fert_1997,72.672
+Saint Vincent and the Grenadines,fert_2000,70.0692
+Saint Vincent and the Grenadines,fert_2002,68.334
+Saint Vincent and the Grenadines,fert_2005,65.7024
+Saint Vincent and the Grenadines,fert_2006,64.8252
+Sudan,fert_1997,85.541
+Sudan,fert_2000,75.6878
+Sudan,fert_2002,69.119
+Sudan,fert_2005,61.742
+Sudan,fert_2006,59.283
+Suriname,fert_1997,50.848
+Suriname,fert_2000,47.239
+Suriname,fert_2002,44.833
+Suriname,fert_2005,41.6116
+Suriname,fert_2006,40.5378
+Swaziland,fert_1997,45.629
+Swaziland,fert_2000,41.3306
+Swaziland,fert_2002,38.465
+Swaziland,fert_2005,35.0864
+Swaziland,fert_2006,33.9602
+Sweden,fert_1997,5.1
+Sweden,fert_2000,4.8258
+Sweden,fert_2002,4.643
+Sweden,fert_2005,4.5284
+Sweden,fert_2006,4.4902
+Switzerland,fert_1997,5.762
+Switzerland,fert_2000,5.2592
+Switzerland,fert_2002,4.924
+Switzerland,fert_2005,4.5424
+Switzerland,fert_2006,4.4152
+Syria,fert_1997,61.058
+Syria,fert_2000,52.1954
+Syria,fert_2002,46.287
+Syria,fert_2005,39.7068
+Syria,fert_2006,37.5134
+Tajikistan,fert_1997,35.864
+Tajikistan,fert_2000,33.2948
+Tajikistan,fert_2002,31.582
+Tajikistan,fert_2005,29.2288
+Tajikistan,fert_2006,28.4444
+Tanzania,fert_1997,131.199
+Tanzania,fert_2000,131.6742
+Tanzania,fert_2002,131.991
+Tanzania,fert_2005,125.139
+Tanzania,fert_2006,122.855
+Thailand,fert_1997,49.042
+Thailand,fert_2000,46.3504
+Thailand,fert_2002,44.556
+Thailand,fert_2005,42.7422
+Thailand,fert_2006,42.1376
+Timor-Leste,fert_1997,114.322
+Timor-Leste,fert_2000,84.2872
+Timor-Leste,fert_2002,64.264
+Timor-Leste,fert_2005,57.9652
+Timor-Leste,fert_2006,55.8656
+Togo,fert_1997,115.304
+Togo,fert_2000,108.4004
+Togo,fert_2002,103.798
+Togo,fert_2005,95.041
+Togo,fert_2006,92.122
+Tonga,fert_1997,16.625
+Tonga,fert_2000,17.2544
+Tonga,fert_2002,17.674
+Tonga,fert_2005,17.7712
+Tonga,fert_2006,17.8036
+Trinidad and Tobago,fert_1997,42.07
+Trinidad and Tobago,fert_2000,38.047
+Trinidad and Tobago,fert_2002,35.365
+Trinidad and Tobago,fert_2005,34.9042
+Trinidad and Tobago,fert_2006,34.7506
+Tunisia,fert_1997,8.434
+Tunisia,fert_2000,7.8736
+Tunisia,fert_2002,7.5
+Tunisia,fert_2005,7.2846
+Tunisia,fert_2006,7.2128
+Turkey,fert_1997,58.43
+Turkey,fert_2000,50.9618
+Turkey,fert_2002,45.983
+Turkey,fert_2005,40.8692
+Turkey,fert_2006,39.1646
+Turkmenistan,fert_1997,17.756
+Turkmenistan,fert_2000,17.219
+Turkmenistan,fert_2002,16.861
+Turkmenistan,fert_2005,16.3108
+Turkmenistan,fert_2006,16.1274
+Uganda,fert_1997,191.015
+Uganda,fert_2000,179.9282
+Uganda,fert_2002,172.537
+Uganda,fert_2005,160.0444
+Uganda,fert_2006,155.8802
+Ukraine,fert_1997,42.998
+Ukraine,fert_2000,34.9508
+Ukraine,fert_2002,29.586
+Ukraine,fert_2005,28.731
+Ukraine,fert_2006,28.446
+United Arab Emirates,fert_1997,35.002
+United Arab Emirates,fert_2000,28.0042
+United Arab Emirates,fert_2002,23.339
+United Arab Emirates,fert_2005,20.372
+United Arab Emirates,fert_2006,19.383
+United Kingdom,fert_1997,29.784
+United Kingdom,fert_2000,28.2264
+United Kingdom,fert_2002,27.188
+United Kingdom,fert_2005,25.1192
+United Kingdom,fert_2006,24.4296
+United States,fert_1997,52.203
+United States,fert_2000,47.1222
+United States,fert_2002,43.735
+United States,fert_2005,42.931
+United States,fert_2006,42.663
+Uruguay,fert_1997,67.3
+Uruguay,fert_2000,65.56
+Uruguay,fert_2002,64.4
+Uruguay,fert_2005,62.42
+Uruguay,fert_2006,61.76
+Uzbekistan,fert_1997,40.936
+Uzbekistan,fert_2000,38.7166
+Uzbekistan,fert_2002,37.237
+Uzbekistan,fert_2005,35.1724
+Uzbekistan,fert_2006,34.4842
+Vanuatu,fert_1997,61.965
+Vanuatu,fert_2000,56.2824
+Vanuatu,fert_2002,52.494
+Vanuatu,fert_2005,47.415
+Vanuatu,fert_2006,45.722
+Venezuela,fert_1997,94.1
+Venezuela,fert_2000,92.9
+Venezuela,fert_2002,92.1
+Venezuela,fert_2005,90.78
+Venezuela,fert_2006,90.34
+Vietnam,fert_1997,24.933
+Vietnam,fert_2000,22.6572
+Vietnam,fert_2002,21.14
+Vietnam,fert_2005,18.9362
+Vietnam,fert_2006,18.2016
+Virgin Islands (U.S.),fert_1997,50.046
+Virgin Islands (U.S.),fert_2000,43.4334
+Virgin Islands (U.S.),fert_2002,39.025
+Virgin Islands (U.S.),fert_2005,33.9448
+Virgin Islands (U.S.),fert_2006,32.2514
+West Bank and Gaza,fert_1997,106.61
+West Bank and Gaza,fert_2000,99.134
+West Bank and Gaza,fert_2002,94.15
+West Bank and Gaza,fert_2005,84.9028
+West Bank and Gaza,fert_2006,81.8204
+"Yemen, Rep.",fert_1997,103.984
+"Yemen, Rep.",fert_2000,89.7214
+"Yemen, Rep.",fert_2002,80.213
+"Yemen, Rep.",fert_2005,74.465
+"Yemen, Rep.",fert_2006,72.549
+Zambia,fert_1997,138.457
+Zambia,fert_2000,144.4402
+Zambia,fert_2002,148.429
+Zambia,fert_2005,134.341
+Zambia,fert_2006,129.645
+Zimbabwe,fert_1997,106.296
+Zimbabwe,fert_2000,85.488
+Zimbabwe,fert_2002,71.616
+Zimbabwe,fert_2005,64.2402
+Zimbabwe,fert_2006,61.7816

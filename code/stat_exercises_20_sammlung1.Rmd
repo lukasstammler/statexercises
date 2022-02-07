@@ -1,0 +1,781 @@
+---
+title: 'Statistik: Übungssammlung 1'
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 4
+    fig_width: 4
+    fig_align: "center"
+    highlight: pygments
+    theme: yeti
+    code_download: false
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(jmv)
+library(knitr)
+library(scatr)
+library(equatiomatic)
+library(openintro)
+```
+
+# Technische Vorbemerkung
+
+* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen. Falls die Meldung erscheint *Github.com hat eine Verbindung verweigert* mit Rechtsklick den Link kopieren und in die Adressleiste im Browser einfügen.    
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
+    
+[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org  
+
+
+**Diskutieren Sie diese Übungen auch mit Ihren Mitstudierenden und den Betreuungspersonen.**
+
+<br/>
+
+# Deskriptive Statistik   
+
+# Übung 1 {.tabset}
+
+Die Datei `fertilitaet.csv` enthält Daten zur Anzahl Kinder, die von Frauen im Alter von 15-19 Jahren geboren wurden. Erfasst sind 189 Länder für die Jahre 1997, 2000, 2002, 2005 und 2006. Die Werte für die jährlichen Fertilitätsraten adoleszenter Frauen sind angegeben als Anzahl Lebendgeburten pro 1000 Frauen im Alter von 15-19 Jahren.   
+
+## Aufgabe
+
+a) Berechnen Sie alle Kennzahlen (Umfang n, Mittelwert, Median, Standardabweichung, IQR, Variationsbreite, Minimum, Maximum) für das Jahr 2006 (Variable `fert_2006`).   
+
+b) Bei welchem Wert liegt die 75. Perzentile? Erläutern Sie in einem Satz diesen Wert im Zusammenhang mit den Daten.   
+
+c) Die Daten für Irak fehlen für die Jahre 2000 bis 2006 (vermutlich wegen des Irak-Kriegs). Hätten diese Daten einen grossen Effekt auf die unter a) berechneten Kennzahlen Median und IQR?   
+
+d) Erstellen Sie vergleichende Boxplots für die Fertilität in den 5 Jahren. Leider geht das in jamovi mit der Struktur des vorliegnden Datensatzes nicht. Verwenden Sie für diese Grafik die Datei `fertilitaet_long.csv`. Interpretieren Sie die Grafik.  
+
+<br/>
+
+## Lösung
+
+```{r, echo=FALSE}
+fertilitaet <- read_csv("../data/fertilitaet.csv") 
+
+# fertilitaet_long <- fertilitaet %>% 
+#   pivot_longer(cols = starts_with("fert"),
+#                names_to = "year", 
+#                values_to = "fert"
+#                )
+# write_csv(fertilitaet_long, "./data/fertilitaet_long.csv")
+fertilitaet_long <- read_csv("../data/fertilitaet_long.csv")
+```
+
+a) Berechnen Sie alle Kennzahlen (Umfang n, Mittelwert, Median, Standardabweichung, IQR, Variationsbreite, Minimum, Maximum) für das Jahr 2006 (Variable `fert_2006`).   
+
+```{r}
+jmv::descriptives(
+  data = fertilitaet,
+  vars = vars(fert_2006),
+  iqr = TRUE
+)
+```
+
+*Alle Angaben sind in der Einheit Anzahl Lebendgeburten pro 1000 Frauen im Alter von 15-19.*   
+
+b) Bei welchem Wert liegt die 75. Perzentile? Erläutern Sie in einem Satz diesen Wert im Zusammenhang mit den Daten.   
+
+```{r}
+jmv::descriptives(
+  data = fertilitaet,
+  vars = vars(fert_2006),
+  pc = TRUE,
+  pcValues = "75"
+)
+```
+
+*Die 75. Perzentile liegt bei 75.7. Interpretation: In 75% der Länder sind die Geburtsraten gleich oder kleiner als 75.73 Geburten pro 1000 Frauen im Alter von 15-19 Jahre.*      
+
+c) Die Daten für Irak fehlen für die Jahre 2000 bis 2006 (vermutlich wegen des Irak-Kriegs). Hätten diese Daten einen grossen Effekt auf die unter a) berechneten Kennzahlen Median und IQR?   
+
+*NEIN, dies ist nicht anzunehmen. Der Median und der IQR sind robuste Masse. Selbst extreme Werte für den Irak hätten kaum einen Einfluss.*   
+
+d) Erstellen Sie vergleichende Boxplots für die Fertilität in den 5 Jahren. Leider geht das in jamovi mit der Struktur des vorliegnden Datensatzes nicht. Verwenden Sie für diese Grafik die Datei `fertilitaet_long.csv`. Interpretieren Sie die Grafik.  
+
+```{r, fig.dim = c(6, 4), fig.align='center'}
+jmv::descriptives(
+  formula = fert ~ year,
+  data = fertilitaet_long,
+  box = TRUE
+)
+```
+
+*Zwischen 1997 und 2006 nehmen Median, IQR, unteres und oberes Quartil kontinuierlich ab.*
+
+<br/>
+
+# Übung 2 {.tabset}
+
+Gibt es einen Zusammenhang zwischen dem Fluorgehalt im Trinkwasser und Karies bei Kindern. Die Datei `water.csv` enthält Daten einer Studie, die 7257 Kinder in 21 Städten in Flandern, Belgien untersucht hat.
+
+Der Fluoridgehalt des Trinkwassers in jeder Stadt in ppm (parts per million) ist in der Variablen `fluoride` gespeichert. Der Wert in der Variablen `caries` ist die Summe von Zahnfüllungen, Zähne mit unbehandelter Karies, Zähne die gezogen werden müssen und fehlende Zähne pro 100 Kinder.  
+
+```{r}
+water <- read_csv("../data/water.csv")
+```
+
+## Aufgabe  
+
+a) Erstellen Sie ein Streudiagramm mit `fluoride` als x-Variable und `caries` als y-Variable.  
+
+b) Beschreiben Sie den Zusammenhang zwischen den beiden Variablen.   
+
+c) Wenn Sie die Daten mit einer Geraden modellieren würden, wo würde diese Gerade die x- und die y-Achse schneiden? Überlegen Sie zuerst theoretisch und erstellen Sie anschliessend zur Überprüfung Ihrer Überlegungen in jamovi eine lineare Regressionsgerade. (Hinweis: Beachten Sie bei Ihren Überlegungen, dass die y-Achse im jamovi-Output bei 200 beginnt.)
+
+d) Würde eine Gerade diese Daten gut modellieren?   
+
+<br/>
+
+## Lösung
+
+a) Erstellen Sie ein Streudiagramm mit `fluoride` als x-Variable und `caries` als y-Variable.  
+
+```{r, fig.align='center'}
+water1 <- water %>% 
+  rename(
+    "Fluorid (ppm)" = fluoride,
+    "Karies pro 100 Kinder" = caries
+  )
+
+scatr::scat(
+  data = water1,
+  x = "Fluorid (ppm)",
+  y = "Karies pro 100 Kinder"
+)
+```
+
+
+b) Beschreiben Sie den Zusammenhang zwischen den beiden Variablen.   
+
+*Mit zunehmendem Fluoridgehalt im Trinkwasser, sinkt die Kariesrate bei Kindern (negativer Zusammenhang).*
+
+c) Wenn Sie die Daten mit einer Geraden modellieren würden, wo würde diese Gerade die x- und die y-Achse schneiden? Überlegen Sie zuerst theoretisch und erstellen Sie anschliessend zur Überprüfung Ihrer Überlegungen in jamovi eine lineare Regressionsgerade. (Hinweis: Beachten Sie bei Ihren Überlegungen, dass die y-Achse im jamovi-Output bei 200 beginnt.)
+
+```{r, fig.align='center'}
+scatr::scat(
+  data = water1,
+  x = "Fluorid (ppm)",
+  y = "Karies pro 100 Kinder",
+  line = "linear"
+)
+```
+
+*Die Gerade schneidet die x-Achse ca. bei 2.7 und die y-Achse bei ca. 740. Die Steigung der Geraden beträgt demnach etwa -740/2.7 = -274. (andere Angaben in dieser Grössenordnung sind auch ok). Beachten Sie, dass jamovi bei diesem Plot die y-Achse bei 0 beginnen lässt)*
+
+d) Würde eine Gerade diese Daten gut modellieren?   
+
+*Eine Gerade scheint kein optimales Modell für die Daten zu sein. Bei kleinen und grossen Werten für `fluoride` liegen die Punkte über der Geraden, bei mittleren Werten unter der Geraden. Dies ist ein Hinweis auf einen nicht-linearen Zusammenhang.*    
+
+```{r, fig.align='center'}
+scatr::scat(
+  data = water1,
+  x = "Fluorid (ppm)",
+  y = "Karies pro 100 Kinder",
+  line = "smooth"
+)
+```
+
+<br/>
+
+# Übung 3 {.tabset}
+
+Die Skelettmuskeln haben grossen Einfluss auf die menschliche Leistungsfähigkeit und die Gesundheit. Wir wissen jedoch noch wenig zu den genetischen Faktoren, welche die Muskelgrösse, Muskelkraft und die Reaktion der Muskeln auf Training beeinflussen. Die Studie mit der etwas umständlichen Bezeichnung FAMuSS (functional single nucleotide polymorphisms associated with muscle size and strength) ist eine Multizenterstudie, welche diese Frage untersucht. 
+
+Referenz: Thompson, P. D., Moyna, N., Seip, R., Price, T., Clarkson, P., Angelopoulos, T., Gordon, P., Pescatello, L., Visich, P., Zoeller, R., Devaney, J. M., Gordish, H., Bilbie, S., & Hoffman, E. P. (2004). Functional polymorphisms associated with human muscle size and strength. Medicine and science in sports and exercise, 36(7), 1132–1139. https://doi.org/10.1249/01.mss.0000132274.26612.23
+
+Die Daten sind in der Datei `famuss.csv`abgelegt.  
+
+Codebook:  
+
+|Variable|Erläuterung| 
+|:-------|:----------|  
+|ndrm.ch| Änderung der Kraft im nicht-dominanten Arm, vor und nach Training in Prozent|  
+|drm.ch| Änderung der Kraft im dominanten Arm, vor und nach Training in Prozent|   
+|sex| Geschlecht |  
+|age| Alter|  
+|race| Rasse|  
+|height_cm| Grösse in cm (Original in inches)|  
+|weight_kg| Gewicht in kg (Original in pounds)|  
+|actn3.r577x| Genotyp am am Locus r577x im ACTN3-Gen (CC, CT oder TT)|  
+|bmi| Body Mass Index|  
+
+```{r}
+# library(oibiostat)
+# data("famuss")
+# 
+# famuss <- famuss %>% 
+#   mutate(
+#     height_cm = height * 2.54,
+#     weight_kg = weight / 2.20462
+#   )
+# 
+# write_csv(famuss, "./data/famuss.csv")
+
+famuss <- read_csv("../data/famuss.csv")
+```
+
+## Aufgabe  
+
+a) Erstellen Sie eine Tabelle für die absoluten Häufigkeiten für die drei Genotypen (Variable `actn3.r577x`).   
+
+b) Erstellen Sie eine Tabelle mit den absoluten Häufigkeiten für `actn3.r577x` nach Rasse. Verwenden Sie `race` als Zeilenvariable und `actn3.r577x` als Spaltenvariable.   
+
+c) Wenn Sie die Variable `ndrm.ch` mit Kennzahlen beschreiben müssten, würden Sie eher Mittelwert und Standardabweichung oder Median und IQR wählen?   
+
+<br/>
+
+## Lösung
+
+a) Erstellen Sie eine Tabelle für die absoluten und relativen Häufigkeiten für die drei Genotypen (Variable `actn3.r577x`)   
+
+```{r}
+jmv::descriptives(
+  data = famuss,
+  vars = "actn3.r577x",
+  freq = TRUE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE
+)
+```
+
+
+b) Erstellen Sie eine Tabelle mit den absoluten Häufigkeiten für `actn3.r577x` nach Rasse. Verwenden Sie `race` als Zeilenvariable und `actn3.r577x` als Spaltenvariable.  
+
+```{r}
+jmv::descriptives(
+  formula = race ~ actn3.r577x,
+  data = famuss,
+  freq = TRUE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE
+)
+```
+
+
+c) Wenn Sie die Variable `ndrm.ch` mit Kennzahlen beschreiben müssten, würden Sie eher Mittelwert und Standardabweichung oder Median und IQR wählen?   
+
+```{r}
+jmv::descriptives(
+  data = famuss,
+  vars = ndrm.ch,
+  hist = TRUE, 
+  iqr = TRUE,
+  box = TRUE
+)
+```
+
+*Die Verteilung von `ndrm.ch` ist rechtsschief, was im Boxplot, im Histogramm und an den Kennzahlen der zentralen Tendenz gut zu erkennen ist. Für schiefe Verteilungen sind Median und IQR zur Beschreibung einer Verteilung eher geeignet als Mittelwert und Standardabweichung.*
+
+<br/>  
+
+# Übung 4 {.tabset}  
+
+Hat Rauchen bei Frauen und Männern die gleichen Effekte auf kardiovaskuläre Erkrankungen? Eine Kohortenstudie hat den Zusammenhang zwischen Rauchen und Aortenstenose (Einengung der Aorta, die den Blutstrom beeinträchtigt) untersucht. Der Datensatz `stenosis.csv` umfasst drei Variablen.  
+
+Codebook:  
+
+|Variable|Erläuterung|  
+|:-------|:----------|
+|disease| yes: Stenose vorhanden, no: keine Stenose|    
+|smoke| Smoker: Raucher:in oder Ex-Raucher:in, NonSmoker: Nichtraucher:in|   
+|sex| Geschlecht: Male oder Female|   
+
+```{r}
+stenosis <- read_csv("../data/stenosis.csv")
+```
+
+## Aufgabe  
+
+a) Erstellen Sie eine Tabelle für Raucherstatus `smoke` und Vorliegen einer Stenose `desease`. Wie gross ist der prozentuale Anteil der 215 Proband:innen die sowohl Raucher sind und eine Aortenstenose aufweisen?  
+
+b) Wie hoch ist der Anteil Proband:innen mit einer Aortenstenose unter den Raucher:innen? Wie hoch ist der Anteil der Proband:innen mit einer Aortenstenose unter den Nicht-Raucher:innen?   
+
+c) Beantworten Sie die Frage b) nach Geschlecht getrennt.  
+
+<br/>
+
+## Lösung  
+
+a) Erstellen Sie eine Tabelle für Raucherstatus `smoke` und Vorliegen einer Stenose `stenosis`. Wie gross ist der prozentuale Anteil der 215 Proband:innen die sowohl Raucher sind und eine Aortenstenose aufweisen?   
+
+```{r}
+jmv::descriptives(
+  formula = smoke ~ disease,
+  data = stenosis,
+  freq = TRUE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE 
+)
+```
+
+```{r, echo=TRUE}
+anzahl.raucher <- 51  
+anzahl.gesamt <- 215
+anzahl.raucher/anzahl.gesamt * 100
+```
+
+*Der Anteil von Raucher:innen mit Aortenstenose beträgt 51/215 = 0.237 ~ 23.7%.*  
+
+b) Wie hoch ist der Anteil Proband:innen mit einer Aortenstenose unter den Raucher:innen? Wie hoch ist der Anteil der Proband:innen mit einer Aortenstenose unter den Nicht-Raucher:innen?   
+
+```{r, echo=TRUE}
+raucher.total <- 43 + 51
+raucher.stenose <- 51
+raucher.stenose / raucher.total * 100
+
+nichtraucher.total <- 67 + 54
+nichtraucher.stenose <- 54
+nichtraucher.stenose / nichtraucher.total * 100
+```
+
+*In der Gruppe der Raucher:innen leiden 54.3% an Aortenstenose, in der Gruppe der Nichtraucher:innen leiden 44.6% an Aortenstenose.*  
+
+c) Beantworten Sie die Frage b) nach Geschlecht getrennt.  
+
+```{r}
+jmv::descriptives(
+  formula = smoke ~ disease:sex, 
+  data = stenosis,
+  freq = TRUE,
+  mean = FALSE,
+  median = FALSE,
+  sd = FALSE,
+  min = FALSE,
+  max = FALSE 
+)
+```
+
+```{r, echo=TRUE}
+raucher.m <- 37 + 24
+raucher.m.yes <- 37
+nichtraucher.m <- 20 + 25
+nichtraucher.m.yes <- 25
+
+raucher.w <- 19 + 14
+raucher.w.yes <- 14
+nichtraucher.w <- 47 + 29
+nichtraucher.w.yes <- 29
+
+# Anteil Raucher mit Aortenstenose
+raucher.m.yes / raucher.m * 100
+
+# Anteil Nichtraucher mit Aortenstenose
+nichtraucher.m.yes / nichtraucher.m * 100
+
+# Anteil Raucherinnen mit Aortenstenose
+raucher.w.yes / raucher.w * 100
+
+# Anteil Nichtraucherinnen mit Aortenstenose
+nichtraucher.w.yes / nichtraucher.w * 100
+```
+
+*Unter den männlichen Rauchern leiden 60.7% an und unter den männlichen Nichtrauchern leiden 55.6% an Aortenstenose. Unter den weiblichen Raucherinnen leiden 42.4% und unter den Nichtraucherinnen leiden 38.2% an Aortenstenose.*   
+
+*Sowohl bei den Frauen als auch bei den Männern ist der prozentuale Anteil von Raucher:innen mit Aortenstenose grösser als bei den Nichtraucher:innen. Der Anteil der Raucher mit Aortenstenose ist jedoch höher als bei den Raucherinnen (das gilt jedoch auch für die männlichen Nichtraucher). Damit haben wir einen Hinweis darauf, dass Rauchen das Risiko, an einer Aortenstenose zu erkranken bei beiden Geschlechtern erhöht. Männer sind eher prädisponiert, eine Aortenstenose zu entwickeln, unabhängig davon, ob sie rauchen oder nicht*   
+
+# Standardnormalverteilung und z-Werte
+
+# Übung 5 {.tabset}
+
+## Aufgabe
+
+Wir betrachten die Standardnormalverteilung mit dem Mittelwert $\mu=0$ und der Standardabweichung $\sigma= 1$. 
+
+a) Wie gross ist die Wahrscheinlichkeit für für ein Ereignis mit $z > 2.30$?
+	
+b) Wie gross ist die Wahrscheinlichkeit, dass $z < 3.10$ ?
+	
+c) Wie gross ist die Wahrscheinlichkeit dass $z$ zwischen -1.60 und 3.10 liegt??
+	
+d) Welcher Wert von $z$ markiert die Grenze zu den oberen 15\% der Verteilung?
+	
+e) Welcher Wert von $z$ markiert die Grenze zu den unteren 20\% der Verteilung?   
+
+**Tipp:** Arbeiten Sie mit den R-Funktionen `pnorm()` und `qnorm` Rj-Editor in jamovi.
+
+<br/>
+
+## Lösung   
+
+a) Wie gross ist die Wahrscheinlichkeit für für ein Ereignis mit $z > 2.30$?  
+
+*Die Funktion `pnorm()` gibt die Wahrscheinlichkeit links von $z$ an. Die Wahrscheinlichkeit rechts von $z$ berechnen wir als `1 - pnorm()`.*  
+
+```{r, echo=TRUE}
+1 - pnorm(2.3)
+
+# auf 3 Nachkommastellen gerundet
+round(1 - pnorm(2.3), 3)
+```
+
+b) Wie gross ist die Wahrscheinlichkeit, dass $z < 3.10$?  
+
+```{r, echo=TRUE}
+pnorm(3.1)
+
+# auf 3 Nachkommastellen gerundet
+round(pnorm(3.1), 3)
+```
+
+c) Wie gross ist die Wahrscheinlichkeit dass $z$ zwischen -1.60 und 3.10 liegt?   
+
+```{r, echo=TRUE}
+pnorm(3.1) - pnorm(-1.6)
+
+# auf 3 Nachkommastellen gerundet
+round(pnorm(3.1) - pnorm(-1.6), 3)
+```
+	
+d) Welcher Wert von $z$ markiert die Grenze zu den oberen 15\% der Verteilung?  
+
+*Die Grenze zu den oberen 15% der Verteilung ist die 85. Perzentile. Mit der Funktion `qnorm()` berechnen wir die Werte, die auf einer bestimmten Perzentile liegen.*
+
+```{r, echo=TRUE}
+qnorm(.85)
+
+#auf 3 Nachkommastellen gerundet
+round(qnorm(.85), 3)
+```
+
+e) Welcher Wert von $z$ markiert die Grenze zu den unteren 20\% der Verteilung?   
+
+```{r, echo=TRUE}
+qnorm(0.2)
+
+# auf 3. Nachkommastelle runden
+round(qnorm(.2), 3)
+```
+
+<br/>
+
+# Übung 6 {.tabset} 
+
+## Aufgabe 
+
+Die WHO (Weltgesundheitsorganisation) definiert Osteoporose bei jungen Erwachsenen als gemessene Knochendichte 2.5 Standardabweichungen unter dem Mittelwert für junge Erwachsene. Wie hoch ist der prozentuale Anteil an jungen Erwachsenen mit Osteoporose, unter der Voraussetzung, dass die Konchendichte bei jungen Erwachsenen normalverteilt ist?   
+
+<br/>
+
+## Lösung
+
+```{r, echo=TRUE}
+pnorm(-2.5)
+
+# in Prozent
+100 * pnorm(-2.5)
+
+# auf 3. Nachkommastelle gerundet
+round(100 * pnorm(-2.5), 3)
+```
+
+*Gemäss den WHO-Kriterien leiden 0.621% der jungen Erwachsenen an Osteoporose*  
+
+# Übung 7 {.tabset}  
+
+Ein hoher Cholesterinspiegel im Blut ist ein Risikofaktor für eine koronare Herzkrankheit. Junge Frauen leiden seltener an einem hohen Cholesterinspiegel als andere Gruppen. Der Cholesterinspiegel von Frauen im Alter von 20 bis 34 Jahre ist annähernd normalverteilt mit einem Mittelwert von 185 mg/dl und einer Standardabweichung von 39 mg/dl Blut.
+
+## Aufgabe   
+
+a) Cholesterinspiegel über 240 mg/dl müssen mediznisch überwacht werden. Wie hoch ist der prozentuale Anteil an jungen Frauen, die einen Cholesterinspiegel über 240 mg/dl haben?   
+
+b) Cholesterinspiegel über 200 mg/dl gelten als grenzwertig erhöht. Wie gross ist der Anteil an jungen Frauen mit einem Cholesterinspiegel zwischen 200 mg/dl und 240 mg/dl?    
+
+## Lösung  
+
+a) a) Cholesterinspiegel über 240 mg/dl müssen mediznisch überwacht werden. Wie hoch ist der prozentuale Anteil an jungen Frauen, die einen Cholesterinspiegel über 240 mg/dl haben?   
+
+* Variante 1: Berechnung des $z$-Werts
+
+```{r, echo=TRUE}
+z <- (240 - 185) / 39
+
+1 - pnorm(z)
+```
+
+* Variante 2: Die Funktion `pnorm()` geht in ihrer Grundeinstellung von einer Standardnormalverteilung aus. Wenn eine andere Normalverteilung als Referenz dient, können ihre Parameter in die Funktion eingetragen werden `pnorm(Wert, mean = Mittelwert, sd = Standardabweichung)`   
+
+```{r, echo=TRUE}
+1 - pnorm(240, mean = 185, sd = 39)
+```
+
+*Der Anteil junger Frauen mit einem Cholesterinspiegel über 240 mg/dl beträgt durchschnittlich 7.923%.*
+
+b) Cholesterinspiegel über 200 mg/dl gelten als grenzwertig erhöht. Wie gross ist der Anteil an jungen Frauen mit einem Cholesterinspiegel zwischen 200 mg/dl und 240 mg/dl?  
+
+```{r, echo=TRUE}
+# Häufigkeit für <= 240 berechnen (aus Teilaufgabe a)
+p_240 <- pnorm(240, mean = 185, sd = 39)
+
+# Häufigkeit für <= 200 berechnen
+p_200 <- pnorm(200, mean = 185, sd = 39) 
+
+# Differenz bilden
+p_240 - p_200
+```
+
+*Der Anteil junger Frauen mit einem Cholesterinspiegel zwischen 200 mg/dl und 240 mg/dl beträgt 27.103%.*  
+
+<br/>
+
+# Mittelwertsvergleiche und Konfidenzintervalle
+
+# Übung 8 {.tabset} 
+
+Das typische Geburtsgewicht eines Babys beträgt in den USA 3250g. Eine Forscherin zieht eine Zufallsstichprobe von 50 Geburtsgewichten aus mehreren regionalen Spitälern. Die Geburtsgewichte sind in der Datei `geburtsgewichte.csv` gespeichert. Die Forscherin vermutet, dass die Geburtsgewichte in diesen Spitälern im Durchschnitt grösser sind als 3250g, da die Mütter, die in diesen Spitälern gebären, in der Tendenz eher übergewichtig sind. Die Resultate dieser Studie bilden die Grundlage für einen politischen Entscheid, der die Einführung von Beratungsprogrammen für schwangere Frauen, die Bewegung und gesunde Ernährung fördern sollen, bewirken soll.
+
+## Aufgabe
+
+Führen Sie einen Hypothesentest durch, um das Geburtsgewicht der Babies im Datensatz mit dem durchschnittlichen Geburtsgewicht von 3250g zu vergleichen. Formulieren Sie die Hypothesen. Das Signifikanzniveau ist auf $\alpha = 0.05$ festgelegt.  
+
+<br/>
+
+## Lösung   
+
+* Hypothesen:  
+
+- $H_0: \mu = 3250$  
+- $H_A: \mu > 3250$  
+
+* Kennzahlen und Voraussetzungen prüfen   
+
+```{r, fig.align='center', fig.dim=c(4, 4)}
+geburtsgewichte <- read_csv("../data/geburtsgewichte.csv")
+
+jmv::descriptives(
+  data = geburtsgewichte, 
+  vars = gewicht,
+  qq = TRUE
+)
+```
+
+- Anhand des QQ-Plots liegt keine Evidenz vor, die dagegen spricht, dass die Daten aus einer normalverteilten Population stammen.  
+- Stichprobenumfang n = 50  
+
+* Einstichproben-T-Test  
+
+```{r}
+jmv::ttestOneS(
+  data = geburtsgewichte,
+  vars = gewicht,
+  testValue = 3250, 
+  hypothesis = "gt"
+)
+```
+
+$p = 0.033$. Da $p < \alpha$ verwerfen wir die $H_0$ zugunsten von $H_A$. Die Daten zeigen, dass das durchschnittliche Gewicht der Babies in diesen Spitälern mit 3320.6g (s = 266.5g) signifikant höher ist, als das durchschnittliche Geburtsgewicht in den USA von 3250g. Die Daten stützen das Anliegen, ein Beratungsprogramm für schwangere Frauen anzubieten.  
+
+<br/>
+
+# Übung 5 {.tabset}
+
+In einer durchgeführten soziologischen Umfrage war eine der Fragen "Wieviel Zeit bleibt Ihnen an einem gewöhnlichen Arbeitstag für Freizeitaktivität und Entspannung?". Die Befrugung wurde bei 1154 zufällig ausgewählten Erwachsenen durchgeführt. Das Resultat auf diese Frage ergab ein 95%-Vertrauensintervall von 3.53 bis 3.83 Stunden.   
+
+## Aufgabe  
+
+Entscheiden sie für jede der folgenden Aussagen, ob sie richtig oder falsch ist. Begründen Sie ihren Entscheid. 
+
+Das Signifikanzniveau ist auf $\alpha = 0.05$ festgelegt.
+
+a) Wenn die Forscherinnen ein 70%-Vertrauensintervall angegeben hätten, wäre dieses breiter (die untere Grenze wäre kleiner als 3.53 und die obere Grenze grösser als 3.83 Stunden).  
+
+b) Wir können zu 95% darauf vertrauen, dass das Intervall [3.53, 3.83] die durchschnittliche Anzahl Stunden beinhaltet, welche den in der Studie Befragten für Freizeitaktivitäten und Entspannung an einem normalen Arbeitstag zur Verfügung steht.
+
+c) Das Konfidenzintervall von [3.53, 3.83] Stunden beinhaltet die durchschnittliche Anzahl Stunden, welche der erwachsenen Bevölkerung, aus der die Stichprobe stammt, für Freizeitaktivitäten und Entspannung zur Verfügung steht.   
+
+d) Die Studie liefert statistisch signifikante Evidenz dafür, dass der erwachsenen Bevölkerung, aus der die Stichprobe stammt, im Durchschnitt 3.6 Stunden Zeit für Freizeitaktivitäten und Erholung an einem normalen Arbeitstag zur Verfügung steht. (Signifikanzniveau $\alpha = 0.05$) 
+
+e) Die Wahrscheinlichkeit beträgt 5%, dass das Intervall von [3.53, 3.83] Stunden die durchschnittliche Zeit, die der erwachsenen Bevölkerung für Freizeitaktivitäten und Erholung zur Verfügung stehen, nicht enthält.   
+
+f) Das Konfidenzintervall von [3.53, 3.83] Stunden liefert statistisch signifikante Evidenz dafür , dass der erwachsenen Bevölkerung an einem normalen Arbeitstag im Durchschnitt weniger als 3.9 Stunden für Freizeitaktivitäten und Erholung zur Verfügung stehen.  
+
+<br/>
+
+## Lösung 
+
+a) Wenn die Forscherinnen ein 70%-Vertrauensintervall angegeben hätten, wäre dieses breiter (die untere Grenze wäre kleiner als 3.53 und die obere Grenze grösser als 3.83 Stunden).  
+
+*FALSCH. Das Vertrauensintervall würde schmaler.*
+
+```{r, fig.dim=c(10, 4), fig.align='center'}
+par(mfrow = c(1, 2))
+normTail(m = 3.68, s = 2.6, L = -1.416, U = 8.776, 
+         main = "95%-CI [3.53, 3.83]", col = COL[1], xLab = "symbol")
+normTail(m = 3.68, s = 2.6, L = 0.986, U = 6.374, 
+         main = "70%-CI [3.60, 3.76]", col = COL[1], xLab = "symbol")
+par(mfrow = c(1, 1))
+```
+
+
+b) Wir können zu 95% darauf vertrauen, dass das Intervall [3.53, 3.83] die durchschnittliche Anzahl Stunden beinhaltet, welche den in der Studie Befragten, für Freizeitaktivitäten und Entspannung an einem normalen Arbeitstag zur Verfügung steht.   
+
+*FALSCH: Konfidenzintervalle beziehen sich auf eine Population und nicht auf eine Stichprobe. Der Satz würde stimmen, wenn an Stelle ", welche den in der Studie Befragten" durch ", welche der erwachsenen Bevölkerung" ersetzt würde.*  
+
+c) Das Konfidenzintervall von [3.53, 3.83] Stunden beinhaltet die durchschnittliche Anzahl Stunden, welche der erwachsenen Bevölkerung, aus der die Stichprobe stammt, für Freizeitaktivitäten und Entspannung zur Verfügung steht.   
+
+*FALSCH: Es besteht eine Wahrscheinlichkeit von 5%, dass 95%-Konfidenzintervall den wahren Mittelwert in der Bevölkerung nicht enthält.*    
+
+d) Die Studie liefert statistisch signifikante Evidenz dafür, dass der erwachsenen Bevölkerung, aus der die Stichprobe stammt, im Durchschnitt 3.6 Stunden Zeit für Freizeitaktivitäten und Erholung an einem normalen Arbeitstag zur Verfügung steht. (Signifikanzniveau $\alpha = 0.05$)  
+
+*FALSCH: Die Fragestellung entspricht einem Einstichproben-T-Test mit dem Nullwert 3.6 Stunden. Die entsprechende Nullhypothese lautet $H_0: \mu = 3.6$ und wir würden anhand dieser Daten die Nullhypothese nicht verwerfen. Allerdings ist  fehlende Evidenz gegen die Nullhypothese nicht das Gleiche wie die Nullhypothese annehmen.*   
+
+e) Die Wahrscheinlichkeit beträgt 5%, dass das Intervall von [3.53, 3.83] Stunden die durchschnittliche Zeit, die der erwachsenen Bevölkerung für Freizeitaktivitäten und Erholung zur Verfügung stehen, nicht enthält.   
+
+*FALSCH: Ein Konfidenzintervall aus Stichprobendaten enthält den wahren Wert oder nicht. Wir wissen es einfach nicht. Was wir aber wissen ist, dass im Falle eines 95%-Konfidenzintervalls in durchschnittlich 95 von 100 Stichproben, der wahre Parameter enthalten ist.*  
+
+f) Das Konfidenzintervall von [3.53, 3.83] Stunden liefert statistisch signifikante Evidenz dafür , dass der erwachsenen Bevölkerung an einem normalen Arbeitstag im Durchschnitt weniger als 3.9 Stunden für Freizeitaktivitäten und Erholung zur Verfügung stehen. 
+
+*RICHTIG: Die Frage entspricht dem Einstichproben-t-Test mit einem Nullwert von 3.9 Stunden. Die Hypothesen lauten: $H_0: \mu = 3.9$ und $H_A:\mu < 3.9$. Weil das 95%-Konfidenzintervall von [3.53, 3.83] Stunden den Nullwert nicht enthält verwerfen wir die Nullhypothese zu Gunsten der Alternativhypothese.*  
+
+<br/>
+
+# Übung 9 {.tabset} 
+
+Entscheiden Sie für jedes der folgenden Szenarios, ob es sich um verbundene (abhängige) oder unabhängige Daten handelt.
+
+## Aufgabe
+
+a) Unterscheidet sich der Lohn von Professoren und Professorinnen an den Schweizer Hochschulen. Ziehen sie ein Zufallsstichproben von 50 Professorinnen und 50 Professoren und vergleichen Sie deren Gehalt.  
+
+b) Führt Vitamin E zu einer Verdickung der Arterien? Messen Sie die Wanddicke der Arterien einer Gruppe von Patient:innen bevor diese regelmässig für zwei Jahre Vitamin E zu sich nehmen (Baseline). Führen Sie nach zwei Jahren eine Follow-Up-Messung durch und vergleichen Sie die Wanddicke der Arterien.  
+
+c) Ist eine mediterrane Diät eine effektive Methode zur Gewichtsreduktion? Vergleichen Sie das Körpergewicht von 30 adipösen Menschen vor und nach der Diät.   
+
+d) Ist exzentrisches oder konzentrisches Krafttraining besser für einen Zuwachs an Muskelmasse. Führen Sie eine randomisierte kontrollierte Studie durch. 55 zufällig ausgewählte Personen werden randomisiert in eine Gruppe, die exzentrisch trainiert und in eine Gruppe, die konzentrisch trainiert eingeteilt. Beide Gruppen trainieren währen drei Monaten vier Mal pro Woche für 30 Minuten. Vergleichen Sie in beiden Gruppen die Muskelumfänge zu Beginn des Trainings mit den Muskelumfängen nach drei Monaten.   
+
+e) In Aufgabe d) haben Sie die Differenz der Muskelumfänge in beiden in beiden Gruppen verglichen. Jetzt vergleichen Sie die Differenz der Muskelumfänge zwischen den beiden Gruppen, um ihre Fragestellung zu beantworten.   
+
+<br/>
+
+## Lösung 
+
+a) Unterscheidet sich der Lohn von Professoren und Professorinnen an den Schweizer Hochschulen. Ziehen sie ein Zufallsstichproben von 50 Professorinnen und 50 Professoren und vergleichen Sie deren Gehalt. *unabhängig*   
+
+b) Führt Vitamin E zu einer Verdickung der Arterien? Messen Sie die Wanddicke der Arterien einer Gruppe von Patient:innen bevor diese regelmässig für zwei Jahre Vitamin E zu sich nehmen (Baseline). Führen Sie nach zwei Jahren eine Follow-Up-Messung durch und vergleichen Sie die Wanddicke der Arterien. *verbunden*   
+
+c) Ist eine mediterrane Diät eine effektive Methode zur Gewichtsreduktion? Vergleichen Sie das Körpergewicht von 30 adipösen Menschen vor und nach der Diät. *verbunden*      
+
+d) Ist exzentrisches oder konzentrisches Krafttraining besser für einen Zuwachs an Muskelmasse. Führen Sie eine randomisierte kontrollierte Studie durch. 55 zufällig ausgewählte Personen werden randomisiert in eine Gruppe, die exzentrisch trainiert und in eine Gruppe, die konzentrisch trainiert eingeteilt. Beide Gruppen trainieren währen drei Monaten vier Mal pro Woche für 30 Minuten. Vergleichen Sie in beiden Gruppen die Muskelumfänge zu Beginn des Trainings mit den Muskelumfängen nach drei Monaten. *verbunden*      
+
+e) In Aufgabe d) haben Sie die Differenz der Muskelumfänge in beiden in beiden Gruppen verglichen. Jetzt vergleichen Sie die Differenz der Muskelumfänge zwischen den beiden Gruppen, um ihre Fragestellung zu beantworten. *unabhängig*  
+
+<br/>
+
+# Übung 10 {.tabset}
+
+Hat Passivrauchen bei Kindern einen Einfluss auf die Lungenfunktion? Für diese Studie wurden 23 Kinder im Alter von 5-9 Jahren untersucht, deren Eltern regelmässig zuhause rauchen. Die Ergebnisse werden mit einer zweiten Gruppe von 20 Kindern in ähnlichem Alter verglichen, deren Eltern nicht rauchen. Die Kinder wurden aus den beiden Populationen zufällig ausgewählt. Die Daten sind in `passivrauchen.csv` abgelegt.  
+
+|Variable|Erläuterung|
+|:-------|:----------|
+|FEV|maximales forciertes expiratorisches Lungenvolumen, Einheit: Liter|
+|passivrauchen|ja: Eltern rauchen, nein: Eltern rauchen nicht|
+
+
+```{r}
+# passivrauchen <- tibble(
+#   FEV = c(rnorm(23, mean = 2.1, sd = .7), rnorm(20, mean = 2.3, .4)),
+#   passivrauchen = c(rep("ja", 23), rep("nein", 20))
+# )
+
+# write_csv(passivrauchen, "./data/passivrauchen.csv")
+passivrauchen <- read_csv("../data/passivrauchen.csv")
+```
+
+
+## Aufgabe   
+
+a) Vergleichen Sie die Mittelwerte der beiden Gruppen und führen Sie einen Hypothesentest durch.  
+b) Formulieren Sie eine Zusammenfassung der Studie in einfachen Worten.  
+
+<br/>
+
+## Lösung   
+
+a) Vergleichen Sie die Mittelwerte der beiden Gruppen und führen Sie einen Hypothesentest durch.  
+
+- Hypothesen:
+
+$H_0: \mu_{passivrauchen} = \mu_{nicht-passivrauchen}$   
+$H_0: \mu_{passivrauchen} \neq \mu_{nicht-passivrauchen}$   
+
+- Kennzahlen   
+
+```{r}
+jmv::descriptives(
+  formula = FEV ~ passivrauchen,
+  data = passivrauchen,
+  box = TRUE,
+  qq = TRUE
+)
+```
+
+*Das durchschnittliche FEV bei Kindern, deren Eltern rauchen beträgt 2.041 l (s = 0.574 l) und bei Kindern, deren Elten nicht rauchen 2.217 (s = 0.414 l).*
+
+
+- Prüfung der Voraussetzungen   
+
+  - Es handelt sich um eine Zufallsstichprobe.      
+  - Die Daten in den QQ-Plots sind annähernd normal verteilt.  
+  - Die Stichprobenumfänge liegen in beiden Gruppen unter 30 und die Standardabweichungen sind nicht gleich -> Mann-Whitney-U-Test  
+  
+```{r}
+jmv::ttestIS(
+  formula = FEV ~ passivrauchen,
+  data = passivrauchen,
+  vars = FEV,
+  mann = TRUE,
+  meanDiff = TRUE
+)
+```
+
+*Der $p$-Wert des Mann-Whitney-U-Tests beträgt 0.316. Da $p > \alpha$ haben wir nicht ausreichend Evidenz, um $H_0$ auf dem Signifikanzniveau $\alpha = 0.05$ zu verwerfen. Im Durchschnitt (Median) haben Kinder von rauchenden Eltern eine um -1.41 l [-0.492, 0.170] geringere FEV.*   
+
+b) Formulieren Sie eine Zusammenfassung der Studie in einfachen Worten.  
+
+*Hat Passivrauchen in einem Elternhaus, in dem die Eltern rauchen, einen Effekt auf die Lungenfunktion der Kinder. Zu dieser Frage wurde eine Studie durchgeführt, in der das maximale forcierte expiratorische Lungenvolumen FEV von Kindern aus einem Elternhaus mit rauchenden Eltern verglichen wurde mit dem FEV von Kindern, deren Eltern nicht rauchen. Das durchschnittliche FEV bei Kindern, deren Eltern rauchen, beträgt 2.041 l (s = 0.574 l) und bei Kindern, deren Elten nicht rauchen 2.217 l (s = 0.414 l). Im Durchschnitt (Median) haben Kinder von rauchenden Eltern eine um -1.41 l [-0.492, 0.170] geringere FEV, Mann-Whitney-U = 188, p = 0.316. Aus den vorliegenden Daten kann nicht geschlossen werden, dass Passivrauchen zuhause mit einer Verschlechterung der Lungenfunktion der Kinder einhergeht.*   
+
+Überlegung: Wir wissen aus zahlreichen Studien, dass Passivrauchen bei Kindern die Lungenfunktion ungünstig beeinflusst. Ein möglicher Confounder in dieser Studie könnte das verfügbare Haushaltseinkommen sein. Kinder in finanziell besser gestellten Verhältnissen haben besseren Zugang zu medizinischer Versorgung und die Wahrscheinlichkeit, dass die Eltern rauchen, ist geringer. Um diesen Aspekt zu berücksichtigen, müssten die Gruppen in der Studie zusätzlich nach den Einkommensverhältnissen stratifiziert werden.   
+
+<br/>
+
+# Übung 11 {.tabset}  
+
+Sie werden von einem engagierten Umweltschützer um statistische Beratung angefragt. Er arbeitet an einer Analyse zur Klimaerwärmung. Er ist im Besitz von Durchschnittstemperaturen im Januar von 200 Orten in Europa und USA aus den Jahren 2008 und 2018. Er schlägt folgendes Vorgehen vor: Für jeden Ort möchte er einen zweiseitigen Hypothesentest durchführen, um die Durchschnittstemperaturen im Januar von 2008 und 2018 zu vergleichen. Das Signifikanzniveau möchte er auf $\alpha = 0.05$ festlegen. Sein Plan ist, Evidenz dafür vorzulegen, dass an den gemessenen Orten die durchschnittliche Temperatur angestiegen ist. Um seinem Anliegen mehr Gewicht zu verleihen, würde er in seiner Arbeit nur die statistisch signifikanten Resultate publizieren.  
+
+## Aufgabe   
+
+Auf welche kritischen Punkte würden Sie auf Grundlage ihrer Statistikkenntnisse den Kollegen ansprechen? (Diskutieren Sie diese Frage mit ihren Mitstudierenden)    
+
+<br/>
+
+## Lösung   
+
+- Der Vorschlag beinhaltet das Problem des multiplen Testens. Wenn 200 unabhängige Hypothesentests durchgeführt werden ist es unvermeidlich, dass Sie Fehler 1. Art begehen. Auf einem Signifikanzniveau von $\alpha = 0.05$ sind es theoretisch 5 Fehler 1. Art auf 100 Hypothesentests; einige der "signifikanten" Resultate werden also alleine durch Stichprobenvariation und nicht durch Populationsunterschiede zustande kommen.   
+- Selektiv nur signifikante Resultate zu publizieren (das nennt man auch "p-hacking") ist irreführend und wissenschaftliches Fehlverhalten Wenn z.B. nur 25 Orte signifikante Resultate ergeben, wird dieses Resultat überbewertet, weil es den Anschein macht, dass von 25 Tests alle eine signifikante Temperaturerwärmung nachgewiesen haben. 
+
+**Hinweis (kein Lernstoff!):** Eine mögliche Lösung, um die Rate der Fehler 1. Art beim multiplen Testen zu kontrollieren, ist die Anpassung des Signifikanzniveaus. Dazu existieren verschiedene Verfahren. Das einfachste besteht darin, dass das Signifikanzniveau $\alpha$ durch die Anzahl der durchgeführten Tests dividiert wird (Bonferroni-Korrektur). In unserem Fall wäre dann $\alpha_{adj} = \frac{0.05}{200} = 0.00025$. Damit wird die Gesamtrate für den Fehler 1. Art für diese Studie bei 0.05 sichergestellt.   
+
+Einen interessanten Artikel dazu finden sie hier: [Iannidis, John: Why Most Published Research Findings are False](https://cse-robotics.engr.tamu.edu/RSS2015NegativeResults/pmed.0020124.pdf)
+
+
+
+
+
+
