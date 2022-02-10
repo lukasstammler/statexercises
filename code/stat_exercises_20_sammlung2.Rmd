@@ -1,0 +1,507 @@
+---
+title: 'Statistik: Übungssammlung 2'
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 5
+    fig_width: 6
+    fig_align: "center"
+    highlight: pygments
+    theme: yeti
+    code_download: false
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(jmv)
+library(knitr)
+library(scatr)
+library(equatiomatic)
+library(openintro)
+library(patchwork)
+library(kableExtra)
+```
+
+# Technische Vorbemerkung
+
+* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
+* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/blob/main/data/data_statexercises.zip) als zip-Datei heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
+* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
+    
+[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org
+
+
+**Diskutieren Sie diese Übungen auch mit Ihren Mitstudierenden und den Betreuungspersonen.**
+
+<br/>
+
+# Deskriptive Statistik   
+
+## Übung 1 {.tabset}   
+
+Die Daten für diese Grafik stammen aus der Befragung 2019 American Community Survey. Eingeschlossen wurden 3142 Gemeinden in den USA. Der Fragebogen umfasst 95 Items. Das Histogramm zeigt die Daten für das mittlere Haushaltseinkommen in 1000 $.  
+
+```{r, fig.align='center'}
+data(county_2019)
+
+ggplot(county_2019, aes(x = mean_household_income/1000)) +
+  geom_histogram(fill = COL[1], color = "white") +
+  scale_x_continuous(breaks = seq(from = 0, to = 200, by = 10)) +
+  xlab("Mittleres Einkommen (in 1000$)") +
+  ylab("Anzahl") +
+  ggtitle("Mittleres Haushaltseinkommen in 3142 US-Gemeinden")
+
+# summary(county_2019$mean_household_income)
+```
+
+
+### Aufgabe
+
+a) Beschreiben Sie die Verteilung der Daten.   
+b) Welches ist das häufigste mittlere Einkommen?  
+c) Wo etwas schätzen Sie liegt der Median?  
+d) Ist der Mittelwert grösser oder kleiner als der Median?   
+e) Welche Kennzahlen sind für die Beschreibung dieser Verteilung eher geeignet: Mittelwert und Standardabweichung oder Median und Interquartilabstand?
+f) Bei welcher Art von Grafik könnten Sie den Median direkt ablesen?   
+
+<br/>
+
+### Lösung
+
+a) Beschreiben Sie die Verteilung der Daten.
+
+- *Die Verteilung ist rechtschief (linkssteil). Dies ist eine typische Einkommensverteilung: Die meisten Haushalte verfügen über niedrige bis mittlere Einkommen und wenige Haushalte verfügen über sehr grosse Einkommen*    
+
+b) Welches ist das häufigste mittlere Einkommen?  
+
+- *ca. 65'000$*      
+
+c) Geben Sie einen Bereich an, in dem der Median schätzungsweise liegt?   
+
+- *ca. bei 65'000 - 70'000* (exakt liegt er bei 66875$)  
+
+d) Ist der Mittelwert grösser oder kleiner als der Median?   
+
+- *Bei rechtsschiefen Verteilungen ist der Mittelwert grösser als der Median* (hier ist $\bar{x}$ = 70180)   
+
+e) Welche Kennzahlen sind für die Beschreibung dieser Verteilung eher geeignet: Mittelwert und Standardabweichung oder Median und Interquartilabstand?    
+
+- *Bei schiefen Verteilungen eignen sich Median und Interquartilabstand besser als typische Kennzahlen*  
+
+f) Bei welcher Art von Grafik könnten Sie den Median direkt ablesen?   
+
+- *In einem Boxplot*  
+
+<br/>
+
+## Übung 2 {.tabset}
+
+Die Grafik zeigt einen Boxplot der gleichen Daten wie in Übung 1.  
+
+```{r, fig.align='center', fig.dim=c(3, 5)}
+ggplot(county_2019, aes(y = mean_household_income/1000)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 200, by = 10)) +
+  ylab("Mittleres Einkommen (in 1000$)") +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank()) +
+  ggtitle("Mittleres Haushaltseinkommen\nin 3142 US-Gemeinden") +
+  geom_boxplot()
+```
+
+### Aufgabe  
+
+a) Schätzen Sie anhand des Boxplots: Wo etwa liegen das untere und das obere Quartil?   
+b) Wie gross ist etwa der prozentuale Anteil der Daten innerhalb der Box?  
+c) Wie gross ist etwa der prozentuale Anteil der Gemeinden mit einem durchschnittlichen Haushaltseinkommen unter 59'000 $?   
+d) Wie gross etwa sind das minimale und das maximale Haushaltseinkommen?   
+
+<br/>  
+
+### Lösung
+
+a) Schätzen Sie anhand des Boxplots: Wo etwa liegen das untere und das obere Quartil?  
+
+- *unteres Quartil: ca. 59'000 \$ (exakt 59214 \$), oberes Quartil: ca. 77'000 \$ (exakt: 76951 \$)*  
+
+b) Wie gross ist etwa der prozentuale Anteil der Daten innerhalb der Box?  
+
+- *50% der Daten liegen innerhalb des Interquartilabstands $IQR$*   
+
+c) Wie gross ist etwa der prozentuale Anteil der Gemeinden mit einem durchschnittlichen Haushaltseinkommen unter 59'000?   
+
+- *25% der Daten liegen unterhalb des unteren Quartils*   
+
+d) Wie gross etwa sind das minimale und das maximale Haushaltseinkommen?  
+
+- *Minimum: ca. 36'000 \$ (exakt 35'819 \$), Maximum: ca. 182'000 \$ (exakt: 181'261 \$)*
+
+<br/>
+
+## Übung 3 {.tabset}   
+
+Migräne ist eine ausserordentlich schmerzhafte Form von Kopfschmerzen, welche Patienten gelegentlich mit Akupunktur behandeln möchten. Um herauszufinden, ob Akupunktur gegen Migräne hilft, hat eine Forschungsgruppe eine randomisierte kontrollierte Studie durchgeführt, in der 89 Frauen mit diagnostizierter Migräne randomisiert in eine Interventions- und eine Kontrollgruppe eingeteilt wurden. Die 43 Probandinnen in der Interventionsgruppe wurden mit einem Akupunkturverfahren behandelt, das spezifisch für Migräne eingesetzt wird. 46 Probandinnen erhielten eine Schein-Akupunktur (Nadeln wurden an Nicht-Akupunkturpunkten gesetzt). 24 Stunden, nachdem die Probandinnen jeweils die Akupunkturbehandlung erhielten, wurden sie gefragt, ob sie schmerzfrei seien. Die Resultate sind in der Tabelle zusammengefasst.   
+
+|Gruppe|schmerzfrei ja|schmerzfrei nein|Total|
+|:-----|:-------------|:---------------|:----|
+|Intervention|10|33|43|
+|Kontrolle|2|44|46|
+|Total|12|77|89|
+
+### Aufgabe
+
+a) Wie gross ist der prozentuale Anteil der Probandinnen in der Interventionsgruppe, die 24 Stunden nach Akupunktur schmerzfrei waren?   
+b) Wie gross ist der prozentuale Anteil der Probandinnen in der Kontrollgruppe, die 24 Stunden nach Scheinakupunktur schmerzfrei waren?  
+c) Haben Sie auf den ersten Blick den Eindruck, dass Akupunktur eine wirksame Behandlungsmethode bei Migräne ist?   
+d) Sind Sie auf Grund der Daten überzeugt, dass Akupunktur eine wirksame Behandlungsmethode für Migräne ist oder könnte der Unterschied alleine auf zufällige Stichprobenvariation zurückzuführen sein? 
+
+<br/>
+
+### Lösung
+
+a) Wie gross ist der prozentuale Anteil der Probandinnen in der Interventionsgruppe, die 24 Stunden nach Akupunktur schmerzfrei waren?   
+
+```{r, echo=TRUE}
+10/43 * 100
+```
+
+- *23.26% der Probandinnen sind 24 Stunden nach Akupunktur schmerzfrei*  
+
+b) Wie gross ist der prozentuale Anteil der Probandinnen in der Kontrollgruppe, die 24 Stunden nach Scheinakupunktur schmerzfrei waren?  
+
+```{r, echo=TRUE}
+2/46 * 100
+```
+
+- *4.35% der Probandinnen sind 24 Stunden nach Scheinakupunktur schmerzfrei*  
+
+c) Haben Sie auf den ersten Blick den Eindruck, dass Akupunktur eine wirksame Behandlungsmethode bei Migräne ist?   
+
+```{r, echo=TRUE}
+23.26 - 4.35
+```
+
+- *Ja. Der prozenuale Anteil der Probandinnen, die in der Interventionsgruppe sind ist um 18.91% höher als in der Kontrollgruppe.*   
+
+d) Sind Sie auf Grund der Daten überzeugt, dass Akupunktur eine wirksame Behandlungsmethode für Migräne ist oder könnte der Unterschied alleine auf zufällige Stichprobenvariation zurückzuführen sein?  
+
+- *Der grosse Unterschied von knapp 19% zwischen Interventions- und Kontrollgruppe ist recht überzeugend. Allerdings kann nie ausgeschlossen werden, dass das Ergebnis alleine auf zufällige Stichprobenvariation zurückzuführen ist*   
+
+<br/>
+
+## Übung 4 {.tabset}  
+
+```{r, fig.align='center', fig.dim=c(10, 6)}
+set.seed(1234)
+norm <- tibble(values = rnorm(1000, mean = 50, sd =10))
+unif <- tibble(values = runif(1000, min = 0, max = 100))
+beta <- tibble(values = rbeta(1000, 5, 2))
+
+hist_norm <- ggplot(norm, aes(x = values)) +
+  geom_histogram(fill = COL[1], color = "white") +
+  ylab("") +
+  xlab("(a)")
+hist_unif <- ggplot(unif, aes(x = values)) +
+  geom_histogram(fill = COL[1], color = "white")+
+  ylab("") +
+  xlab("(b)")
+hist_beta <- ggplot(beta, aes(x = values)) +
+  geom_histogram(fill = COL[1], color = "white") +
+  ylab("") +
+  xlab("(c)")
+
+box_beta <- ggplot(beta, aes(y = values)) +
+  geom_boxplot() +
+  xlab("A") +
+  ylab("") +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())
+box_norm <- ggplot(norm, aes(y = values)) +
+  geom_boxplot() +
+  xlab("B") +
+  ylab("") +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())
+box_unif <- ggplot(unif, aes(y = values)) +
+  geom_boxplot() +
+  xlab("C") +
+  ylab("") +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())
+
+(hist_norm | hist_unif | hist_beta) /
+  (box_beta | box_norm | box_unif)
+```
+
+
+### Aufgabe  
+
+Beschreiben Sie die Verteilungen in den drei Histogrammen und ordnen Sie diese dem richtigen Boxplot zu.   
+
+<br/> 
+
+### Lösung   
+
+- *(a) Normalverteilung, passt zu (B)*     
+- *(b) Uniforme Verteilung, passt zu (C)*     
+- *(c) linksschiefe Verteilung, passt zu (A)*     
+
+<br/>   
+
+## Übung 5 {.tabset}   
+
+Die Daten von Facebook zeigen, dass 50% der Facebook-Abonnent:innen 100 oder mehr Freunde haben und dass die durchschnittliche Anzahl an Freunden 190 beträgt.  
+
+### Aufgabe: 
+
+Welche Form der Verteilung erwarten Sie für die Anzahl Freunde von Facebook-Abonnent:innen.  
+
+</br>   
+
+### Lösung:   
+
+*Die Aussage, dass "50% der Facebook-Abonnent:innen 100 oder mehr Freunde haben" bedeutet, dass der Median für die Anzahl Freunde bei 100 liegt. Der Mittelwert für die Anzahl Freunde liegt bei 190. Dies bedeutet, dass die Verteilung der Anzahl Freunde pro Facebook-Abonnent:in rechtsschief ist.*     
+
+<br/>   
+
+## Übung 6 {.tabset}   
+
+In einem Raum haben sich 40 Personen versammelt. Das erste Histogramm zeigt die Verteilung des jährlichen Einkommens dieser Personen. Jetzt betreten zwei neue Personen den Raum: Eine verdient \$250'000 und die andere \$250'000 pro Jahr. Das zweite Histogramm zeigt die neue Einkommensverteilung. Die Tabelle gibt die Kennzahlen für die beiden Situationen an.   
+
+```{r, fig.dim=c(9, 4), fig.align='center'}
+# Quelle: https://github.com/OpenIntroStat/openintro-statistics/blob/master/ch_summarizing_data/figures/eoce/income_coffee_shop/income_coffee_shop.R 
+
+# generate data -----------------------------------------------------
+set.seed(956)
+
+sal_symmetric = rnorm(40, mean = 65000, sd = 2000)
+sal_skewed = c(sal_symmetric, 225000, 250000)
+
+options(scipen=2)
+
+# histograms --------------------------------------------------------
+# pdf("income_coffee_shop.pdf", 5.5, 4.3)
+# par(mar = c(3.6, 2, 0.5, 1), las = 1, mgp = c(2.5, 0.7, 0), 
+#     mfrow = c(2,1), cex.lab = 1.5, cex.axis = 1)
+
+par(mfrow = c(1, 2))
+
+histPlot(sal_symmetric, xlim = c(60000, 70000), 
+         xlab = "(1)", ylim = c(0,12), col = COL[1], 
+         axes = FALSE, ylab = "")
+AxisInDollars(1, at = seq(0, 1000000, 2500))
+axis(2, at = seq(0,12,4))
+
+histPlot(sal_skewed, xlab = "(2)", ylim = c(0,12), 
+         breaks = seq(0, 260000, by = 1000), col = COL[1], 
+         axes = FALSE, xlim = c(60000,260000), ylab = "")
+AxisInDollars(1, at = seq(60000, 260000, 50000))
+axis(2, at = seq(0,12,4))
+
+par(mfrow =c(1, 1))
+# dev.off()
+
+# summary stats -----------------------------------------------------
+# library(xtable)
+
+summary_table = as.data.frame(cbind(summary(sal_symmetric), summary(sal_skewed)))
+names(summary_table) = c("(1)","(2)")
+summary_table = rbind(c(length(sal_symmetric), length(sal_skewed)), 
+                      summary_table, c(sd(sal_symmetric), sd(sal_skewed)))
+rownames(summary_table)[1] = "n"
+rownames(summary_table)[dim(summary_table)[1]] = "s"
+
+kable(summary_table, digits = 0) %>% 
+  kable_styling(full_width = FALSE)
+```
+
+### Aufgabe   
+
+a) Repräsentiert eher der Mittelwert oder der Median das typische jährliche Einkommen für die 42 Personen? Was bedeutet dies für die Robustheit der beiden Kennzahlen?   
+
+b) Ist eher die Standardabweichung oder der Interquartilabstand IQR repräsentativ für die Variabilität der jährlichen Einkommen der 42 Personen? Was bedeutet dies für die Robustheit der beiden Kennzahlen?   
+
+<br/>  
+
+### Lösung  
+
+*a) Der Median ist die bessere Kennzahl, um das typische jährliche Durchschnittseinkommen dieser 42 Personen zu beschreiben. Der Mittelwert ist viel höher als das durchschnittliche Einkommen der 40 Personen, weil er viel empfindlicher auf Extremwerte reagiert als der Median. Der Median ist robust gegen Extremwerte.*   
+
+*b) Der IQR ist das bessere Mass für die Variabilität der jährlichen Einkommen der 42 Personen. Die Standardabweichung ist empfindlich für Extremwerte, der IQR dagegen ist robust gegenüber Extremwerten.*
+
+# Korrelation und Regression  
+
+## Übung 7 {.tabset}  
+
+Neben dem Geschlecht, dem Körpergewicht, Trinkgewohnheiten und weiteren Faktoren spielt die Menge an konsumiertem Alkohol eine Rolle für den Alkoholspiegel im Blut. Wir haben Daten von 16 freiwilligen Studierenden, denen randomisiert eine bestimmte Menge Bierdosen (Variable `cans`) zugewiesen wurden. Es nahmen 8 Studenten und 8 Studentinnen am Versuch teil, die sich in Gewicht und Trinkgewohnheiten unterschieden. 30 Minuten nach dem Konsum der letzten Dose Bier wurde ihr Alkoholspiegel in g Alkohol/dl Blut (Variable `BAC`) gemessen. 
+
+Das Streudiagramm und die Regressionstabelle fassen die Ergebnisse zusammen.   
+
+```{r, fig.align='center'}
+beer <- read_csv("../data/beer_blood_alcohol.csv")
+
+ggplot(beer, aes(x = cans, y = BAC)) +
+  geom_point(size = 3, color = COL[1]) +
+  xlab("Anzahl Dosen Bier (0.44 cl)") +
+  ylab("Blutalkohol (g/dl)") +
+  scale_x_continuous(breaks = seq(from = 0, to = 9, by = 1)) +
+  ggtitle("Alkoholspiegel im Blut in Abhängigkeit vom Bierkonsum", subtitle = "30 Min. nach letztem Bierkonsum, n = 16")
+
+jmv::linReg(
+  data = beer,
+  dep = BAC,
+  covs = cans,
+  blocks = list(
+    list("cans")),
+  refLevels = list()
+)
+```
+
+### Aufgabe  
+
+a) Beschreiben Sie den Zusammenhang zwischen der Anzahl Dosen Bier und und dem Blutalkoholspiegel.   
+b) Notieren Sie die Gleichung für die Regressionsgerade.   
+c) Zeigen die Daten Evidenz dafür, dass es einen Zusammenhang zwischen Bierkonsum und Alkoholspiegel im Blut gibt?  
+d) Wie gross ist der Korrelationskoeffizient nach Pearson für den Zusammenhang von Bierkonsum und Alkoholspiegel im Blut?  
+e) Interpretieren sie $R^2$    
+f) Wie hoch ist der erwartete Blutalkoholspiegel nach i) 3.5 Dosen Bier, ii) 19 Dosen Bier?   
+
+<br/>  
+
+### Lösung
+
+a) Beschreiben Sie den Zusammenhang zwischen der Anzahl Dosen Bier und und dem Blutalkoholspiegel.   
+
+- *Es besteht ein positiver starker linearer Zusammenhang zwischen der Anzahl konsumierter Dosen Bier und dem Blutalkoholspiegel*    
+
+b) Notieren Sie die Gleichung für die Regressionsgerade.   
+
+$$\widehat{Blutalkoholspiegel} = -0.011 + 0.018 \times Anzahl ~Dosen ~Bier$$
+
+c) Zeigen die Daten Evidenz dafür, dass es einen Zusammenhang zwischen Bierkonsum und Alkoholspiegel im Blut gibt? Notieren Sie die Nullhypothese und die Alternativhypothese, $\alpha = 0.05$. 
+
+- $H_0: \beta_1 = 0}$ Die wahre Steigung für den Koeffizienten der Anzahl konsumierter Dosen Bier ist 0.  
+- $H_A: \beta_1 \neq 0$ Die wahre Steigung für den Koeffizienten der Anzahl konsumierter Dosen Bier ist nicht gleich 0. 
+
+- *Der p-Wert für den Regressionskoeffizienten $\beta_1$ ist $p < 0.0001$. Damit ist der $p$-Wert kleiner als das Signifikanzniveau $\alpha$ und wir haben Evidenz gegen die Nullhypothese. Unsere Daten liefern Evidenz für einen statistisch signifikanten positiven linearen Zusammenhang zwischen konsumierter Alkoholmenge und Blutalkoholspiegel, Steigung $\beta_1$ = 0.018, p <.001*   
+
+d) Wie gross ist der Korrelationskoeffizient nach Pearson $r$ für den Zusammenhang von Bierkonsum und Alkoholspiegel im Blut?   
+
+- *$r$ = 0.906*  
+
+e) Interpretieren sie $R^2$    
+
+- *Die konsumierte Biermenge erklärt 82% der Variabilität des Blutalkoholspiegels*   
+
+f) Wie hoch ist der erwartete Blutalkoholspiegel nach i) 3.5 Dosen Bier, ii) 19 Dosen Bier?  
+
+- Wir setzen die Menge an Bierdosen in unsere Regressionsgleichung ein:  
+
+```{r, echo=TRUE}
+# Fall i
+-0.0114 + 0.0181 * 3.5
+
+# Fall ii
+-0.0114 + 0.0181 * 19
+```
+
+- *Fall i: 30 Minuten nach dem Konsum von 3.5 Dosen Bier erwarten wir im Durchschnitt einen Blutalkoholspiegel von 0.052 g Alkohol/dl Blut.*  
+
+- *Fall ii: 30 Minuten nach dem Konsum von 19 Dosen Bier erwarten wir im Durchschnitt einen Blutalkoholspiegel von 0.333 g Alkohol/dl Blut.* **ACHTUNG:** *Diese Berechnung ist eine Extrapolation über unseren Datenbereich hinaus. Sie ist nur dann gültig, wenn wir sicher sind, dass die lineare Beziehung auch ausserhalb von unserem Datenbereich von 1 bis 9 Dosen Bier gültig ist. Da wir das aber nicht wissen, ist diese Berechnung unzuverlässig.*   
+
+<br/>  
+
+## Übung 8 {.tabset}  
+
+Gibt es einen Zusammenhang zwischen der Körpergrösse der Partner bei heterosexuellen Ehepaaren? Das Streudiagramm zeigt die Körpergrössen von Frauen und Männern von 170 zufällig ausgewählten Ehepaaren in Grossbritannien. Beide Ehepartner sind jünger als 65 Jahre. Zudem finden Sie den Output für die Regressionsgerade, die die Körpergrösse von Ehefrauen aus der Körpergrösse der Ehemänner vorhersagt.   
+
+```{r}
+# openintro
+data("husbands_wives")
+
+husbands_wives$ht_husband <- husbands_wives$ht_husband/10 # in cm 
+husbands_wives$ht_wife <- husbands_wives$ht_wife/10       # in cm
+
+hw_65 <- husbands_wives %>% 
+  filter(
+    age_husband <65 & age_wife < 65
+  )
+
+ggplot(hw_65, aes(x = ht_husband, y = ht_wife)) +
+  geom_point(size = 3, color = COL[1]) +
+  xlab("Grösse Männer (cm)") +
+  ylab("Grösse Frauen (cm)") +
+  ggtitle("Körpergrösse von Männern und Frauen bei Ehepaaren", subtitle = "Alter: beide < 65 Jahre, n = 170")
+
+mod1 <- lm(ht_wife ~ ht_husband, data = hw_65)
+summary(mod1)
+```
+
+### Aufgabe   
+
+a) Liefern die Daten Evidenz dafür, dass Männer grösser sind als Frauen? Notieren Sie ihre Hypothesen und interpretieren Sie den Output der Regressionsanalyse.  
+b) Notieren Sie die Gleichung für die Regressionsgerade, die die Körpergrösse von Ehefrauen aus der Körpergrösse der Ehemänner vorhersagt.  
+c) Interpretieren Sie die Steigung und den Achsenabschnitt im Zusammenhang mit der Fragestellung.  
+d) $R^2$ ist 0.094. Welchen Wert hat der Korrelationskoeffizient nach Pearson $r$.   
+e) Sie treffen einen verheirateten Mann, der 175 cm gross ist. Welche Grösse würden Sie für seine Frau vorhersagen und wie zuverlässig wäre diese Aussage?   
+f) Sie treffen einen anderen verheirateten Mann, der 205 cm gross ist. Wäre es klug, das gleiche lineare Modell für die Vorhersage der Körpergrösse seiner Frau zu wählen? Begründen Sie.   
+
+<br/>
+<br/>
+
+### Lösung  
+
+a) Liefern die Daten Evidenz dafür, dass Männer grösser sind als Frauen? Notieren Sie ihre Hypothesen und interpretieren Sie den Output der Regressionsanalyse.  
+
+- $H_0: \beta_1 = 0$ Die wahre Steigung für den Koeffizienten der Grösse des Mannes ist 0.  
+- $H_1: \beta_1 > 0$ Die wahre Steigung für den Koeffizienten der Grösse des Mannes ist grösser als 0.  
+- *Die Teststatistik $t$ beträgt 4.17 (df = 170 - 2) und der $p$-Wert für eine zweiseitige Hypothese ist kleiner als 0.0001. Damit ist auch der p-Wert für eine einseitige Hypothese kleiner als $\alpha = 0.05$. Mit einem derart kleinen $p$-Wert, verwerfen wir $H_0$ und schliessen, dass die Daten statistisch signifikante Evidenz dafür liefern, dass die Körpergrössen von Ehefrauen und Ehemännern einen positiven linearen Zusammenhang aufweisen und dass die wahre Steigung grösser als 0 ist.*   
+
+b) Notieren Sie die Gleichung für die Regressionsgerade, die die Körpergrösse von Ehefrauen aus der Körpergrösse der Ehemänner vorhersagt.  
+
+$$\widehat{Groesse_w} = 110.68 + 0.29 \times Groesse_m$$  
+c) Interpretieren Sie die Steigung und den Achsenabschnitt im Zusammenhang mit der Fragestellung.  
+
+- *Steigung: Wir erwarten dass pro cm Grössenzunahme der Ehemänner die Grösse ihrer Frauen um durchschnittlich 0.29 cm zunimmt.*   
+- *Achsenabschnitt: Männer mit einer Körpergrösse von 0 cm haben Frauen mit einer durchschnittlichen Grösse von 110.7 cm. Diese Aussage ist ziemlich unsinnig.*   
+
+d) $R^2$ ist 0.094. Welchen Wert hat der Korrelationskoeffizient nach Pearson $r$.   
+
+$$r = \sqrt{R^2}$$
+
+```{r, echo=TRUE}
+sqrt(0.094)
+```
+
+- *Der Pearson Korrelationskoeffizient $r$ beträgt 0.307. Dieser Wert steht für einen schwachen positiven linearen Zusammenhang zwischen der Körpergrösse der Ehefrauen und der Körpergrösse der Ehemänner.*   
+
+e) Sie treffen einen verheirateten Mann, der 175 cm gross ist. Welche Grösse würden Sie für seine Frau vorhersagen und wie zuverlässig wäre diese Aussage?   
+
+- *Wir setzen 175 in unsere Regressionsgleichung ein.*
+
+```{r, echo=TRUE}
+110.68 + 0.29 * 175
+```
+
+- *Unser Modell sagt eine Körpergrösse der Ehefrau von, im Durchschnitt, 161.4 cm voraus. Mit einem $R^2$ von 0.094 ist diese Vorhersage nicht sehr zuverlässig*   
+
+f) Sie treffen einen anderen verheirateten Mann, der 205 cm gross ist. Wäre es klug, das gleiche lineare Modell für die Vorhersage der Körpergrösse seiner Frau zu wählen? Begründen Sie.   
+
+- *Nein. Die Vorhersage für eine Körpergrösse von 205 cm überschreitet den gemessenen Datenbereich. Das Regressionsmodell könnte ausserhalb dieses Bereichs nicht mehr gültig sein.*   
+
+g) Zwei verheiratete Freunde treffen sich. Der eine ist vier cm grösser als der andere (beide < 190 cm gross). Um wieviel grösser ist seine Frau im Durchschnitt?  
+
+```{r, echo=TRUE}
+0.286 * 4
+```
+
+- *Unser Modell sagt voraus, dass die Frau des grösseren Mannes um durchschnittlich 1.144 cm grösser ist als die Frau des kleineren Mannes.*    
+
+<br/>
+<br/>
+<br/>
+

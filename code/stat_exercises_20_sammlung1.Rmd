@@ -23,6 +23,7 @@ library(knitr)
 library(scatr)
 library(equatiomatic)
 library(openintro)
+library(patchwork)
 ```
 
 # Technische Vorbemerkung
