@@ -24,7 +24,7 @@ library(openintro)
 
 data(COL)
 
-phydata <- readRDS("../data/physio.rds")
+phydata <- read_csv("../data/physio.csv")
 ```
 
 # Technische Vorbemerkung
@@ -149,7 +149,7 @@ $$z_n=\frac{x_n-\bar{x}}{s}$$
 
 **Beispiel:** (Mittelwert und Standardabweichung siehe oben)
 
-$$z_n=\frac{x_n-166.940}{5.587}$$
+$$z_n=\frac{x_n-166.92}{5.66}$$
 
 
 ```{r, fig.align='center'}
@@ -182,7 +182,7 @@ Uns interessiert jetzt die Frage *Wie gross ist die Wahrscheinlichkeit, dass ein
 
 **Beispiel:** Wie gross ist die Wahrscheinlichkeit, dass eine Studientin 163 cm gross oder kleiner ist?
 
-$$z_{163} = \frac{163 - 166.940}{5.587} = -0.705$$
+$$z_{163} = \frac{163 - 166.92}{5.66} = -0.693$$
 
 ```{r, fig.align='center'}
 phy_w %>% 
@@ -507,9 +507,9 @@ $Normbereich_{obere Grenze} = \bar{x}+2s$
     
 Daraus folgt: *"Normalgrosse"* Studentinnen sind zwischen   
     
-$Normbereich_{untere Grenze} = 166.94 - 2 \times 5.59 = 166.94 - 11.18 = 155.76$  
+$Normbereich_{untere Grenze} = 166.92 - 2 \times 5.66 = 166.94 - 11.18 = 155.62$  
    
-$Normbereich_{obere Grenze} = 166.94 + 2 \times 5.59 = 166.94 + 11.18 = 178.12$   
+$Normbereich_{obere Grenze} = 166.92 + 2 \times 5.66 = 166.94 + 11.18 = 178.26$   
    
 cm gross.
 
@@ -549,4 +549,61 @@ Die beiden 2.5%-Flächen in der Abbildung zu Aufgabe 3 liegen ausserhalb des 95%
 $$p = 0.025 + 0.025 = 0.05 = 5\%$$      
 
 <br/>
+<br/>
+
+## Übung 5 {.tabset}
+
+### Aufgabe
+
+1. Wie gross muss eine Studentin mindestens sein, damit sie zu den 10% grössten Studentinnen gehört?  
+2. Wie gross ist eine Studentin, die auf der 25. Perzentile liegt?
+
+<br/> 
+<br/>
+
+### Lösung
+
+1. Wie gross muss eine Studentin mindestens sein, damit sie zu den 10% grössten Studentinnen gehört?
+
+   a) z-Wert für 90% in z-Tabelle ablesen $z \approx 1.28$, alternativ z-Wert mit der Funktion `qnorm()` in `R` bestimmen (s. unten)
+   
+![z-Werte-Tabelle](../png/zWerteUe5-1a.png) 
+
+   b) 
+   $$
+   z = \frac{x_i - \bar{x}}{s}
+   $$
+   
+   $$
+   x_i =\bar{x} + z \times s = 166.9 + 1.28 \times 5.664 = 174.15
+   $$  
+
+```{r, echo=TRUE}
+## z-Wert für die 90. Perzentile bestimmen
+qnorm(.9)
+
+## Groesse auf der 90. Perzentile aus einer Normalverteilung bestimmen
+qnorm(.9, mean = mean(phy_w$Groesse), sd = sd(phy_w$Groesse))
+```
+
+2. Wie gross ist eine Studentin, die auf der 25. Perzentile liegt?
+
+  a) z-Wert für 25. Perzentile in z-Tabelle ablesen $z \approx -0.67$; alternativ z-Wert mit der Funktion `qnorm()` in `R` bestimmen (s. unten) 
+  b) 
+   $$
+   z = \frac{x_i - \bar{x}}{s}
+   $$
+   $$
+   x_i =\bar{x} + z \times s = 166.9 -0.67 \times 5.664 = 163.1
+   $$ 
+
+```{r, echo=TRUE}
+## z-Wert für die 25. Perzentile bestimmen
+qnorm(.25)
+
+## Groesse auf der 90. Perzentile aus einer Normalverteilung bestimmen
+qnorm(.25, mean = mean(phy_w$Groesse), sd = sd(phy_w$Groesse))
+```
+
+<br/> 
 <br/>

@@ -195,7 +195,7 @@ Wir arbeiten weiter mit der Simulations-App [Central Limit Theorem for Means](ht
 
 ### Aufgabe   
 
-1. Wähle *Parent Distribution*: right skewed (d.h. die Stichproben werden aus einer rechtssteil verteilten Population gezogen)        
+1. Wähle *Parent Distribution*: right skewed (d.h. die Stichproben werden aus einer rechtsschief  verteilten Population gezogen)        
 3. Stelle die Stichprobenangaben *Sample size = 2* und *Number of Samples = 700* ein. Notiere dir den Populationsmittelwert *mean of x* und die Standardabweichung *SD of x*, die im Register *Population Distribution* angezeigt wird  
 
 Vergrössere jetzt die *Sample Size* schrittweise. Hat der Stichprobenumfang einen Einfluss ...    
@@ -211,9 +211,9 @@ Vergrössere jetzt die *Sample Size* schrittweise. Hat der Stichprobenumfang ein
 * (a) Die Standardabweichungen der Stichproben ensprechen etwa der Standardabweichung der Population $s \approx \mu$. Der Stichprobenumfang beeinflusst die Standardabweichung SD der Stichprobe insofern, als dass die Abweichungen der einzelnen Stichproben-Standardabweichungen von der Populationsstandardabweichung mit steigendem Stichprobenumfang abnehmen.  
 * (b) Die Mittelwerte der Stichproben entsprechen etwa dem Mittelwert der Population $\bar{x} \approx \mu$. Der Stichprobenumfang beeinflusst die Mittelwerte $\bar{x}$ der Stichproben insofern, als dass die Abweichungen der einzelnen  Stichprobenmittelwerte vom Populationsmittelwert mit steigendem Stichprobenumfang abnehmen.   
 * (c) Die Beobachtung aus (b) äussert sich darin, dass mit steigendem Stichprobenumfang die Variation der Stichprobenmittelwerte um den Populationsparameter, ausgedrückt als Standardfehler SE, immer kleiner wird. 
-* (d) In kleinen Stichproben (n < 30) entspricht die Verteilung der Stichprobenmittelwerte eher der rechtssteilen Verteilung der Populationsdaten. Mit zunehmendem Stichprobenumfang nähert sich die Verteilung der Stichprobenmittelwerte der Normalverteilung an.  
+* (d) In kleinen Stichproben (n < 30) entspricht die Verteilung der Stichprobenmittelwerte eher der rechtsschiefen Verteilung der Populationsdaten. Mit zunehmendem Stichprobenumfang nähert sich die Verteilung der Stichprobenmittelwerte der Normalverteilung an.  
 
-**Merke:** Unabhängig davon, wie die Daten in der Population verteilt sind (normal, rechtssteil, linkssteil, irregulär), mit steigendem Umfang nähert sich die Verteilung der Stichprobenkennzahlen der Normalverteilung an.  
+**Merke:** Unabhängig davon, wie die Daten in der Population verteilt sind (normal, rechtsschief, linksschief, irregulär), mit steigendem Umfang nähert sich die Verteilung der Stichprobenkennzahlen der Normalverteilung an.  
 
 <br>
 

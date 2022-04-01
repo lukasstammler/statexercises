@@ -14,7 +14,7 @@ output:
 ```{r setup, include=FALSE}
 rm(list = ls())
 
-knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, fig.align = "center")
 
 library(tidyverse)
 library(jmv)
@@ -41,7 +41,7 @@ Die t-Werte hängen vom Signifikanzniveau sowie von der Stichprobengröße n ab 
 
 **Merke:**  
 
-* Für die praktische Arbeit gilt, dass die t-Verteilung als Anpassung der Normalverteilung für kleine Stichprobenumfänge aufgefasst werden kann. Ab einem Stichprobenumfang von n > 30 entspricht sie nahezu der Normalverteilung. Der $t$-Wert, den Statistikprogramme berechnen, kann analog zu den $Z$-Werten interpretiert werden.    
+* Für die praktische Arbeit gilt, dass die t-Verteilung als Anpassung der Normalverteilung für kleine Stichprobenumfänge aufgefasst werden kann. Ab einem Stichprobenumfang von n > 30 entspricht sie annähernd der Normalverteilung. Der $t$-Wert, den Statistikprogramme berechnen, kann analog zu den $Z$-Werten interpretiert werden.    
 * Die Form der t-Verteilung ist abhängig vom Stichprobenumfang n. Dieser wird in Freiheitsgraden (degrees of freedom, $df$ angegeben), wobei $df = n - 1$. 
 
 ```{r}
@@ -122,6 +122,10 @@ $$SE_{pooled} = \sqrt{\frac{s_{Bern}^2}{n_{Bern}} + \frac{s_{Basel}^2}{n_{Basel}
 * Die Berechnung des t-Werts erfolgt nach der Formel    
 
 $$t = \frac{m_1 - m_2}{SE_{pooled}}$$
+* Die Anzahl Freiheitsgrade $df$ ist  
+
+$$df = n_1 + n_2 - 2 = n_{Bern} + n_{Basel} - 2$$
+
 <br />
 
 ### Lösung

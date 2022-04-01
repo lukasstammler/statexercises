@@ -320,6 +320,6 @@ polygon(cord.x,cord.y,col='lightblue', border = "black")
 points(x = t2, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
 ```
 
-Die Grenzen zwischen Annahmebereich (blaue Fläche) und Verwerfungsbereich (weisse Enden der Kurve) bei einem Signifikanzniveau $\alpha = 0.05$, liegt für die Standardnormalverteilung bei -1.96 und +1.96. Unsere Teststatistik $z = -2.8$ liegt innerhalb des Annahmebereichs und wir haben keine Evidenz gegen die Nullhypothese.
+Die Grenzen zwischen Annahmebereich (blaue Fläche) und Verwerfungsbereich (weisse Enden der Kurve) bei einem Signifikanzniveau $\alpha = 0.05$, liegt für die Standardnormalverteilung bei -1.96 und +1.96. Unsere Teststatistik $z = -2.8$ liegt innerhalb des Verwerfungsbereichs und wir haben Evidenz gegen die Nullhypothese.
 
 <br/>
