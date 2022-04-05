@@ -463,4 +463,192 @@ Auf Grund ihrer Erfahrung vermuten Sie, dass die Laufzeit von Notebook-Akkus (si
 <br />
 <br />
 
+## Übung 5 {.tabset}
 
+Unterscheidet sich der mittlere BMI von Physiotherapie-Studentinnen vom gesamtschweizerischen Durchschnitt von 23.7 $kg/m^2$ für Frauen im Alter von 20-29 Jahren?   
+
+Wir prüfen diese Frage anhand einer Zufallsstichprobe von 183 Physiotherapie-Studentinnen. Der Datensatz kann [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden.
+
+*Dies ist die gleiche Fragestellung mit den identischen Daten, wie im Video Mittelwertsvergleiche Teil 1, Kap. Einstichproben-t-Test.*
+
+
+### Aufgabe 
+
+Führen Sie eine komplette statistische Analyse zu dieser Fragestellung durch. Legen Sie das Signifikanzniveau auf $\alpha$ = .05 fest. 
+
+<br />
+<br />
+
+### Lösung  
+
+1. Statistische Hypothesen formulieren
+
+* $H_0: \mu_{bmi} = 23.7$   
+* $H_A: \mu_{bmi} \neq 23.7$  
+
+2. Signifikanzniveau festlegen   
+
+* $\alpha$ = .05   
+
+3. Sind die Daten gepaart oder unabhhängig?    
+
+* Es handelt sich um eine einzige Stichprobe.  
+
+4. Prüfgrösse bestimmen
+
+* Die Prüfgrösse ist $\mu_{bmi}$ von Physiotherapie-Studentinnen   
+
+5. Voraussetzungen prüfen
+
+* Der Stichprobenumfang $n$ ist grösser als 30.   
+* Es handelt sich um eine Zufallsstichprobe; wir können annehmen, dass die Beobachtungseinheiten unabhängig sind.  
+* Verteilung der Prüfgrösse anhand eines QQ-Plots prüfen  
+
+**in `R`** 
+
+```{r}
+bmi_phy_w <- read_csv("../data/bmi_phy_w.csv")
+```
+
+```{r, echo=TRUE}
+qqnorm(bmi_phy_w$bmi, col = "blue")
+qqline(bmi_phy_w$bmi)
+```
+
+**in `jamovi`**
+
+* Datensatz *bmi_phy_w.csv* öffnen  
+* jamovi > Exploration > Descriptives > Untermenü Plots > Q-Q Plots > Häkchen bei Q-Q setzen
+
+```{r, results='asis'}
+desc0 <- jmv::descriptives(
+  data = bmi_phy_w,
+  vars = bmi,
+  qq = TRUE
+)
+
+cat("<pre>")
+print(desc0)
+cat("</pre>")
+```
+
+* Obwohl der QQ-Plot leicht konvex nach unten gekrümmt ist (was auf eine rechtsschiefe Verteilung hinweist) entscheiden wir vorerst auf annähernd normalverteilte Daten.  
+
+6. Vertrauensintervalle für $\hat{\mu}_{bmi}$ berechnen.
+
+**in `R`** 
+
+```{r, echo=TRUE}   
+n <- length(bmi_phy_w$bmi)       # Stichprobenumfang n ermitteln
+m <- mean(bmi_phy_w$bmi)         # Mittelwert für $bmi ermitteln
+s <- sd(bmi_phy_w$bmi)           # s für $bmi ermitteln
+SE <- s/sqrt(n)                  # SE brü $bmi berechnen
+t95 <- abs(qt(.025, df = n - 1)) # t-Wert für 95%-CI ermitteln
+CI <- m + c(-1, 1) * t95 * SE    # Grenzen für 95%-CI berechnen
+CI <- round(CI, 3)               # 95%-CI auf drei Stellen runden
+
+result <- paste("Mittelwert =", round(m, 3), ", CI = [", CI[1], ",", CI[2], "]")
+result
+```
+
+Hinweis: Einfacher geht es mit der Funktion `t.test()` siehe unter Punkt 7.
+
+
+**in `jamovi`**
+
+* jamovi > Exploration > Descriptives > Mean Dispersion > Confidence interval for Mean: Häkchen setzen, Vorgabe ist der Wert 95 für ein 95%-CI.
+
+```{r, results='asis'}
+desc <- jmv::descriptives(
+  data = bmi_phy_w,
+  vars = bmi,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(desc)
+cat("</pre>")
+```
+
+*Interpretation: Der durchschnittliche BMI von Physiotherapie-Studentinnen beträgt 21.377 [21.072, 21.682] $kg/m^2$. Das 95%-Konfidenzintervall enthält den Nullwert von 23.7 nicht und wir haben Evidenz gegen die Nullhypothese. Der durchschnittliche BMI von Physiotherapeutinnen unterscheidet sich signifikant vom durchschnittlichen BMI von Schweizer Frauen im Alter von 20-29 Jahren.*  
+
+7. Einstichproben-t-Test durchführen   
+
+**in `R`**
+
+```{r, echo=TRUE}
+t.test(bmi_phy_w$bmi, mu = 23.7, alternative = "two.sided")
+```
+
+**in `jamovi`**
+
+jamovi > T-Tests > One Sample T-Test > bmi in *Dependent Variables* einfügen > unter *Tests: Student's* wählen, unter *Hypothesis > Test value* den Nullwert 23.7 eingeben und zweiseitige Hypothese $\neq$ *Test value* wählen.
+
+Unter *Additional Statistics* kann *Mean Difference* inkl. *Confidence Interval* für die Berechnung der Differenz zwischen dem durchschnittlichen BMI von Physiotherapie-Studentinnen und dem Referenzwert von 23.7 gewählt werden.
+
+
+```{r, results='asis'}
+res <- jmv::ttestOneS(
+  data = bmi_phy_w,
+  vars = bmi,
+  testValue = 23.7,
+  meanDiff = TRUE,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(res)
+cat("</pre>")
+```
+
+8. Schlussfolgerung
+
+Der durchschnittliche BMI von Physiotherapie-Studentinnen (Mittelwert = 21.377, 95%-CI [21.072, 21.682] $kg/m^2$) unterscheidet sich signifikant vom durchschnittlichen BMI von Schweizer Frauen im Alter von 20 - 29 Jahren (BMI = 23.7 $kg/m^2$). Physiotherapie-Studentinnen haben im Durchschnitt einen um -2.323 [-2.628, -2.018] $kg/m^2$ geringeren BMI als Schweizer Frauen, $t$ = -15.030, $df$ = 182, $p$ < 0.0001. (s.a. Video)   
+
+<br/>
+
+**Wilcoxon-Vorzeichenrangtest**  
+
+Auf Grund der etwas fraglichen Normalverteilung der Prüfgrösse, kann auch ein Wilcoxon-Vorzeichenrangtest durchgeführt werden.  
+
+1. Hypothesen  
+
+* $H_0: \tilde{x}_{BMI} = 23.7$, $\tilde{x}$ = Median  
+* $H_A: \tilde{x}_{BMI} \neq 23.7$   
+
+2. Wilcoxon-Vorzeichenrangtest   
+
+**in `R`**
+
+```{r, echo=TRUE}
+wilcox.test(bmi_phy_w$bmi, mu = 23.7, alternative = "two.sided")
+```
+
+**in `jamovi`**
+
+jamovi > T-Tests > One Sample T-Test > bmi in *Dependent Variables* einfügen > unter *Tests: Wilcoxon rank* wählen unter *Hypothesis > Test value* den Nullwert 23.7 eingeben und zweiseitige Hypothese $\neq$ *Test value* wählen.
+
+Unter *Additional Statistics* kann *Mean Difference* inkl. *Confidence Interval* für die Berechnung der Differenz zwischen dem Median BMI von Physiotherapie-Studentinnen und dem Referenzwert von 23.7 gewählt werden.
+
+```{r, results='asis'}
+wilcox <- jmv::ttestOneS(
+  data = bmi_phy_w,
+  vars = bmi,
+  students = FALSE,
+  wilcoxon = TRUE,
+  testValue = 23.7,
+  meanDiff = TRUE,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(wilcox)
+cat("</pre>")
+```
+
+3. Schlussfolgerung   
+
+Der durchschnittliche BMI von Physiotherapie-Studentinnen (Median = 21.01 $kg/m^2$) unterscheidet sich signifikant vom durchschnittlichen BMI von Schweizer Frauen im Alter von 20 - 29 Jahren. Physiotherapie-Studentinnen haben einen um -2.439 [-2.743, -2.124] $kg/m^2$ geringeren BMI als Schweizer Frauen, Wilcoxon W = 1211, p < 0.0001.
+
+<br/>
+<br/>

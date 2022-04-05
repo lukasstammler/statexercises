@@ -91,13 +91,13 @@ Die Funktion `pt()` kann mehrere Argumente annehmen, von denen wir drei benötig
 
 |Argument|Erläuterung|
 |:-------|:----------|
-|q | $z$-Wert (z.B. eine Teststatistik)|
+|q | $t$-Wert (z.B. eine Teststatistik)|
 |df | Anzahl Freiheitsgrade|
 |lower.tail| wenn `= TRUE` (Standardeinstellung), wird die Fläche links vom z-Wert berechnet; wenn `= FALSE`, wird die Fläche rechts vom z-Wert berechnet.|  
 
 Beispiel: $z$ = 1.1, $df$ = 5 ($n$ = 6)   
 
-## Berechnung der Fläche links von $z$
+## Berechnung der Fläche links von $t$
 
 ```{r, echo=TRUE}
 pt(1.1, df = 5)
@@ -113,7 +113,7 @@ normTail(L = 1.1,
 
 Die blaue Fläche beträgt ca. 84% ($p$ = 0.8393) der Gesamtfläche unter der Kurve.
 
-## Berechnung der Fläche rechts von $z$
+## Berechnung der Fläche rechts von $t$
 
 ```{r, echo=TRUE}
 # 1. Möglichkeit
