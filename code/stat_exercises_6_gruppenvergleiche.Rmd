@@ -1,7 +1,7 @@
 ---
 title: 'Übungen: Mittelwertsvergleiche'
 author: "Lukas Stammler"
-date: "11 2 2021"
+date: "`r Sys.Date()`"
 output:
   html_document:
     fig_height: 6
@@ -199,7 +199,7 @@ Der p-Wert ist mit 0.079 > 0.05. Wir haben keine Evidenz dafür, dass sich die K
 
 4. Formulieren Sie ihr Resultat in ein bis zwei Sätzen. 
 
-**Die durchschnittliche Kaffeemenge in der Filiale in Bern (311.7 [301.5, 321.9] ml) und in der Filiale in Basel (301.9 [298.1, 305.7] ml) unterscheiden sich nicht, t = -1.804, df = 38, p = 0.079.**   
+*Die durchschnittliche Kaffeemenge in der Filiale in Bern (311.7 [301.5, 321.9] ml) und in der Filiale in Basel (301.9 [298.1, 305.7] ml) unterscheiden sich nicht, t = -1.804, df = 38, p = 0.079.*   
 
 <br />
 
@@ -217,40 +217,42 @@ Ort | Ort der Datenerhebung: Bern, Basel
 Menge | Kaffeemenge in ml  
 
 
-### Aufgabe
+### Aufgabe  
 
-0. Laden Sie den Datensatz in jamovi.
+0. Laden Sie den Datensatz in jamovi.   
 1. Formulieren Sie ihre Hypothese.   
 2. Beschreiben Sie die Daten deskriptiv. Erstellen Sie ein Boxplot für den Vergleich der Kaffeemengen in Bern und Basel.   
-3. Wählen Sie den richtigen t-Test aus (gemäss der Entscheidungskriterien müssten wir hier einen Man-Whitney-U-Test wählen, da n < 30, wir wählen aber den t-Test um das Ergebnis mit der Übung 1 zu vergleichen). Erstellen Sie auch eine Grafik für den Vergleich der 95%-Vertrauensintervalle.   
-4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat in ein bis zwei Sätzen. 
+3. Wählen Sie den richtigen t-Test aus (gemäss der Entscheidungskriterien müssten wir hier einen Man-Whitney-U-Test wählen, da n < 30, wir wählen aber den t-Test um das Ergebnis mit der Übung 1 zu vergleichen). Erstellen Sie auch eine Grafik für den Vergleich der 95%-Vertrauensintervalle.    
+4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat in ein bis zwei Sätzen.  
 <br />
 <br />
 
-### Lösung
+### Lösung  
 
 1. Formulieren Sie ihre Hypothese.   
 
 * $H_0$ : Die Kaffeemengen von Bern und Basel unterscheiden sich nicht. $\mu_{Basel} = \mu_{Bern}$.    
 * $H_A$ : Die Kaffeemengen von Bern und Basel unterscheiden sich. $\mu_{Basel} \neq \mu_{Bern}$.   
-<br />
-<br />
 
 2. Beschreiben Sie die Daten deskriptiv und erstellen Sie ein Boxplot für den Vergleich der Kaffeemengen in Bern und Basel.   
 
-```{r}
+```{r, results='asis'}
 caffe <- read_csv("../data/caffe.csv")
 #write_csv(caffe, file = "caffe.csv")
 
-jmv::descriptives(
+desc_caffe <- jmv::descriptives(
   formula = Menge ~ Ort,
   data = caffe,
   se = TRUE,
   box = TRUE
 )
+
+cat("<pre>")
+print(desc_caffe)
+cat("</pre>")
 ```
 
-Der korrekt beschriftete Plot könnte etwa so aussehen:
+Der korrekt beschriftete Plot könnte etwa so aussehen:   
 
 ```{r}
 ggplot(caffe, aes(y = Menge, x = Ort)) +
@@ -260,7 +262,7 @@ ggplot(caffe, aes(y = Menge, x = Ort)) +
   ylab("Menge (ml)") +
   theme_classic()
 ```
-<br />
+
 <br />
 
 3. Wählen Sie den richtigen t-Test aus. Erstellen Sie auch eine Grafik für den Vergleich der 95%-Vertrauensintervalle.  
@@ -269,20 +271,24 @@ ggplot(caffe, aes(y = Menge, x = Ort)) +
 * Wählen sie den *Student's Test* und unter *Additional Statistics > Descriptive plots*.    
 * Gegenüber der Berechnung von Hand ergeben sich geringfügige Rundungsfehler.    
 
-```{r}
-jmv::ttestIS(
+```{r, results='asis'}
+caffe_tt <- jmv::ttestIS(
   formula = Menge ~ Ort,
   data = caffe,
   vars = Menge,
   plots = TRUE
 )
+
+cat("<pre>")
+print(caffe_tt)
+cat("</pre>")
 ```
 
 <br />
 
-4. Formulieren Sie ihr Resultat in ein bis zwei Sätzen. 
+4. Formulieren Sie ihr Resultat in ein bis zwei Sätzen.   
 
-**Die durchschnittliche Kaffeemenge in Bern (311.7 [301.5, 321.9] ml) und in Basel (301.9 [298.1, 305.7] ml) unterscheiden sich nicht signifikant, t = -1.798, df = 38, p = 0.080.** 
+*Die durchschnittliche Kaffeemenge in Bern (311.7 [301.5, 321.9] ml) und in Basel (301.9 [298.1, 305.7] ml) unterscheiden sich nicht signifikant, t = -1.798, df = 38, p = 0.080.*  
 
 <br />
 <br />
@@ -290,41 +296,44 @@ jmv::ttestIS(
 
 ## Übung 3 {.tabset}
 
-Arbeiten Sie mit dem Datensatz `physio.csv` bzw. `physio.omv`, den Sie bereits früher erstellt haben.
+Arbeiten Sie mit dem Datensatz `physio.csv` bzw. `physio.omv`, den Sie bereits früher erstellt haben.   
 
 <br />
 
 ### Aufgabe
 
-Untersuchen Sie, ob sich Studentinnen und Studenten in ihrer Körpergrösse unterscheiden.
+Untersuchen Sie, ob sich Studentinnen und Studenten in ihrer Körpergrösse unterscheiden.  
 
-0. Laden Sie den Datensatz `physio.omv` in jamovi.
+0. Laden Sie den Datensatz `physio.omv` in jamovi.   
 1. Formulieren Sie ihre Hypothesen.   
 2. Beschreiben Sie die Daten deskriptiv. Erstellen Sie ein Boxplot für den Vergleich der Körpergrössen von Studentinnen und Studenten.   
 3. Prüfen Sie die Testvoraussetzungen und wählen Sie einen statistischen Test. Erstellen Sie auch eine Grafik für den Vergleich der 95%-Vertrauensintervalle.   
 4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat.    
 <br />
-<br />
+
 
 ### Lösung
 
 1. Formulieren Sie ihre Hypothese.   
 
 * $H_0$ : Die Körpergrössen von Studentinnen (w) und Studenten (m) unterscheiden sich nicht. $\mu_{w} = \mu_{m}$.    
-* $H_A$ : Die Körpergrössen von Studentinnen (w) und Studenten (m) unterscheiden sich. $\mu_{w} \neq \mu_{m}$.
-<br />
+* $H_A$ : Die Körpergrössen von Studentinnen (w) und Studenten (m) unterscheiden sich. $\mu_{w} \neq \mu_{m}$.  
 
 2. Beschreiben Sie die Daten deskriptiv. Erstellen Sie ein Boxplot für den Vergleich der Körpergrössen von Studentinnen und Studenten.   
 
-```{r}
+```{r, results='asis'}
 phydata <- readRDS(file = "../data/physio.rds")
 
-jmv::descriptives(
+phy_desc <- jmv::descriptives(
   formula = Groesse ~ Geschlecht,
   data = phydata,
   box = TRUE,
   sd = TRUE
 )
+
+cat("<pre>")
+print(phy_desc)
+cat("</pre>")
 ```
 <br />
 
@@ -336,8 +345,8 @@ jmv::descriptives(
 * Die Boxplots sind weitgehend symmetrisch (vielleicht leicht rechtssteil) > spricht für Normalverteilung    
 * Die QQ-Plots sind weitgehend linear > spricht für Normalverteilung   
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+phy_desc2 <- jmv::descriptives(
   formula = Groesse ~ Geschlecht,
   data = phydata,
   qq = TRUE,
@@ -349,11 +358,15 @@ jmv::descriptives(
   min = FALSE,
   max = FALSE
 )
+
+cat("<pre>")
+print(phy_desc2)
+cat("</pre>")
 ```
 
 * Die Stichprobenumfänge in den beiden Gruppen ($n_w$ = 183, $n_m$ = 45) unterscheiden sich stark.   
 
-**Testentscheid:** Auf Grund der Unterschiede in den Stichprobenumfängen entscheiden wir uns für den Wilcoxon-Rangsummen-Test (Man-Whitney-U). Zum Vergleich führen wir aber auch den Zwei-Stichproben-t-Test durch.
+**Testentscheid:** Auf Grund der Unterschiede in den Stichprobenumfängen entscheiden wir uns für den Wilcoxon-Rangsummen-Test (Man-Whitney-U). Zum Vergleich führen wir aber auch den Zwei-Stichproben-t-Test durch.   
 
 ```{r, eval = FALSE}
 jmv::ttestIS(
@@ -372,6 +385,7 @@ jmv::ttestIS(
 Output lesen und verstehen:  
 
 1. Student's t    
+
    + Statistic = t-Wert = t = 13.38  
    + df = degrees of freedom = $n_w + n_m - 2$ = 228 - 2 = 226    
    + p = p-Wert < .001    
@@ -381,6 +395,7 @@ Output lesen und verstehen:
    + Upper = Obere Grenze des 95%-CI für die Differenz der Mittelwerte = 14.85     
    
 2. Man-Whitney-U    
+
    + Statistic: Teststatistik U = 486.5, interpretieren wir nicht!    
    + p = p-Wert < .001   
    + Mean difference = $Md_m - Md_w$ (Differenz der Mediane)   
@@ -388,30 +403,29 @@ Output lesen und verstehen:
    + Upper: Obere Grenze des 95%-CI für die Differenz der Mediane = 15   
    
 3. Grafik 95% CI    
+
    + zeigt die Vertrauensintervalle für $\mu_m$ und $\mu_w$.    
    + Die Vertrauensintervalle überschneiden sich nicht.    
    + Warum ist das Vertrauensintervall für $\mu_w$ schmaler als für $\mu_m$?     
    
 * Mit diesen Resulten besteht Evidenz dafür, dass sich Studentinnen und Studenten in der  druchschnittlichen Körpergrösse unterscheiden. Da p < .05 ist, verwerfen Sie $H_0$ zugunsten von $H_A$.     
-<br />
-<br />
-  
-4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat.
 
-**Merke:** Wir haben uns auf Grund der Entscheidungskriterien für den Wilcoxon-Test entschieden, daher werden in einem Bericht nur diese Ergebnisse präsentiert. Zu Übungszwecken wird unten zusätzlich das Ergebnis für den t-Test formuliert!
+4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat.   
 
-**für den Wilcoxon-Test: Geprüft wurde die Frage, ob sich Physiotherapie-Studentinnen und -Studenten in ihrer Körpergrösse unterscheiden. In Stichproben aus den Studienjahrgängen PHY13 - PHY17 ($n_w$ = 183, $n_m$ = 45) wurde die Körpergrösse gemessen. Studenten sind im Durchschnitt (Median) um 13 [11, 15] cm grösser als Studentinnen, Man-Whitney-U  = 486.5, p < .001.**   
+**Merke:** Wir haben uns auf Grund der Entscheidungskriterien für den Wilcoxon-Test entschieden, daher werden in einem Bericht nur diese Ergebnisse präsentiert. Zu Übungszwecken wird unten zusätzlich das Ergebnis für den t-Test formuliert!   
 
-**für den t-Test: Geprüft wurde die Frage, ob sich Physiotherapie-Studentinnen und -Studenten in ihrer Körpergrösse unterscheiden. In Stichproben aus den Studienjahrgängen PHY13 - PHY17 ($n_w$ = 183, $n_m$ = 45) wurde die Körpergrösse gemessen. Studenten sind im Durchschnitt um 12.94 [11.04, 14.85] cm grösser als Studentinnen, t = 13.38, df = 226, p < .001.**  
+*für den Wilcoxon-Test: Geprüft wurde die Frage, ob sich Physiotherapie-Studentinnen und -Studenten in ihrer Körpergrösse unterscheiden. In Stichproben aus den Studienjahrgängen PHY13 - PHY17 ($n_w$ = 183, $n_m$ = 45) wurde die Körpergrösse gemessen. Studenten sind im Durchschnitt (Median) um 13 [11, 15] cm grösser als Studentinnen, Man-Whitney-$U$  = 486.5, $p$ < .001.*   
+
+*für den $t$-Test: Geprüft wurde die Frage, ob sich Physiotherapie-Studentinnen und -Studenten in ihrer Körpergrösse unterscheiden. In Stichproben aus den Studienjahrgängen PHY13 - PHY17 ($n_w$ = 183, $n_m$ = 45) wurde die Körpergrösse gemessen. Studenten sind im Durchschnitt um 12.94 [11.04, 14.85] cm grösser als Studentinnen, $t$ = 13.38, $df$ = 226, $p$ < .001.*   
 
 <br />
 <br />
 
 ## Übung 4 {.tabset}
 
-Ein Gefängnisaufenthalt ist mit psychischem Stress verbunden. Eine Möglichkeit, diesen Stress abzubauen ist sportliche Betätigung. Ein Studie hat den Stresslevel von 26 Gefängnissinsassen bei Ein- und Austritt mittels Fragebogen untersucht. Ein Teil der Gefangenen erhielt ein sportliches Training.
+Ein Gefängnisaufenthalt ist mit psychischem Stress verbunden. Eine Möglichkeit, diesen Stress abzubauen ist sportliche Betätigung. Ein Studie hat den Stresslevel von 26 Gefängnissinsassen bei Ein- und Austritt mittels Fragebogen untersucht. Ein Teil der Gefangenen erhielt ein sportliches Training.   
 
-Bearbeiten Sie die Übung 4 in jamovi. Laden Sie die Datei `prisonStress.csv` [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter.
+Bearbeiten Sie die Übung 4 in jamovi. Laden Sie die Datei `prisonStress.csv` [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter.   
 
 Der Datensatz umfasst 5 Variablen    
 
@@ -437,27 +451,23 @@ prison <- read_csv("../data/prisonStress.csv")
 4. Frage: Besteht ein Unterschied im Stresslevel zwischen Ein- und Austritt in der Sportgruppe?    
 5. Frage: Hat Sport einen Effekt auf den Stresslevel im Vergleich zu einer Kontrollgruppe, die keinen Sport macht?  
 
-Führen Sie für alle Fragen sowohl einen Wilcoxon- als auch einen t-Test durch.
-<br />
+Führen Sie für alle Fragen sowohl einen Wilcoxon- als auch einen t-Test durch.  
 
 ### Lösung 1
 
 Fragestellung: Haben beide Gruppen bei Eintritt den gleichen Stresslevel?  
 
 1. Hypothesen    
-   + $H_0$ Es besteht kein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Eintritt, $\mu_{con,before} = \mu_{sport,before}$
+
+   + $H_0$ Es besteht kein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Eintritt, $\mu_{con,before} = \mu_{sport,before}$  
    + $H_A$ Es besteht ein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Eintritt, $\mu_{con,before} \neq \mu_{sport,before}$    
-
 2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.  
-
-3. Die Daten sind unabhängig.
-
-4. Die Prüfgrösse ist $\mu_{con,before} - \mu_{sport,before}$    
-
+3. Die Daten sind unabhängig.  
+4. Die Prüfgrösse ist $\mu_{con,before} - \mu_{sport,before}$   
 5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Man-Whitney-U-Test spricht    
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_desc <- jmv::descriptives(
   data = prison,
   formula = Subject ~ Group,
   mean = FALSE,
@@ -465,24 +475,33 @@ jmv::descriptives(
   min = FALSE,
   max = FALSE
 )
+
+cat("<pre>")
+print(prison_desc)
+cat("</pre>")
 ```
 <br />
 
+6. Die Verteilung der Prüfgrösse anhand der Box im Boxplot ergibt eine leicht rechtssteile Verteilung in der Kontrollgruppe und etwa Normalverteilung in der Sportgruppe Die QQ-Plots sind wenig aussagekräftig. Die Streuung der Daten ist unterschiedlich.   
 
-6. Die Verteilung der Prüfgrösse anhand der Box im Boxplot ergibt eine leicht rechtssteile Verteilung in der Kontrollgruppe und etwa Normalverteilung in der Sportgruppe Die QQ-Plots sind wenig aussagekräftig. Die Streuung der Daten ist unterschiedlich. 
-
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_qq <- jmv::descriptives(
   data = prison,
   formula = PSSbefore ~ Group,
   sd = TRUE,
   box = TRUE,
   qq = TRUE
 )
+
+cat("<pre>")
+print(prison_qq)
+cat("</pre>")
 ```
 
 * Die Prüfung der Testbedingungen legt nichtparametrische Verfahren zur statistischen Analyse nahe.   
-7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen
+
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen   
+
    + independent t-Test: t = -2.1213, df = 24, p = .0444     
    + Man-Whitney-U-Test: U = 52.5, p = .1249   
    + Der Welch-Test korrigiert den t-Test für die unterschiedlichen Varianzen: t =-2.006, df = 16.86, p = .0611, **generell sollte immer der Welch-Test verwendet werden**     
@@ -490,17 +509,21 @@ jmv::descriptives(
    + Das 95% Vertrauensintervall für $Md_{con,before} - Md_{sport,before}$ schliesst 0 ein.  
 
 
-```{r, eval = TRUE}
-jmv::ttestIS(
+```{r, eval = TRUE, results='asis'}
+prison_tt <- jmv::ttestIS(
   formula = PSSbefore ~ Group,
   data = prison,
   vars = PSSbefore,
   welchs = TRUE,
   mann = TRUE
 )
+
+cat("<pre>")
+print(prison_tt)
+cat("</pre>")
 ```
 
-**Aus technischen Gründen können die 95%-Konfidenzintervalle in diesem Output nicht dargestellt werden**
+**Aus technischen Gründen können die 95%-Konfidenzintervalle in diesem Output nicht dargestellt werden**   
 
 ```{r, eval=FALSE}
 t.test(PSSbefore ~ Group, data = prison, var.equal = TRUE)
@@ -511,28 +534,25 @@ t.test(PSSbefore ~ Group, data = prison)
 
 8. Resultat, Schlussfolgerung    
 
-**Der Stresslevel bei Eintritt ins Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt (Median) um -7 [-15, 2] Punkte tiefer als in der Sportgruppe (n = 15). Es liegt jedoch keine Evidenz dafür vor, dass sich die beiden Gruppen im Stresslevel bei Eintritt ins Gefängnis signifikant unterscheiden, Man-Whitney-U = 52.5, p = .1249. **  
+*Der Stresslevel bei Eintritt ins Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt (Median) um -7 [-15, 2] Punkte tiefer als in der Sportgruppe (n = 15). Es liegt jedoch keine Evidenz dafür vor, dass sich die beiden Gruppen im Stresslevel bei Eintritt ins Gefängnis signifikant unterscheiden, Man-Whitney-U = 52.5, p = .1249. *    
 
 <br />
 
-### Lösung 2
+### Lösung 2  
 
-Fragestellung: Haben beide Gruppen bei Austritt den gleichen Stresslevel?     
+Fragestellung: Haben beide Gruppen bei Austritt den gleichen Stresslevel?      
 
 1. Hypothesen    
-   + $H_0$ Es besteht kein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Austritt, $\mu_{con,after} = \mu_{sport,after}$
-   + $H_A$ Es besteht ein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Austritt, $\mu_{con,after} \neq \mu_{sport,after}$    
 
-2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest. 
-
+   + $H_0$ Es besteht kein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Austritt, $\mu_{con,after} = \mu_{sport,after}$  
+   + $H_A$ Es besteht ein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Austritt, $\mu_{con,after} \neq \mu_{sport,after}$     
+2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.  
 3. Die Daten sind unabhängig.   
+4. Die Prüfgrösse ist $\mu_{con,after} - \mu_{sport,after}$.  
+5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Man-Whitney-U-Test spricht.                    
 
-4. Die Prüfgrösse ist $\mu_{con,after} - \mu_{sport,after}$    
-
-5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Man-Whitney-U-Test spricht    
-
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_desc2 <- jmv::descriptives(
   data = prison,
   formula = Subject ~ Group,
   mean = FALSE,
@@ -540,45 +560,57 @@ jmv::descriptives(
   min = FALSE,
   max = FALSE
 )
+
+cat("<pre>")
+print(prison_desc2)
+cat("</pre>")
 ```
-<br />
+
 <br />
 
-6. Die Verteilung der Prüfgrösse anhand der Box im Boxplot ergibt eine leicht rechtssteile Verteilung in beiden Gruppen. Die QQ-Plots sind wenig aussagekräftig. Die Streuung der Daten ist ähnlich 
+6. Die Verteilung der Prüfgrösse anhand der Box im Boxplot ergibt eine leicht rechtssteile Verteilung in beiden Gruppen. Die QQ-Plots sind wenig aussagekräftig. Die Streuung der Daten ist ähnlich.    
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_qq2 <- jmv::descriptives(
   data = prison,
   formula = PSSafter ~ Group,
   sd = TRUE,
   box = TRUE,
   qq = TRUE
 )
+
+cat("<pre>")
+print(prison_qq2)
+cat("</pre>")
 ```
 
 * Die Prüfung der Testbedingungen (n < 30, rechtssteile Verteilungen) legt nichtparametrische Verfahren zur statistischen Analyse nahe.   
 <br />
-<br />
 
-7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen   
+
    + independent t-Test: t = 1.3424, df = 24, p = .192     
-   + Man-Whitney-U-Test: U = 108.5, p = .185
+   + Man-Whitney-U-Test: U = 108.5, p = .185   
    + **Nur für Interessierte:** Der Welch-Test korrigiert den t-Test für die unterschiedlichen Varianzen: t =1.336, df = 21.32, p = .1956  
    + Das 95% Vertrauensintervall für $\mu_{con} - \mu_{sport}$ schliesst 0 ein.   
-   + Das 95% Vertrauensintervall für $Md_{con} - Md_{sport}$ schliesst 0 ein. 
+   + Das 95% Vertrauensintervall für $Md_{con} - Md_{sport}$ schliesst 0 ein.   
    
 
-```{r, eval = TRUE}
-jmv::ttestIS(
+```{r, eval = TRUE, results='asis'}
+prison_tt2 <- jmv::ttestIS(
   formula = PSSafter ~ Group,
   data = prison,
   vars = PSSafter,
   welchs = TRUE,
   mann = TRUE
 )
+
+cat("<pre>")
+print(prison_tt2)
+cat("</pre>")
 ```
 
-**Aus technischen Gründen können die 95%-Konfidenzintervalle in diesem Output nicht dargestellt werden**
+Aus technischen Gründen können die 95%-Konfidenzintervalle in diesem Output nicht dargestellt werden.   
 
 
 ```{r, eval=FALSE}
@@ -589,31 +621,32 @@ t.test(PSSafter ~ Group, data = prison)
 
 8. Schlussfolgerung    
 
-**Der Stresslevel bei aus dem Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt (Median) um 4 [-3, 9] Punkte höher als in der Sportgruppe (n = 15). Es liegt jedoch keine Evidenz dafür vor, dass sich die beiden Gruppen im Stresslevel bei Austritt aus dem Gefängnis signifikant unterscheiden, Man-Whitney-U = 56.5, p = 0.185. **
+*Der Stresslevel bei aus dem Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt (Median) um 4 [-3, 9] Punkte höher als in der Sportgruppe (n = 15). Es liegt jedoch keine Evidenz dafür vor, dass sich die beiden Gruppen im Stresslevel bei Austritt aus dem Gefängnis signifikant unterscheiden, Man-Whitney-U = 56.5, p = 0.185. *  
 
 <br />
 
 ### Lösung 3
 
-Fragestellung: Besteht ein Unterschied im Stresslevel zwischen Ein- und Austritt in der Kontrollgruppe? 
+Fragestellung: Besteht ein Unterschied im Stresslevel zwischen Ein- und Austritt in der Kontrollgruppe?   
 
-* Tipp: Erstellen Sie in jamovi einen Filter `= Group == Control`
+* Tipp: Erstellen Sie in jamovi einen Filter `= Group == Control`.  
 <br />
 
 
 1. Hypothesen    
-   + $H_0$ Es besteht kein Unterschied im Stresslevel in der Kontrollgruppe zwischen Ein- und Austritt, $\mu_{con,diff}=0}$ (Mittelwert der paarweisen Differenzen!)
+
+   + $H_0$ Es besteht kein Unterschied im Stresslevel in der Kontrollgruppe zwischen Ein- und Austritt, $\mu_{con,diff}=0}$ (Mittelwert der paarweisen Differenzen!)   
    + $H_A$ Es besteht ein Unterschied im Stresslevel in der Kontrollgruppe bei Eintritt, $\mu_{con,diff} \neq 0$$    
 
 2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.    
 
-3. Die Daten sind gepaart (2 Messungen pro Proband)    
+3. Die Daten sind gepaart (2 Messungen pro Proband)      
 
-4. Die Prüfgrösse ist $\mu_{con,diff}$ und wir erstellen in jamovi ein neue Variable für die paarweisen Differenzen im Register Data > Compute > `PSSdiff` = `PSSafter` - `PSSbefore`   
+4. Die Prüfgrösse ist $\mu_{con,diff}$ und wir erstellen in jamovi ein neue Variable für die paarweisen Differenzen im Register Data > Compute > `PSSdiff` = `PSSafter` - `PSSbefore`.      
 
-5. Der Stichprobenumfang pro Gruppe ist n < 30, was für den Wilcoxon-Vorzeichenrang-Test spricht    
+5. Der Stichprobenumfang pro Gruppe ist n < 30, was für den Wilcoxon-Vorzeichenrang-Test spricht.       
 
-```{r}
+```{r, results='asis'}
 prison$PSSdiff <- prison$PSSafter - prison$PSSbefore
 
 # prepare datasets
@@ -635,7 +668,7 @@ prison_sport <- prison %>%
 # write_csv(prison_sport_l, file = "prisonSportLong.csv")
 
 
-jmv::descriptives(
+prison_desc3 <- jmv::descriptives(
   data = prison_con,
   vars = Subject,
   mean = FALSE,
@@ -643,33 +676,41 @@ jmv::descriptives(
   min = FALSE,
   max = FALSE
 )
+
+cat("<pre>")
+print(prison_desc3)
+cat("</pre>")
 ```
 
 <br />
 
-6. Die Verteilung der Prüfgrösse `PSSdiff` anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen. 
+6. Die Verteilung der Prüfgrösse `PSSdiff` anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen.   
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_qq3 <- jmv::descriptives(
   data = prison_con,
   vars = PSSdiff,
   sd = TRUE,
   box = TRUE,
   qq = TRUE
 )
+
+cat("<pre>")
+print(prison_qq3)
+cat("</pre>")
 ```
 
 * Die Prüfung der Testbedingungen (n < 30) legt nichtparametrische Verfahren zur statistischen Analyse nahe. Wir führen aber übungshalber auch den t-Test für gepaarte Daten durch   
 <br />
 
-7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen   
    + independent t-Test: t = -2.645, df = 10, p = .0245     
-   + Wilcoxon Vorzeichenrang-Test: V = 47.5, p = .0466
+   + Wilcoxon Vorzeichenrang-Test: V = 47.5, p = .0466   
    + Das 95% Vertrauensintervall für $\mu_{con,diff}$ [-13.6, -1.16] beinhaltet den Nullwert nicht.   
-   + Das 95% Vertrauensintervall für $Md_{con,diff}$ kann nicht sinnvoll berechnet werden. 
+   + Das 95% Vertrauensintervall für $Md_{con,diff}$ kann nicht sinnvoll berechnet werden.  
    
-```{r}
-jmv::ttestPS(
+```{r, results='asis'}
+prison_tt3 <- jmv::ttestPS(
   data = prison_con,
   pairs = list(
     list(
@@ -677,6 +718,10 @@ jmv::ttestPS(
       i2 = "PSSbefore")),
   wilcoxon = TRUE
 )
+
+cat("<pre>")
+print(prison_tt3)
+cat("</pre>")
 ```
 
 
@@ -689,7 +734,7 @@ wilcox.test(prison_con$PSSafter, prison_con$PSSbefore, paired = TRUE)
 
 8. Schlussfolgerung    
 
-**Der Stresslevel bei Austritt aus dem Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt (Median) um 8 Punkte höher als beim Eintritt. Es liegt Evidenz dafür vor, dass sich der Stresslevel bei Austritt aus dem Gefängnis signifikant erhöht, Wilcoxon Vorzeichenrang-Test V = 47.5, p = 0.047. **
+*Der Stresslevel bei Austritt aus dem Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt (Median) um 8 Punkte höher als beim Eintritt. Es liegt Evidenz dafür vor, dass sich der Stresslevel bei Austritt aus dem Gefängnis signifikant erhöht, Wilcoxon Vorzeichenrang-Test V = 47.5, p = 0.047. *  
 <br />
 <br />
 
@@ -697,24 +742,25 @@ wilcox.test(prison_con$PSSafter, prison_con$PSSbefore, paired = TRUE)
 
 Fragestellung: Besteht ein Unterschied im Stresslevel zwischen Ein- und Austritt in der Sportgruppe?   
 
-Tipp: Erstellen Sie in jamovi einen Filter `= Group == Sport`   
+Tipp: Erstellen Sie in jamovi einen Filter `= Group == Sport`.      
 
 <br />
 
-1. Hypothesen    
+1. Hypothesen   
+
    + $H_0$ Es besteht kein Unterschied im Stresslevel in der Sportgruppe zwischen Ein- und Austritt, $\mu_{sport,diff}=0}$ (Mittelwert der paarweisen Differenzen!)
-   + $H_A$ Es besteht ein Unterschied im Stresslevel in der Kontrollgruppe bei Eintritt, $\mu_{sport,diff} \neq 0$$   <br />
+   + $H_A$ Es besteht ein Unterschied im Stresslevel in der Kontrollgruppe bei Eintritt, $\mu_{sport,diff} \neq 0$$   
 
 2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.    
 
-3. Die Daten sind gepaart (2 Messungen pro Proband)
+3. Die Daten sind gepaart (2 Messungen pro Proband)   
 
 4. Die Prüfgrösse ist $\mu_{sport,diff}$    
 
-5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Wilcoxon-Vorzeichenrang-Test spricht    
+5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Wilcoxon-Vorzeichenrang-Test spricht.      
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_desc4 <- jmv::descriptives(
   data = prison_sport,
   formula = Subject ~ Group,
   mean = FALSE,
@@ -722,33 +768,42 @@ jmv::descriptives(
   min = FALSE,
   max = FALSE
 )
+
+cat("<pre>")
+print(prison_desc4)
+cat("</pre>")
 ```
 
 <br />
 
-6. Die Verteilung der Prüfgrösse `PSSdiff` anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen. 
+6. Die Verteilung der Prüfgrösse `PSSdiff` anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen.   
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_qq4 <- jmv::descriptives(
   data = prison_sport,
   vars = PSSdiff,
   sd = TRUE,
   box = TRUE,
   qq = TRUE
 )
+
+cat("<pre>")
+print(prison_qq4)
+cat("</pre>")
 ```
 
 * Die Prüfung der Testbedingungen legt nichtparametrische Verfahren zur statistischen Analyse nahe.   
 <br />
 
-7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen  
+
    + independent t-Test: t = -2.6842, df = 14, p = .0178       
-   + Wilcoxon Vorzeichenrang-Test: W = 20, p = .0246
+   + Wilcoxon Vorzeichenrang-Test: W = 20, p = .0246   
    + Das 95% Vertrauensintervall für $\mu_{sport,diff}$ [-7.08, -0.790] beinhaltet den Nullwert nicht.   
-   + Das 95% Vertrauensintervall für $Md_{sport,diff}$ [-7, -0.5] beinhaltet den Nullwert nicht. 
+   + Das 95% Vertrauensintervall für $Md_{sport,diff}$ [-7, -0.5] beinhaltet den Nullwert nicht.  
    
-```{r}
-jmv::ttestPS(
+```{r, results='asis'}
+prison_tt4 <- jmv::ttestPS(
   data = prison_sport,
   pairs = list(
     list(
@@ -756,15 +811,19 @@ jmv::ttestPS(
       i2 = "PSSbefore")),
   wilcoxon = TRUE
 )
+
+cat("<pre>")
+print(prison_tt4)
+cat("</pre>")
 ```
 
 <br />
 
 8. Schlussfolgerung    
 
-**Der Stresslevel bei Austritt aus dem Gefängnis ist in der Sportgruppe (n = 15) im Durchschnitt (Median) um 3.6 Punkte tiefer als beim Eintritt. Es liegt Evidenz dafür vor, dass sich der Stresslevel bei Austritt aus dem Gefängnis in der Sportgruppe signifikant senkt, Wilcoxon Vorzeichenrang-Test W = 100, p = 0.0246.**
+*Der Stresslevel bei Austritt aus dem Gefängnis ist in der Sportgruppe (n = 15) im Durchschnitt (Median) um 3.6 Punkte tiefer als beim Eintritt. Es liegt Evidenz dafür vor, dass sich der Stresslevel bei Austritt aus dem Gefängnis in der Sportgruppe signifikant senkt, Wilcoxon Vorzeichenrang-Test W = 100, p = 0.0246.*  
 
-**Hinweis:** Sie können gepaarte Tests auch als Einstichprobentest mit $Testvalue: \mu_{diff} = 0$ durchführen.
+**Hinweis:** Sie können gepaarte Tests auch als Einstichprobentest mit $Testvalue: \mu_{diff} = 0$ durchführen.  
 <br />
 <br />
 
@@ -774,7 +833,7 @@ Fragestellung: Hat Sport einen Effekt auf den Stresslevel im Vergleich zu einer 
 
 1. Hypothesen    
 
-   + $H_0$ Sport hat keinen Effekt, $\mu_{diff,sport} = \mu_{diff,con}$
+   + $H_0$ Sport hat keinen Effekt, $\mu_{diff,sport} = \mu_{diff,con}$   
    + $H_A$ Sport hat einen Effekt, $\mu_{diff,sport} \neq \mu_{diff,con}$   
 
 2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.    
@@ -783,10 +842,10 @@ Fragestellung: Hat Sport einen Effekt auf den Stresslevel im Vergleich zu einer 
 
 4. Die Prüfgrösse ist $\mu_{diff,sport} = \mu_{diff,con}$    
 
-5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Man-Whitney-U-Test spricht    
+5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Man-Whitney-U-Test spricht.       
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_desc5 <- jmv::descriptives(
   data = prison,
   formula = PSSdiff ~ Group,
   sd = FALSE,
@@ -795,40 +854,52 @@ jmv::descriptives(
   min = FALSE,
   max = FALSE
 )
+
+cat("<pre>")
+print(prison_desc5)
+cat("</pre>")
 ```
 
 <br />
 
-6. Die Verteilung der Daten in beiden Gruppen anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen. 
+6. Die Verteilung der Daten in beiden Gruppen anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen.   
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+prison_qq5 <- jmv::descriptives(
   data = prison,
   formula = Diff ~ Group,
   sd = TRUE,
   box = TRUE,
   qq = TRUE
 )
+
+cat("<pre>")
+print(prison_qq5)
+cat("</pre>")
 ```
 
 * Die Prüfung der Testbedingungen (n < 30) legt nichtparametrische Verfahren zur statistischen Analyse nahe.   
 
 <br />
 
-7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen   
    + Welch-Test: t = 3.59, df = 15.5, p = .003       
-   + Man-Whitney-U-Test: U = 27.0, p = .004
+   + Man-Whitney-U-Test: U = 27.0, p = .004   
    + Das 95% Vertrauensintervall für $\mu_{diff,sport} = \mu_{diff,con}$ [4.61, 18] schliesst den Nullwert nicht ein.   
-   + Das 95% Vertrauensintervall für $Md_{diff,sport} = Md_{diff,con}$ [4.0, 18.0] schliesst den Nullwert nicht ein. 
+   + Das 95% Vertrauensintervall für $Md_{diff,sport} = Md_{diff,con}$ [4.0, 18.0] schliesst den Nullwert nicht ein.  
 
-```{r}
-jmv::ttestIS(
+```{r, results='asis'}
+prison_tt5 <- jmv::ttestIS(
   formula = PSSdiff ~ Group,
   data = prison,
   vars = PSSdiff,
   welchs = TRUE,
   mann = TRUE
 )
+
+cat("<pre>")
+print(prison_tt5)
+cat("</pre>")
 ```
 
 
@@ -842,7 +913,7 @@ t.test(Diff ~ Group, data = prison)
 
 8. Schlussfolgerung    
 
-**Untersucht wurde der Effekt von Sport auf den Stresslevel bei Gefängnisinsassen, die in eine Sport- (n = 15) und eine Kontrollgruppe (n = 11) eingeteilt wurden. In der Kontrollgruppe hat der Stresslevel um 8 Punkte zugenommen und in der Sportgruppe um durchschnittlich -3.6 [-7.0, -0.5] Punkte abgenommen. Die Daten liefern Evidenz dafür, dass sich Sport günstig auf den Stresslevel im Gefängnis auswirkt, Man-Whitney-U = 27.0, p = .0042. **
+*Untersucht wurde der Effekt von Sport auf den Stresslevel bei Gefängnisinsassen, die in eine Sport- (n = 15) und eine Kontrollgruppe (n = 11) eingeteilt wurden. In der Kontrollgruppe hat der Stresslevel um 8 Punkte zugenommen und in der Sportgruppe um durchschnittlich -3.6 [-7.0, -0.5] Punkte abgenommen. Die Daten liefern Evidenz dafür, dass sich Sport günstig auf den Stresslevel im Gefängnis auswirkt, Man-Whitney-U = 27.0, p = .0042.*  
 <br />
 <br />
 
@@ -850,11 +921,11 @@ t.test(Diff ~ Group, data = prison)
 
 ### Aufgabe
 
-Hintergrund: Aufgrund der aktuellsten Thunberg'schen Guideline soll auch die Elektrotherapie klimaneutral werden. Darum ist wichtig zu wissen, wie viel Strom die Elektrotherapie überhaupt verbraucht. Allerdings ist unklar, ob verschiedene Frequenzen unterschiedlich viel Strom brauchen. Ziel dieser Studie war es, die Amplituden bei TENS-Strömen bei verschiedenen Frequenzen und Dosen zu untersuchen.
+Hintergrund: Aufgrund der aktuellsten Thunberg'schen Guideline soll auch die Elektrotherapie klimaneutral werden. Darum ist wichtig zu wissen, wie viel Strom die Elektrotherapie überhaupt verbraucht. Allerdings ist unklar, ob verschiedene Frequenzen unterschiedlich viel Strom brauchen. Ziel dieser Studie war es, die Amplituden bei TENS-Strömen bei verschiedenen Frequenzen und Dosen zu untersuchen.   
 
-Methode: Bei allen teilnehmenden Personen (PHY19BS) wurde der dorsale Unterschenkel mit biphasischen, symmetrischen Rechteckimpulsen stimuliert. Die Impulsdauer betrug 150 µs und die Kathode (48cm2) wurde proximal angebracht. Jeweils mit einer Frequenz von 8 Hz und 120 Hz wurde die Amplitude (in mA) bis zur 1) Dosis mitis und 2) Dosis fortis aufgedreht. Primäres Outcome war der Unterschied der Amplituden zwischen den beiden Frequenzen. Sekundäres Outcome waren Unterschiede der errichten Amplituden zwischen Klasse 1 und Klasse 2.
+Methode: Bei allen teilnehmenden Personen (PHY19BS) wurde der dorsale Unterschenkel mit biphasischen, symmetrischen Rechteckimpulsen stimuliert. Die Impulsdauer betrug 150 µs und die Kathode (48cm2) wurde proximal angebracht. Jeweils mit einer Frequenz von 8 Hz und 120 Hz wurde die Amplitude (in mA) bis zur 1) Dosis mitis und 2) Dosis fortis aufgedreht. Primäres Outcome war der Unterschied der Amplituden zwischen den beiden Frequenzen. Sekundäres Outcome waren Unterschiede der errichten Amplituden zwischen Klasse 1 und Klasse 2.   
 
-Bearbeiten Sie die Übung 5 in jamovi. Den Datensatz können sie hier herunterladen: [tens.csv](https://1drv.ms/u/s!AgeAm23J8ZSmi-xBRRazHbXLXCCRuQ?e=9xSqqc)
+Bearbeiten Sie die Übung 5 in jamovi. Den Datensatz können sie hier herunterladen: [tens.csv](https://1drv.ms/u/s!AgeAm23J8ZSmi-xBRRazHbXLXCCRuQ?e=9xSqqc)   
 
 Der Datensatz umfasst 6 Variablen    
 
@@ -867,17 +938,17 @@ mA_mitis_120 | Dosis mitis, 120 Hz, Amplitude in mA
 mA_fortiss_120 | Dosis fortis, 120 Hz, Amplitude in mA
 Klasse | Klasse 1, Klasse 2
 
-Fragestellung: Unterscheidet sich die Amplitude in mA zwischen 8 Hz und 120 Hz bei der Dosis fortis?
+Fragestellung: Unterscheidet sich die Amplitude in mA zwischen 8 Hz und 120 Hz bei der Dosis fortis?   
 
 0. Laden Sie den Datensatz in jamovi und kategorisieren Sie die Variablen.    
-1. Formulieren Sie die Hypothesen. 
-2. Beschreiben Sie die Daten deskriptiv. Erstellen Sie ein Boxplot für den Vergleich der Amplituden bei Dosis fortis. 
-3. Wählen Sie den richtigen t-Test aus und prüfen Sie die Testvoraussetzungen. Erstellen Sie auch eine Grafik für den Vergleich der 95%-Vertrauensintervalle.   
-4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat in ein bis zwei Sätzen.    
+1. Formulieren Sie die Hypothesen.  
+2. Beschreiben Sie die Daten deskriptiv. Erstellen Sie ein Boxplot für den Vergleich der Amplituden bei Dosis fortis.  
+3. Wählen Sie den richtigen t-Test aus und prüfen Sie die Testvoraussetzungen. Erstellen Sie auch eine Grafik für den Vergleich der 95%-Vertrauensintervalle.    
+4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat in ein bis zwei Sätzen.      
 <br />
 <br />
 
-### Lösung
+### Lösung  
 
 1. Hypothesen    
 
@@ -888,7 +959,7 @@ Fragestellung: Unterscheidet sich die Amplitude in mA zwischen 8 Hz und 120 Hz b
 
 2. Beschreiben Sie die Daten deskriptiv. Erstellen Sie ein Boxplot für den Vergleich der Amplituden bei Dosis mitis.  
 
-```{r}
+```{r, results='asis'}
 # tens <- read.csv("tens.csv", sep = ",", dec = ".")
 # write_csv(tens, file = "tens.csv")
 # 
@@ -905,27 +976,35 @@ tens <- tens %>%
     mA_diff_fortis = mA_fortis_120 - mA_fortis_8
   )
 
-jmv::descriptives(
+tens_d <- jmv::descriptives(
   data = tens,
   vars = vars(mA_fortis_8, mA_fortis_120),
   box = TRUE
 )
+
+cat("<pre>")
+print(tens_d)
+cat("</pre>")
 ```
 
-**Hinweis:** Wenn Sie die beiden Boxplots nebeneinander in derselben Grafik erstellen wollen, müssen Sie auf ein anderes Dateiformat zurückgreifen. Sie können dieses hier als `tensLong.csv`  herunterladen.
+**Hinweis:** Wenn Sie die beiden Boxplots nebeneinander in derselben Grafik erstellen wollen, müssen Sie auf ein anderes Dateiformat zurückgreifen. Sie können dieses hier als `tensLong.csv`  herunterladen.   
 
-Setzen Sie einen Filter: `Dosis == "mA_fortis_8" or Dosis == "mA_fortis_120"`
+Setzen Sie einen Filter: `Dosis == "mA_fortis_8" or Dosis == "mA_fortis_120"`.  
 
-```{r}
+```{r, results='asis'}
 tensLong <- read_csv("../data/tensLong.csv")
 tensLongFortis <- tensLong %>% 
   filter(Dosis == "mA_fortis_8" | Dosis == "mA_fortis_120")
 
-jmv::descriptives(
+tens_desc <- jmv::descriptives(
   data = tensLongFortis,
   formula = mA ~ Dosis,
   box = TRUE
 )
+
+cat("<pre>")
+print(tens_desc)
+cat("</pre>")
 ```
 
 <br />
@@ -934,24 +1013,28 @@ jmv::descriptives(
 
 * Die Daten sind gepaart.    
 * Die Prüfgrösse ist der Mittelwert der paarweisen Differenzen.    
-   * Erstellen Sie im Datensatz `tens` eine New Computed Variable `mA_diff_fortis` mit der Formel `= mA_fortis_120 - mA_fortis_8`    
-   * Erstellen Sie einen QQ-Plot für `mA_diff_fortis`
+   * Erstellen Sie im Datensatz `tens` eine New Computed Variable `mA_diff_fortis` mit der Formel `= mA_fortis_120 - mA_fortis_8`.    
+   * Erstellen Sie einen QQ-Plot für `mA_diff_fortis`.  
 
-```{r}
-jmv::descriptives(
+```{r, results='asis'}
+tens_qq <- jmv::descriptives(
   data = tens,
   vars = mA_diff_fortis,
   sd = TRUE,
   qq = TRUE, 
   hist = TRUE
 )
+
+cat("<pre>")
+print(tens_qq)
+cat("</pre>")
 ```
 
-* Im Durchschnitt ist die Amplitude um 38.3 (s = 17.2) mA bei Dosis fortis 120 Hz geringer als bei Dosis fortis 8 Hz
-* Auf Grund des Stichprobenumfangs und der Grafiken entscheiden wir für normalverteilte Daten (man kann darüber streiten, es ist nicht eindeutig) und führen einen t-Test für gepaarte Daten durch.
+* Im Durchschnitt ist die Amplitude um 38.3 (s = 17.2) mA bei Dosis fortis 120 Hz geringer als bei Dosis fortis 8 Hz.  
+* Auf Grund des Stichprobenumfangs und der Grafiken entscheiden wir für normalverteilte Daten (man kann darüber streiten, es ist nicht eindeutig) und führen einen t-Test für gepaarte Daten durch.  
 
-```{r}
-jmv::ttestPS(
+```{r, results='asis'}
+tens_tt <- jmv::ttestPS(
   data = tens,
   pairs = list(
     list(
@@ -960,15 +1043,449 @@ jmv::ttestPS(
   wilcoxon = TRUE,
   plots = TRUE
 )
+
+cat("<pre>")
+print(tens_tt)
+cat("</pre>")
 #t.test(tens$mA_fortis_120, tens$mA_fortis_8, paired = TRUE)
 ```
 
 
 <br />
 
-4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat in ein bis zwei Sätzen.    
+4. Kopieren Sie den jamovi-Output in ein Word-Dokument und beschriften Sie die Tabellen und Grafiken so, dass sie selbsterklärend sind. Formulieren Sie ihr Resultat in ein bis zwei Sätzen.      
    
-**Untersucht wurde die Differenz der Amplitude in mA bei Dosis fortis 8 Hz und Dosis fortis 120 Hz. Die Amplitude ist im Durchschnitt bei Dosis fortis 8 Hz um 38.3 [33.4, 43.2] mA signifikant höher als bei Dosis fortis 120 Hz, gepaarter t-Test, t = -15.7, df = 49, p < .0001.**
+*Untersucht wurde die Differenz der Amplitude in mA bei Dosis fortis 8 Hz und Dosis fortis 120 Hz. Die Amplitude ist im Durchschnitt bei Dosis fortis 8 Hz um 38.3 [33.4, 43.2] mA signifikant höher als bei Dosis fortis 120 Hz, gepaarter t-Test, t = -15.7, df = 49, p < .0001.*  
 
 <br />
 <br />
+
+## Übung 6 {.tabset}
+
+Unterscheidet sich der BMI von weiblichen und männlichen Physiotherapie-Studierenden?  
+
+Wir prüfen diese Frage anhand zweier Zufallsstichproben von 45 männlichen und 45 weiblichen Physiotherapie-Studierenden. Der Datensatz `bmi_phy_45.csv`kann [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden.  
+
+*Dies ist die gleiche Fragestellung mit den identischen Daten, wie im Video Mittelwertsvergleiche Teil 1, Kap. Zweistichproben-t-Test.*  
+
+### Aufgabe  
+
+Führen Sie eine inferenzstatistische Analyse zu dieser Fragestellung durch. Legen Sie das Signifikanzniveau auf $\alpha$ = .05 fest.  
+
+<br />
+<br />
+
+### Lösung  
+
+1. Deskriptive Zusammenfassung (Kennzahlen)  
+
+Es wird empfohlen, stets die wichtigsten Kennzahlen zu berechnen.  
+
+```{r}
+bmi_phy_45 <- read_csv("../data/bmi_phy_45.csv")
+```
+
+**in `R`**  
+
+```{r, echo=TRUE}
+tapply(bmi_phy_45$bmi, bmi_phy_45$Geschlecht, summary)
+```
+
+Einfacher geht es mit dem package `psych`. Dieses muss zuerst installiert und geladen werden.  
+
+```{r, echo=TRUE}
+library(psych)
+psych::describeBy(bmi_phy_45$bmi, group = bmi_phy_45$Geschlecht)
+```
+
+**in `jamovi`**  
+
+jamovi > Exploration > `bmi` in *Variables* einfügen, `Geschlecht` in *Split by* einfügen. Gewünschte Kennzahlen unter *Statistics* auswählen.   
+
+```{r, results='asis'}
+desc45 <- jmv::descriptives(
+  formula = bmi ~ Geschlecht,
+  data = bmi_phy_45
+)
+
+cat("<pre>")
+print(desc45)
+cat("</pre>")
+```
+
+
+2. Statistische Hypothesen formulieren    
+
+* $H_0: \mu_w = \mu_m$  
+* $H_A: \mu_w \neq \mu_m$  
+
+3. Signifkanzniveau festlegen  
+
+* $\alpha$ = .05  
+
+4. Sind die Daten gepaart oder unabhängig?   
+
+* Es besteht kein Zusammenhang zwischen dem BMI von Studenten und von Studentinnen. Es handelt sich um nicht gepaarte (unabhängige) Stichproben.   
+
+5. Prüfgrösse bestimmen  
+
+* Die Prüfgrösse ist die Differenz der Mittelwerte: $\mu_m - \mu_w$  
+
+6. Voraussetzungen prüfen   
+
+* Es handelt sich um Zufallsstichproben. Es kann davon ausgegangen werden, dass die Beobachtungseinheiten unabhängig voneinander sind.   
+* Der Stichprobenumfang pro Gruppe ist grösser als 30.    
+* Normalverteilung für beide Stichproben prüfen   
+
+**in `R`**  
+
+```{r}
+bmi_45 <- read_csv("../data/bmi_phy_45.csv")
+```
+
+```{r, echo=TRUE}
+phy_m <- subset(bmi_phy_45, Geschlecht == "m")  # Teildatensatz für Männer
+phy_w <- subset(bmi_phy_45, Geschlecht == "w")  # Teildatensatz für Frauen
+
+qqnorm(phy_m$bmi, col = "blue")
+qqline(phy_m$bmi)
+
+qqnorm(phy_w$bmi, col = "blue")
+qqline(phy_w$bmi)
+```
+
+**in `jamovi`**   
+
+jamovi > Exploration > `bmi` in *Variables* einfügen, `Geschlecht` in *Split by* einfügen. Unter *Plots* > Q-Q Plots > Häkchen bei *Q-Q*. 
+
+```{r, results='asis'}
+desc45qq <- jmv::descriptives(
+  formula = bmi ~ Geschlecht,
+  data = bmi_phy_45,
+  qq = TRUE
+)
+
+cat("<pre>")
+print(desc45qq)
+cat("</pre>")
+```
+
+* In beiden Stichproben sind die Daten annähernd normalverteilt.  
+
+7. 95%-Konfidenzintervalle berechnen  
+
+**in `R`**  
+
+```{r, echo=TRUE}
+# für Männer
+n_m <- length(phy_m$bmi)  
+m_m <- mean(phy_m$bmi)
+s_m <- sd(phy_m$bmi)
+SE_m <- s_m/sqrt(n_m)
+t <- abs(qt(.025, df = n_m - 1))
+CI <- m_m + c(-1, 1) * t * SE_m
+CI <- round(CI, 3)
+result_m <- paste("BMI Männer: Mittelwert =", round(m_m, 3), ", CI = [", CI[1], ",", CI[2], "]")
+
+# für Frauen
+n_w <- length(phy_w$bmi)  
+m_w <- mean(phy_w$bmi)
+s_w <- sd(phy_w$bmi)
+SE_w <- s_w/sqrt(n_w)
+t <- abs(qt(.025, df = n_w - 1))
+CI <- m_w + c(-1, 1) * t * SE_w
+CI <- round(CI, 3)
+result_w <- paste("BMI Frauen: Mittelwert =", round(m_w, 3), ", CI = [", CI[1], ",", CI[2], "]")
+
+result_m
+result_w
+```
+
+**in `jamovi`**  
+
+jamovi > Exploration > Descriptives > Mean Dispersion > Confidence interval for Mean: Häkchen setzen, Vorgabe ist der Wert 95 für ein 95%-CI.  
+
+```{r}
+ci <- jmv::descriptives(
+  formula = bmi ~ Geschlecht,
+  data = bmi_phy_45,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(ci)
+cat("</pre>")
+```
+
+*Physiotherapie-Studentinnen haben einen durchschnittlichen BMI von 20.984 [20.438, 21.53] $kg/m^2$ und Physiotherapie-Studenten haben einen durchschnittlichen BMI von 22.522 [21.85, 23.193] $kg/m^2$. Männer haben im Durchschnitt einen um 1.538 [0.684, 2.392] $kg/m^2$ signifikant höheren BMI als Frauen. Dieses 95%-Konfidenzintervall enthält den Nullwert nicht und wir haben Evidenz gegen die Nullhypothese.*   
+
+**Hinweise:**  
+
+* Das 95%-CI für die Differenz kann dem Welch-Test unten entnommen werden.  
+* Die geringgradige Differenz für die Grenzen des 95%-CI zwischen `R` und `jamovi` sind darauf zurückzuführen, dass `jamovi` die Grenzen mit dem $z$-Wert 1.96 berechnet, während die 
+Berechnung in `R` mit dem $t$-Wert für das 2.5-Quantil und $df$ = 44 ($t$ = 2.0154) erfolgt.   
+
+8. Teststatistik und p-Wert berechnen  
+
+**in `R`**  
+
+```{r, echo=TRUE}
+t.test(bmi ~ Geschlecht, data = bmi_phy_45, alternative = "two.sided")
+```
+
+**in `jamovi`**    
+
+jamovi > T-Tests > Independent Samples T-Test > Tests: *Welch's* wählen und unter > Hypothesis *Group 1 $\neq$ Group 2$* wählen. Für das 95%-CI der Differenz zwischen den beiden Gruppen unter > Additional Statistics > *Mean difference* und *Confidence interval* wählen.  
+
+Für die Anzeige der 95%-Konfidenzintervalle kann unter > Additional Statistics > *Descriptive Plots* gewählt werden.  
+
+```{r, results='asis'}
+ttest <- jmv::ttestIS(
+  formula = bmi ~Geschlecht,
+  data = bmi_phy_45,
+  vars = bmi,
+  students = FALSE,
+  welchs = TRUE,
+  meanDiff = TRUE,
+  ci = TRUE,
+  plots = TRUE
+)
+
+cat("<pre>")
+print(ttest)
+cat("</pre>")
+```
+
+8. Schlussfolgerung   
+
+*Der durchschnittliche BMI von Physiotherapie-Studentinnen (20.984 [20.438, 21.53] $kg/m^2$) unterscheidet sich signifikant vom durchschnittlichen BMI von Physiotherapie-Studenten (22.522 [21.85, 23.193] $kg/m^2$). Physiotherapie-Studenten haben im Durchschnitt einen um 1.538 [0.684, 2.392] $kg/m^2$ höheren BMI als Physiotherapie-Studentinnen, $t$ = 3.581, $df$ = 84.5, $p$ = .0006.*   
+
+<br/>
+<br/>
+
+## Übung 7 {.tabset}
+
+In einer Studie wird der Effekt eines neuen Schlafmittels untersucht. Die Studie wird mit 20 Testpersonen durchgeführt. Zuerst wird die Schlafdauer ohne Medikament, dann die Schlafdauer mit Medikament gemessen.   
+
+Der Datensatz `schlafmittel.csv`kann [hier](https://github.com/lukasstammler/statexercises/tree/main/data) heruntergeladen werden.  
+
+*Dies ist die gleiche Fragestellung mit den identischen Daten, wie im Video Mittelwertsvergleiche Teil 1, Kap. T-Test für verbundene Stichproben.*  
+
+### Aufgabe
+
+Hat das neue Schlafmittel einen Effekt auf die Schlafdauer? Führen Sie eine inferenzstatistische Analyse zu dieser Fragestellung durch. Legen Sie das Signifikanzniveau auf $\alpha$ = .05 fest. 
+
+<br/>
+<br/>
+
+### Lösung 
+
+1. Datensatz einlesen und Struktur analysieren   
+
+**in `R`**   
+
+```{r, echo=TRUE}
+medi <- rio::import("../data/schlafmittel.csv")
+
+head(medi)
+```
+
+
+2. Deskriptive Zusammenfassung (Kennzahlen)   
+
+**in `R`**  
+
+```{r}
+summary(medi)
+
+# alternativ
+psych::describe(medi)
+```
+
+**in `jamovi`**   
+
+```{r, results='asis'}
+desc_medi <- jmv::descriptives(
+  data = medi,
+  vars = vars(ohne_Med, mit_Med)
+)
+
+cat("<pre>")
+print(desc_medi)
+cat("</pre>")
+```
+
+3. Statistische Hypothesen   
+
+* $H_0: \mu_{diff} = 0$   
+* $H_A: \mu_{diff} \neq 0$  
+
+4. Sind die Daten gepaart oder unabhängig?   
+
+* Es handelt sich um zwei Messungen an den gleichen Probanden. In diesem Fall besteht ein Zusammenhang zwischen der ersten und der zweiten Messung; die Daten sind gepaart.   
+* Der Zusammenhang zwischen den Messungen kann in einem Streudiagramm dargestellt werden.   
+
+**in `R`**   
+
+```{r, echo=TRUE}
+plot(medi$ohne_Med, medi$mit_Med, col = "blue")
+```
+
+**in `jamovi`**   
+
+jamovi > Exploration > Scatterplot > `ohne_Med` als X-Axis, `mit_Med` als Y-Axis.   
+
+```{r}
+library(scatr)
+scatr::scat(
+  data = medi,
+  x = "ohne_Med",
+  y = "mit_Med"
+)
+```
+
+*Das Streudiagramm zeigt in der Tendenz, dass Testpersonen, die ohne Medikament länger schlafen auch mit Medikament länger schlafen.*   
+
+5. Prüfgrösse  
+
+* Die Prüfgrösse ist der Mittelwert der paarweisen Differenzen $\mu_{diff}$  
+* Die paarweisen Differenzen müssen als neue Variable berechnet werden.  
+
+**in `R`**   
+
+```{r, echo=TRUE}
+medi$diff <- medi$mit_Med - medi$ohne_Med
+summary(medi$diff)
+```
+
+**in `jamovi`**   
+
+jamovi > Data > Compute > Variablennamen eingeben, z.B. `diff` > im Formelfenster `= mit_Medi - ohne_Medi` eintragen.   
+
+```{r, results='asis'}
+desc_diff <- jmv::descriptives(
+  data = medi,
+  vars = vars(ohne_Med, mit_Med, diff)
+)
+
+cat("<pre>")
+print(desc_diff)
+cat("</pre>")
+```
+
+6. Voraussetzungen prüfen   
+
+* Es handelt sich um eine Zufallsstichprobe und wir können davon ausgehen, dass die Beobachtungseinheiten voneinander unabhängig sind.  
+* Der Stichprobenumfang ist grösser als 12; ein parametrischer Test ist möglich.  
+* Ist die Prüfgrösse normalverteilt?  
+
+**in `R`**   
+
+```{r, echo=TRUE}
+qqnorm(medi$diff, col = "blue")
+qqline(medi$diff)
+```
+
+**in `jamovi`**   
+
+jamovi > Analyses > Exploration > `diff` in *Variables* auswählen, > Plots > Q-Q Plots > Häkchen bei *Q-Q* setzen.   
+
+```{r, results='asis'}
+medi_qq <- jmv::descriptives(
+  data = medi,
+  vars = diff,
+  qq = TRUE
+)
+
+cat("<pre>")
+print(medi_qq)
+cat("</pre>")
+```
+
+Der QQ-Plot liefert keine Evidenz gegen die Annahme, dass die paarweisen Differenzen normalverteilt sind.    
+
+7. 95%-Konfidenzintervall für $\hat{\mu}_{diff}$ berechnen   
+
+**in `R`**  
+
+```{r, echo=TRUE}
+n_diff <- length(medi$diff)             # Stichprobenumfang
+m_diff <- mean(medi$diff)               # Mittelwert
+s_diff <- sd(medi$diff)                 # Standardabweichung
+se_diff <- s_diff/sqrt(n_diff)          # Standardfehler
+t <- abs(qt(.025, df = n_diff - 1))     # t-Wert für 95%-CI und df = 19
+CI <- m_diff + c(-1, 1) * t * se_diff   # Grenzen des 95%-CI
+CI <- round(CI, 3)                      # Grenzen des 95%-CI auf drei Nachkommastellen runden
+
+# Resultat formatieren und ausgeben
+result <- paste("medi$diff: Mittelwert =", round(m_diff, 3), ", CI = [", CI[1], ",", CI[2], "]")
+print(result)
+```
+
+**in `jamovi`**   
+
+Das korrekte 95%-Konfidenzintervall für $\hat{\mu}_{diff}$ muss mit der Funktion für den $T$-Test für verbundene Stichproben berechnet werden, da `jamovi` in > Descriptives stets mit dem $z$-Wert rechnet und dadurch ein zu schmales 95%-CI berechnet wird.  
+
+jamovi > Analyses > T-Tests > Paired Samples T-Test > 1. `mit_Med`, 2. `ohne_Med` als *Paired Variables* einsetzen; unter > Additional Statistics: Häkchen bei *Mean difference* und *Confidence Interval* setzen.  
+
+```{r, results='asis'}
+medi_ci <- jmv::ttestPS(
+  data = medi,
+  pairs = list(
+    list(
+      i1 = "mit_Med",
+      i2 = "ohne_Med"
+    )),
+  meanDiff = TRUE,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(medi_ci)
+cat("</pre>")
+```
+
+*Interpretation: Die Einnahme des Schlafmittels verlängert den Schlaf im Durchschnitt um 0.395 [0.080, 0.709] Stunden. Das 95%-Konfidenzintervall beinhaltet den Nullwert nicht und wir haben Evidenz gegen die Nullhypothese, bzw. Evidenz für einen signifikanten Effekt.*  
+
+8. Teststatistik und $p$-Wert berechnen  
+
+Die Berechnung der Teststatistik $t$ und des $p$-Werts kann auf zweierlei Arten erfolgen:  
+
+* Variante 1: Als $t$-Test für verbundene Stichproben oder  
+* Variante 2: Als Einstichproben-$t$-Test mit der Variablen `diff` und dem Referenzwert 0 (siehe Hypothesen oben)  
+
+**in `R`**  
+
+```{r}
+# Variante 1: t-Test für verbundene Stichproben 
+t.test(medi$mit_Med, medi$ohne_Med, paired = TRUE, alternative = "two.sided")
+
+# Variante 2: Einstichproben-t-Test
+t.test(medi$diff, mu = 0, alternative = "two.sided")
+```
+
+**in `jamovi`**  
+
+* Variante 1: jamovi > Analyses > T-Tests > Paired Samples T-Test > 1. `mit_Med`, 2. `ohne_Med` als *Paired Variables* einsetzen; unter > Tests: *Student's* wählen; unter > Additional Statistics: Häkchen bei *Mean difference* und *Confidence Interval* setzen.  
+
+* Variante 2: jamovi > Analyses > T-Tests > One Sample T-Test: `diff` in *Dependent Variables* einsetzen, unter > Tests: *Student's* wählen, unter > Additional Statistics: Häkchen bei *Mean difference* und *Confidence Interval* setzen.  
+
+```{r, results='asis'}
+medi_ostt <- jmv::ttestOneS(
+  data = medi,
+  vars = "diff",
+  meanDiff = TRUE,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(medi_ostt)
+cat("</pre>")
+```
+
+9. Schlussfolgerung   
+
+*Geprüft wurde die Frage, ob ein neues Schlafmittel einen Effekt auf die Schlafdauer hat. Die Studie mit 20 Testpersonen ergab, das die Einnahme des Schlafmittels den Schlaf im Durchschnitt signifikant um 0.395 [0.080, 0.709] Stunden verlängert, $t$ = 2.624, $df$ = 19, $p$ = .017.*   
+
+<br/>
+<br/>
