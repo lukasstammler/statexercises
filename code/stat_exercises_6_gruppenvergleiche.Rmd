@@ -121,7 +121,8 @@ $$SE_{pooled} = \sqrt{\frac{s_{Bern}^2}{n_{Bern}} + \frac{s_{Basel}^2}{n_{Basel}
 
 * Die Berechnung des t-Werts erfolgt nach der Formel    
 
-$$t = \frac{m_1 - m_2}{SE_{pooled}}$$
+$$t = \frac{\bar{x}_{Bern} - \bar{x}_{Basel}}{SE_{pooled}}$$
+
 * Die Anzahl Freiheitsgrade $df$ ist  
 
 $$df = n_1 + n_2 - 2 = n_{Bern} + n_{Basel} - 2$$

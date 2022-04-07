@@ -1,7 +1,7 @@
 ---
 title: 'Übungen: Mittelwertsvergleiche - Einstichproben-T-Test'
 author: "Lukas Stammler"
-date: "10 2 2021"
+date: "`r Sys.Date()`"
 output:
   html_document:
     fig_height: 6
@@ -14,7 +14,7 @@ output:
 ```{r setup, include=FALSE}
 rm(list = ls())
 
-knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, fig.align = "center")
 
 library(tidyverse)
 library(jmv)
@@ -102,11 +102,11 @@ Anmerkung: Inferenzstatistik bezieht sich immer auf Populationen. Daher wird die
 
 - Stichprobenumfang, Mittelwert und Standardabweichung für Groesse (Achtung Filter = Geschlecht == "w") berechnen.   
 
-```{r}
+```{r, results='asis'}
 phy_w <- phydata %>% 
   filter(Geschlecht == "w")
 
-descriptives(
+phy_w_desc <- descriptives(
   data = phy_w,
   vars = Gewicht,
   sd = TRUE,
@@ -115,6 +115,10 @@ descriptives(
   min = FALSE,
   max = FALSE
 )
+
+cat("<pre>")
+print(phy_w_desc)
+cat("</pre>")
 ```
 
 - Standardfehler für den Mittelwert berechnen (von Hand oder jamovi: S.E. mean), zur Erinnerung    
@@ -123,7 +127,7 @@ $$SE =\frac{s}{\sqrt{n}}$$
 
 - 95%-Vertrauensintervall für den Mittelwert berechnen. Zur Erinnerung    
 
-$$CI_{95} = \bar{x} \pm 1.96 SE$$
+$$CI_{95} = \bar{x} \pm 1.96 \times SE$$
     
 ```{r}
 ci_lo <- round(mean(phy_w$Gewicht) - 1.96 * (sd(phy_w$Gewicht)/sqrt(length(phy_w$Gewicht))), 3)
@@ -148,13 +152,13 @@ $$z = \frac{\bar{x} - \mu}{SE}$$
 - $\mu$ = Populationsmittelwert (hier 67.6 kg einsetzen)  
 - $SE$ = Standardfehler (hier 0.493 einsetzen)
 
-```{r}
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
 z_value <- round((59.6 - 67.6)/.493, 3)
-
 paste("Z-Wert =", z_value)
 ```
 
-* Das durchschnittliche Körpergewicht liegt im Abstand von -16 SE von $\mu$ = 67.6 kg entfernt. Aus der Vorlesung wissen Sie, dass ein Abstand von mehr als $\mu \pm 2SE$ im Verwerfungsbereich für $H_0$ liegt. 
+* Das durchschnittliche Körpergewicht liegt im Abstand von -16 SE von $\mu$ = 67.6 kg entfernt. Aus der Vorlesung wissen Sie, dass ein Abstand von mehr als $\mu \pm 2 \times SE$ typischerweise im Verwerfungsbereich für $H_0$ liegt. 
 
 
 ```{r}
@@ -165,19 +169,26 @@ polygon(cord.x,cord.y,col='lightblue', border = "black")
 points(x = -16, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
 ```
 
-```{r}
-p_value <- pnorm(z_value)
+* $p$-Wert in `R` berechnen
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+p_value <- 2 * pnorm(-16.227)
 paste("p-Wert =", p_value)
 ```
 
-- Der p-Wert für z = -16 ist extrem klein und kann nicht aus den Z-Tabellen abgelesen werden. Sie können ihn in jamovi > ttest > One Sample T-Test berechnen:
+* Der p-Wert für z = -16 ist extrem klein und kann nicht aus den Z-Tabellen abgelesen werden. Sie können ihn in jamovi > ttest > One Sample T-Test berechnen:
 
-```{r}
-ttestOneS(
+```{r, results='asis'}
+phy_w_tt <- ttestOneS(
   data = phy_w,
   vars = Gewicht,
   testValue = 67.6
 )
+
+cat("<pre>")
+print(phy_w_tt)
+cat("</pre>")
 ```
 
 * Der p-Wert von <0.0000001 gibt die Wahrscheinlichkeit dafür an, dass ein Stichprobenmittelwert von 59.6 kg ermittelt wird, wenn der wahre Mittelwert 67.6 kg beträgt. Mit anderen Worten, dass ein Stichprobenmittelwert so unterschiedlich oder noch unterschiedlicher von 67.6 kg ist, als der Mittelwert in unserer Stichprobe. Da der p-Wert < 0.05 ist verwerfen wir die Nullhypothese zu Gunsten der Alternativhypothese.
@@ -185,7 +196,7 @@ ttestOneS(
 
 4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.  
 
-**Das durchschnittliche Körpergewicht von Physiotherapie-Studentinnen (59.6[58.6 , 60.5] kg) ist signifikant geringer als das durchschnittliche Körpergewicht in der Population der Schweizerinnen zwischen 15 und 24 Jahren (67.6 kg), z = -16.05, p <.0001.**
+*Das durchschnittliche Körpergewicht von Physiotherapie-Studentinnen (59.6[58.6 , 60.5] kg) ist signifikant geringer als das durchschnittliche Körpergewicht in der Population der Schweizerinnen zwischen 15 und 24 Jahren (67.6 kg), z = -16.05, p <.0001.*
 <br />
 <br />
 
@@ -221,7 +232,8 @@ Quelle: [OpenIntro Statistics, 3rd ed](https://www.openintro.org/index.php)
 
 2. Berechnen Sie das 95%-Vertrauensintervall für den Mittelwert der Schlafdauer der New Yorker.   
 
-```{r}
+```{r, echo=TRUE}
+# # Code für jamovi Rj-Editor
 n <- 25
 m <- 7.73
 s <- .77
@@ -239,12 +251,13 @@ paste("95%-Vertrauensintervall: [", ci_lo, ",", ci_hi, "]")
 
 3. Prüfen Sie ihre Hypothese mit einem statistischen Test.   
 
-```{r}
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
 z_value <- (m - 8)/se
 paste("Z-Wert:", z_value)
 ```
 
-- Der Z-Wert liegt innerhalb von $\mu \pm 2SE$ und somit im Nicht-Verwerfungsbereich von $H_0$. 
+* Der Z-Wert liegt innerhalb von $\mu \pm 2SE$ und somit im Nicht-Verwerfungsbereich von $H_0$. 
 
 ```{r}
 cord.x <- c(-2, seq(-1.96, 1.96,0.01),2) 
@@ -254,7 +267,7 @@ polygon(cord.x,cord.y,col='lightblue', border = "black")
 points(x = -1.75, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
 ```
 
-- Der p-Wert für diesen Z-Wert kann in Tabellen nachgesehen oder in jamovi:Rj-Editor berechnet werden.
+* Der p-Wert für diesen Z-Wert kann in Tabellen nachgesehen oder in `jamovi::Rj-Editor` berechnet werden.
 
 ```{r, echo=TRUE}
 # Code für jamovi Rj-Editor
@@ -266,13 +279,13 @@ points(x = -1.75, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
 
 4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.   
 
-**Die durchschnittliche Schlafdauer von New Yorkern beträgt 7.73 [7.43, 8.03] Stunden und unterscheidet sich nicht von den erwarteten 8 Stunden, z = -1.753, p = .0796.**  
+*Die durchschnittliche Schlafdauer von New Yorkern beträgt 7.73 [7.43, 8.03] Stunden und unterscheidet sich nicht von den erwarteten 8 Stunden, z = -1.753, p = .0796.*  
 
 <br />
 
 ### Aus Fehlern lernen
 
-Zu dieser Aufgabe wurde folgender Forumeintrag von Studierenden gepostet: "Bei der Berechnung des P-Wertes kommen wir bei Jamovi (0.7957) und der Z-Werte Tabelle (0.0401) auf einen anderen Wert. Bei den Lösungen wurde der Wert von Jamovi verwendet, welchen Lösungsweg sollten wir anwenden?"
+Zu dieser Aufgabe wurde folgender Forumeintrag von Studierenden PHY19 gepostet: "Bei der Berechnung des P-Wertes kommen wir bei Jamovi (0.7957) und der Z-Werte Tabelle (0.0401) auf einen anderen Wert. Bei den Lösungen wurde der Wert von Jamovi verwendet, welchen Lösungsweg sollten wir anwenden?"
 
 Hier noch einmal der Lösungsweg im Detail:   
 
@@ -287,7 +300,7 @@ Stichprobe:
 
 **Fragestellung**    
 
-Liefert unserr Stichprobe Evidenz dafür, dass New Yorker im Durchschnitt 8 Stunden schlafen?   
+Liefert unsere Stichprobe Evidenz dafür, dass New Yorker im Durchschnitt 8 Stunden schlafen?   
 
 **1. Hypothesen**    
 
@@ -303,8 +316,7 @@ auf Grundlage der Ergebnisse unserer Stichprobe.
 
 $$CI_{95} = \bar{x} \pm 1.96 \times \frac{s}{\sqrt{n}}$$
 
-$CI_{95} = \bar{7.73} \pm 1.96 \times \frac{.77}{\sqrt{25}}$ = 
-$CI_{95} = \bar{7.73} \pm 1.96 \times .154$ = $CI_{95} = [7.428, 8.032]$  
+$$CI_{95} = \bar{7.73} \pm 1.96 \times \frac{.77}{\sqrt{25}} = CI_{95} = \bar{7.73} \pm 1.96 \times .154 = CI_{95} = [7.428, 8.032]$$  
 
 Da das 95%-Vertrauensintervall den Referenzwert $\mu = 8 h$ beinhaltet, können
 wir $H_0$ nicht verwerfen, d.h. es besteht kein signifikanter Unterschied 
@@ -380,12 +392,12 @@ Es soll getestet werden, ob die durchschnittliche Laufzeit von Notebook-Akkus m�
 2. Berechnen Sie das 95%-Vertrauensintervall für die Akku-Laufzeit  
 
 
-```{r}
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
 n <- 50
 m <- 6.94
 s <- .884
 se <- s/sqrt(n)
-
 
 ci_lo <- m - 1.96 * se
 ci_hi <- m + 1.96 * se
@@ -393,18 +405,19 @@ ci_hi <- m + 1.96 * se
 paste("95%-Vertrauensintervall: [", ci_lo, ",", ci_hi, "]")
 ```
 
-Die gemessene durchschnittliche Akku-Laufzeit beträgt 6.94[6.695, 7.185] Stunden. Das 95%-vertrauensintervall schliesst den Vergleichswert von 7.5 Stunden nicht ein. Es besteht Evidenz dafür, dass die Laufzeit dieser Akkus von der angegebenen Laufzeit von 7.5 Stunden abweicht.     
+Die gemessene durchschnittliche Akku-Laufzeit beträgt 6.94 [6.695, 7.185] Stunden. Das 95%-vertrauensintervall schliesst den Vergleichswert von 7.5 Stunden nicht ein. Es besteht Evidenz dafür, dass die Laufzeit dieser Akkus von der angegebenen Laufzeit von 7.5 Stunden abweicht.     
 
 <br />
 
 3. Prüfen Sie ihre Hypothese mit einem statistischen Test.    
 
-```{r}
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
 z_value <- (m - 7.5)/se
 paste("Z-Wert:", z_value)
 ```
 
-- Der Z-Wert von -4.48 liegt ausserhalb von $\mu \pm 2SE$ und somit im Verwerfungsbereich von $H_0$. 
+* Der Z-Wert von -4.479 liegt ausserhalb von $\mu \pm 2 \times SE$ und somit im Verwerfungsbereich von $H_0$. 
 
 ```{r}
 cord.x <- c(-2, seq(-1.96, 1.96,0.01),2) 
@@ -418,7 +431,7 @@ points(x = -4.48, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
 
 ```{r, echo=TRUE}
 # Code für jamovi Rj-Editor
-2*pnorm(-4.48)
+2 * pnorm(-4.48)
 ```
 
  - Da der p-Wert < .05 ist, besteht Evidenz dafür, dass sich die durchschnittliche Akku-Laufzeit sich von 7.5 Stunden unterscheidet und verwerfen die $H_0$.
@@ -426,7 +439,7 @@ points(x = -4.48, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
 
 4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.   
 
-**Die durchschnittliche Akku-Laufzeit beträgt 6.94[6.695, 7.185] Stunden und unterscheidet sich signifikant von den erwarteten 7.5 Stunden, z = -4.480, p < 0.0001**   
+*Die durchschnittliche Akku-Laufzeit beträgt 6.94[6.695, 7.185] Stunden und unterscheidet sich signifikant von den erwarteten 7.5 Stunden, z = -4.480, p < 0.0001.*   
 
 <br />
 <br />
@@ -459,7 +472,8 @@ Auf Grund ihrer Erfahrung vermuten Sie, dass die Laufzeit von Notebook-Akkus (si
 
 3. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen (verwenden Sie ihre Analyse aus Übung 3) 
 
-- **Die durchschnittliche Akku-Laufzeit (6.94[6.695, 7.185] Stunden) ist signifikant ( z = -4.480, p < 0.0001) kürzer als in den Unterlagen mit 7.5 Stunden angegeben.** 
+*Die durchschnittliche Akku-Laufzeit (6.94[6.695, 7.185] Stunden) ist signifikant kürzer als in den Unterlagen mit 7.5 Stunden angegeben, z = -4.480, p < 0.0001.* 
+
 <br />
 <br />
 
@@ -647,11 +661,11 @@ cat("</pre>")
 
 **Wilcoxon-Vorzeichenrangtest**  
 
-Auf Grund der etwas fraglichen Normalverteilung der Prüfgrösse, kann auch ein Wilcoxon-Vorzeichenrangtest durchgeführt werden.  
+Auf Grund der etwas fraglichen Normalverteilung der Prüfgrösse, kann auch ein Wilcoxon-Vorzeichenrangtest durchgeführt werden. $\tilde{x}$ = Median    
 
 1. Hypothesen  
 
-* $H_0: \tilde{x}_{BMI} = 23.7$, $\tilde{x}$ = Median  
+* $H_0: \tilde{x}_{BMI} = 23.7$  
 * $H_A: \tilde{x}_{BMI} \neq 23.7$   
 
 2. Wilcoxon-Vorzeichenrangtest   
