@@ -71,7 +71,7 @@ ggplot(phy, aes(x = Groesse, y = Schuhgroesse)) +
 ```
 
 
-* Die Grafik zeigt einen linearen Zusammenhang zwischen Schuhgrösse und Körpergrösse. Die blaue Linie ist die Regressionsgrade. Sie wird vom PC so berechnet, dass die Summe der Abstände aller Punkte minimal ist. Die Steigung der Geraden $\beta_1$ gibt uns an, um wieviel die Schuhgrösse zunimmt, wenn die Körpergrösse um eine Einheit zunimmt. So genau lässt sich das aber nicht ablesen und deshalb lassen wir den PC unser Regressionsmodell rechnen.    
+* Die Grafik zeigt einen linearen Zusammenhang zwischen Schuhgrösse und Körpergrösse. Die blaue Linie ist die Regressionsgrade. Sie wird vom PC so berechnet, dass die Summe der quadrierten Abstände aller Punkte minimal ist. Die Steigung der Geraden $\beta_1$ gibt uns an, um wieviel die Schuhgrösse zunimmt, wenn die Körpergrösse um eine Einheit zunimmt. So genau lässt sich das aber nicht ablesen und deshalb lassen wir den PC unser Regressionsmodell rechnen.    
 
 ```{r}
 jmv::linReg(
@@ -338,7 +338,7 @@ $$\widehat{Morde} = -29.901 + 2.559 \times Armut$$
 
 Erfahrungsgemäss hat die Schlafdauer junger Mütter einen erheblichen Einfluss auf ihre Laune. Danielle hat in einem Selbstversuch während 100 Tagen ihre Laune anhand einer selbst erstellten Skala von 0 - 100 gemessen. Zudem hat sie ihre eigene Schlafdauer und diejenige ihres Babys gemessen.  
 
-Wir arbeiten mit dem Datesatz `parenthood.csv`. Der Datensatz stammt aus dem Lehrbuch *Learning Statistic with jamovi* von Danielle Navarro und David Foxcroft und enthält 5 Variablen
+Wir arbeiten mit dem Datesatz `parenthood.csv`. Der Datensatz stammt aus dem Lehrbuch *Learning Statistics with jamovi* von Danielle Navarro und David Foxcroft und enthält 5 Variablen
 
 | Variable | Erläuterung |
 |:-|:-|
@@ -543,7 +543,7 @@ extract_eq(m001, use_coefs = TRUE)
 
 6. Formulieren Sie Ihre Resultate.    
 
-**Zwischen der Schlafdauer von Dan's Baby und ihrer eigenen Schlafdauer besteht ein positive linearer Zusammenhang, d.h. je länger das Baby schläft, desto länger schläft auch Dan. Der Zusammenhang ist mässig und signifikant, $r_p$ = 0.6279 [0.4922, -0.7339], p < 0.0001.** 
+**Zwischen der Schlafdauer von Dan's Baby und ihrer eigenen Schlafdauer besteht ein positive linearer Zusammenhang, d.h. je länger das Baby schläft, desto länger schläft auch Dan. Der Zusammenhang ist mässig und signifikant, $r_p$ = 0.6279 [0.4922, 0.7339], p < 0.0001.** 
 
 **Eine einfache lineare Regression mit Dan's Schlafdauer als abhängiger Variable und der Schlafdauer des Babys als unabhängiger Variable wurde durchgeführt. Der geschätzte Regressionskoeffizient $\beta$ für Schlaf Baby beträgt 0.3075 [0.2311, 0.3840], p < 0.0001). Pro Stunde Schlaf des Babys erhöht sich Dan's Schlafdauer demnach im Durchschnitt um 0.3075 [.2311, .3840] Stunden. Die Schlafdauer des Babys erklärt 39.4% der Varianz von Dan's Schlafdauer ($R^2$ = .3943)**   
 

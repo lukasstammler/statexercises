@@ -85,6 +85,16 @@ Die blaue Fläche beträgt ca. 14% ($p$ = 0.1357) der Gesamtfläche unter der Ku
 Die Funktion `pt()` verwenden wir, wenn wir mit der t-Verteilung arbeiten, was bei den Hypothesentests eigentlich immer der Fall ist. Die Funktion arbeitet genau gleich wie `pnorm()` muss allerdings um den Freiheitsgrad $df$ ergänzt werden, da die Form der t-Verteilung vom 
 Stichprobenumfang abhängt. Für eine Stichprobe ist $df = n - 1$, für zwei Stichproben ist $df = n_1 + n_2 - 2$. 
 
+Eine einfache Animation zeigt, wie der Stichprobenumfang die Form der $t$-Verteilung und damit die Grenzen ($t$-Werte) zwischen Annahme- und Verwerfungsbereich beeinflusst.  
+
+* orange Kurve: Normalverteilung  
+* grüne Kurve: t-Verteilung (df im Untertitel)  
+* grüne Fläche: 5%-Verwerfungsbereich unter der t-Verteilung
+
+<center>
+![t-Verteilung](../tdistr.gif)
+</center>
+
 Die Funktion `pt()` kann mehrere Argumente annehmen, von denen wir drei benötigen:
 
 `pt(q, df, ncp, lower.tail = TRUE, log.p = FALSE)`

@@ -1,0 +1,84 @@
+---
+title: "t-Verteilung animiert"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+
+library(tidyverse)
+library(plotly)
+```
+
+
+
+```{r, eval=FALSE}
+# http://www.statistics.cool/post/student-s-t-and-the-normal-distribution/
+for (nu in 1:50) {
+  p <- ggplot(data.frame(x=c(-5,5)), aes(x)) + 
+    stat_function(fun=dnorm, color='gray') + 
+    stat_function(fun=dt, args=list(df=nu), color='blue') +
+    theme_classic() + ylab("Density") + xlab('Value') + ggtitle(paste("df =", nu))
+  print(p)
+}
+```
+
+
+
+```{r, eval=FALSE}
+dfvalues <- c(2, 3, 4, 6, 8, 10, 15, 20, 30, 100, 1000)
+
+for(i in dfvalues){
+  df = i
+  # print(df)
+  t.up = round(qt(.975, df), 3)
+  t.lo = -t.up
+  p <- ggplot(data.frame(x=c(-6,6)), aes(x)) + 
+    stat_function(fun=dnorm, color='coral', size = 1) + 
+    stat_function(fun=dt, args=list(df=df), color='darkgreen', size = 1, alpha = .5) +
+    geom_area(stat = "function", fun = dt, args = list(df=df), xlim = c(-6, t.lo), 
+            fill = "darkgreen", alpha = .5) +
+    geom_area(stat = "function", fun = dt, args = list(df=df), xlim = c(t.up, 6), 
+            fill = "darkgreen", alpha = .5) +
+    theme_classic() + 
+    ylab("Density") + 
+    xlab('t') + 
+    ggtitle("t-Verteilung und 5%-Verwerfungsbereich", subtitle = (paste("df =", df))) +
+    scale_x_continuous(breaks = c(t.lo, t.up))
+  print(p)
+  filename = paste("plot", i, ".png", sep = "")
+  ggsave(filename)
+}
+```
+
+```{r, eval=FALSE}
+library(animation)
+
+dfvalues <- c(2, 3, 4, 6, 8, 10, 15, 20, 30, 100, 1000)
+
+saveGIF({
+for(i in dfvalues){
+  df = i
+  # print(df)
+  t.up = round(qt(.975, df), 3)
+  t.lo = -t.up
+  p <- ggplot(data.frame(x=c(-6,6)), aes(x)) + 
+    stat_function(fun=dnorm, color='coral', size = 1) + 
+    stat_function(fun=dt, args=list(df=df), color='darkgreen', size = 1, alpha = .5) +
+    geom_area(stat = "function", fun = dt, args = list(df=df), xlim = c(-6, t.lo), 
+            fill = "darkgreen", alpha = .5) +
+    geom_area(stat = "function", fun = dt, args = list(df=df), xlim = c(t.up, 6), 
+            fill = "darkgreen", alpha = .5) +
+    theme_classic() + 
+    ylab("Density") + 
+    xlab('t') + 
+    ggtitle("t-Verteilung und 5%-Verwerfungsbereich", subtitle = (paste("df =", df))) +
+    scale_x_continuous(breaks = c(t.lo, t.up))
+  print(p)}
+}, interval = 1, movie.name = "tdistr1.gif")
+```
+

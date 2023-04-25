@@ -82,7 +82,7 @@ Frage: Unterscheidet sich das durchschnittliche Körpergewicht von Physiotherapi
 von 67.6 kg? (verwenden Sie den Datensatz `physio.csv`)
 
 1. Formulieren Sie die Nullhypothese $H_0$ und die Alternativhypothese $H_A$.
-2. Berechnen Sie das 95%-Vertrauensintervall für die Körpergrösse der Studentinnen.
+2. Berechnen Sie das 95%-Vertrauensintervall für das Körpergewicht der Studentinnen.
 3. Prüfen Sie ihre Hypothese mit einem statistischen Test.
 4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.
 <br />
@@ -98,9 +98,9 @@ von 67.6 kg? (verwenden Sie den Datensatz `physio.csv`)
 Anmerkung: Inferenzstatistik bezieht sich immer auf Populationen. Daher wird die Hypothese für die Population *PHY-Studentinnen* formuliert (daher $\mu$ und nicht $\bar{x}$) und der Mittelwert der Stichprobe wird als Schätzer für diese Population eingesetzt.    
 <br />
 
-2. Berechnen Sie das 95%-Vertrauensintervall für die Körpergrösse der Studentinnen.
+2. Berechnen Sie das 95%-Vertrauensintervall für das Körpergewicht der Studentinnen.
 
-- Stichprobenumfang, Mittelwert und Standardabweichung für Groesse (Achtung Filter = Geschlecht == "w") berechnen.   
+- Stichprobenumfang, Mittelwert und Standardabweichung für Gewicht (Achtung Filter = Geschlecht == "w") berechnen.   
 
 ```{r, results='asis'}
 phy_w <- phydata %>% 

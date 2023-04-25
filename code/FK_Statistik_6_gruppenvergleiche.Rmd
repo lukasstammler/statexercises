@@ -1,0 +1,535 @@
+---
+title: 'Übungen: Mittelwertsvergleiche, Teil 2'
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 6
+    fig_width: 6
+    highlight: pygments
+    theme: yeti
+    code_download: true
+    code_folding: hide
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, fig.align = "center")
+
+library(knitr)
+```
+
+
+
+
+# Praxistipp: Vorgehen bei Hypothesentests für quantitative Daten
+
+1. Hypothesen $H_0$ und $H_A$ formulieren. Sind diese einseitig oder zweiseitig formuliert?  
+2. Signifikanzniveau festlegen. Für alle Übungen wird $\alpha < 0.05$ festgelegt.
+3. Sind die Daten gepaart (paired) oder unabhängig (independent)? 
+4. Prüfgrösse bestimmen: 
+   + für unabhängige Daten: $\mu_2 - \mu_1$ (Differenz der Mittelwerte)   
+   + für gepaarte Daten: $\mu_{diff}$ (Mittelwert der paarweisen Differenzen) 
+   + wenn Sie sich für nicht-parametrische Tests entscheiden, ersetzen sie $\mu$ durch $Md$ (Median)
+5. Stichprobenumfang prüfen   
+   + $n < 30$: nichparametrischen Test (Wilcoxon) wählen    
+   + unterschiedliche Stichprobenumfänge bei unabhängigen Daten: nichtparametrischen Test (Wilcoxon) wählen   
+6. Verteilung der Prüfgrösse untersuchen    
+   + Daten sind annähernd normalverteilt: t-Test wählen    
+   + Daten sind nicht normalverteilt: nichtparametrischen Test (Wilcoxon) wählen     
+   + Unterschiedliche Varianzen bei unabhängigen Daten: nichtparametrischen Test (Wilcoxon) wählen.    
+7. Vertrauensintervalle für die Prüfgrösse berechnen.
+8. Gewählten Test durchführen: t- und p-Wert bestimmen.    
+9. Schlussfolgerung ziehen und das Ergebnis im Zusammenhang mit der Forschungsfrage interpretieren.    
+
+<br>
+
+# Übung 1 {.tabset}
+
+Eine Kaffeekette betreibt eine Filiale in Basel und eine Filiale in Bern. Die Berner Kolleginnen erzählen, dass sie mehr Caffè Latte (mittlere Grösse) in Bern als in Basel für das gleiche Geld erhalten. Sie können das nicht glauben und wollen der Sache auf den Grund gehen. Ihre Frage lautet: *Unterscheiden sich die Kaffeemengen an den Standorten Basel und Bern?*    
+
+Als erstes sammeln Sie Daten: Sie kaufen an beiden Standorten 20 Becher Caffè Latte mittlerer Grösse. Sie messen jeweils die Mengen in ml.
+
+Laden Sie die Datei `caffe.csv`  [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter.
+
+
+Der Datensatz umfasst zwei Variablen:     
+
+Variable | Beschreibung
+-------- | ------------
+Ort | Ort der Datenerhebung: Bern, Basel    
+Menge | Kaffeemenge in ml  
+
+
+## Aufgabe  
+
+1. Laden Sie den Datensatz herunter und importieren Sie ihn in `R`.   
+2. Formulieren Sie die Null- und die Alternativhypothese.   
+3. Beschreiben Sie die Daten deskriptiv. Erstellen Sie ein Boxplot für den Vergleich der Kaffeemengen in Bern und Basel.   
+4. Wählen Sie den richtigen Hypothesentest aus.  
+5. Berechnen Sie das 95%-Konfidenzintervall für die Differenz der Kaffeemenge zwischen Bern und Basel.
+6. Formulieren Sie ihr Resultat in ein bis zwei Sätzen.  
+
+<br />
+<br />
+
+## Lösung  
+
+1. Laden Sie den Datensatz herunter und importieren Sie ihn `R`. 
+
+```{r}
+library(rio)
+caffe <- import("../data/caffe.csv")
+caffe
+```
+
+
+2. Formulieren Sie ihre Hypothese.   
+
+* $H_0$ : Die Kaffeemengen von Bern und Basel unterscheiden sich nicht. $\mu_{Basel} = \mu_{Bern}$.    
+* $H_A$ : Die Kaffeemengen von Bern und Basel unterscheiden sich. $\mu_{Basel} \neq \mu_{Bern}$. 
+
+*Erläuterung: Die Fragestellung ist zweiseitig formuliert.*
+
+<br>
+
+3. Beschreiben Sie die Daten deskriptiv und erstellen Sie ein Boxplot für den Vergleich der Kaffeemengen in Bern und Basel.   
+
+```{r}
+# Teildatensätze (Subsets) erstellen
+bern <- subset(caffe, Ort == "Bern")
+basel <- subset(caffe, Ort == "Basel")
+
+# Kennzahlen berechnen
+summary(bern)
+summary(basel)
+
+# Boxplot erstellen
+boxplot(caffe$Menge ~ caffe$Ort)
+```
+
+Die durchschnittliche Kaffeemenge in Bern beträgt 311.7 ml und in Basel 301.9 ml. Im Boxplot ist zu sehen, dass die Variationsbreite in Bern grösser ist, als in Basel.
+
+<br />
+
+4. Wählen Sie den richtigen t-Test aus. Erstellen Sie auch eine Grafik für den Vergleich der 95%-Vertrauensintervalle.  
+
+* Der Stichprobenumfang pro Gruppe ist n = 20.  
+* Wir prüfen auf Normalverteilung der Daten in beiden Gruppen mit einem QQ-Plot:  
+
+```{r}
+# QQ-Plot für Bern
+qqnorm(bern$Menge)
+qqline(bern$Menge)
+
+# QQ-Plot für Basel
+qqnorm(basel$Menge)
+qqline(basel$Menge)
+```
+
+* Interpretation der QQ-Plots: Die zentralen Bereiche der Daten liegen weitgehend auf einer Linie. Wir dürfen schliessen, dass die Daten aus einer normalverteilten Population stammen.   
+* Die Daten sind unabhängig.  
+* Testwahl: Da n < 30, wählen wir ein nichtparametrisches Verfahren, den *Mann-Whitney-U-Test (Wilcoxon Rangsummen-Test)*. Zum Vergleich führen wir aber auch einen *Zweistichproben-t-Test für unabhängige Daten* durch.  
+
+
+
+```{r}
+wilcox.test(caffe$Menge ~ caffe$Ort, alternative = "two.sided", paired = FALSE)
+```
+
+Interpretation des Wilcoxon Rangsummentests: Die Teststatistik **W** interpretieren wir nicht! Die Wahrscheinlichkeit, für unsere Teststatistik oder noch eine extremere Teststatistik unter der Nullhypothese beträgt 5.24% (**p = 0.0524**)  
+
+```{r}
+t.test(caffe$Menge ~ caffe$Ort, alternative = "two.sided", paired = FALSE)
+```
+
+Interpretation des Zweistichproben-t-Tests: Die Teststatistik **t = -1.7984** ist weniger extrem als die "magische Grenze" um -/+ 2 und wir können bereits jetzt annehmen, dass wir keinen signifikanten Unterschied zwischen den Kaffeemengen in Basel und in Bern haben. Die Anzahl der Freiheitsgrade **df = 24.103** wollen wir beim Welch-Test, einer Variante des Zweistichproben-t-Tests für unabhängige Daten, nicht interpretieren. Die Wahrscheinlichkeit für unserer Teststatistik **t** oder einen noch extremeren Wert für **t** unter der Nullhypothese beträgt 8.465% (**p = 0.08465**).  
+
+<br />
+
+5. Berechnen Sie das 95%-Konfidenzintervall für die Differenz der Kaffeemenge zwischen Bern und Basel.
+
+* Sie finden das 95%-Konfidenzintervall für die Differenz der durchschnittlichen Kaffeemengen im Output des t-Tests unter *95 percent confidence interval:*. Das 95%-Konfidenzintervall für die durchschnittliche Differenz der Kaffeemengen zwischen Bern und Basel liegt somit zwischen [-21.005, 1.442] ml. Unter der Nullhypothese liegt die durchschnittliche Differenz bei Null. Null ist in diesem Konfidenzintervall enthalten und somit ein plausibler Wert. Das 95%-Konfidenzintervall bestätigt die Ergebnisse der Hypothesentests.
+
+
+6. Formulieren Sie ihr Resultat in ein bis zwei Sätzen.   
+
+* *Die durchschnittlichen Kaffeemengen in Bern (311.7 ml) und in Basel (301.9 ml) unterscheiden sich nicht signifikant voneinander, Mann-Whitney-U-Test W = 128, p = 0.0524. Die durchschnittliche Differenz der Kaffeemengen (Basel minus Bern) beträgt -9.8 [CI95: -21.005, 1.442] ml.*  
+
+<br />
+
+# Übung 2 {.tabset}  
+
+Welches Ergebnis erwarten Sie, wenn die Fragestellung bei Übung 1 lauten würde: *Ist die durchschnittliche Kaffeemenge in Basel geringer als in Bern?*  
+
+## Aufgabe
+
+1. Formulieren Sie die Null- und die Alternativhypothese.  
+2. Führen Sie einen Hypothesentest durch. 
+3. Fassen Sie das Ergebnis zusammen.
+
+## Lösung
+
+1. Formulieren Sie die Null- und die Alternativhypothese.  
+
+* $H_0$ : Die Kaffeemengen von Bern und Basel unterscheiden sich nicht. $\mu_{Basel} = \mu_{Bern}$.    
+* $H_A$ : Die Kaffeemenge in Basel ist kleiner als in Bern. $\mu_{Basel} < \mu_{Bern}$. 
+
+*Erläuterung: Die Fragestellung ist einseitig formuliert.*
+
+
+2. Führen Sie einen Hypothesentest durch. 
+
+```{r}
+wilcox.test(caffe$Menge ~ caffe$Ort, alternative = "less", paired = FALSE)
+```
+
+```{r}
+t.test(caffe$Menge ~ caffe$Ort, alternative = "less", paired = FALSE)
+```
+
+
+3. Vergleichen Sie den resultierenden p-Wert mit dem p-Wert aus Übung 1.  
+
+|Test|einseitig|zweiseitig|
+|----|---------|----------|
+|Wilcox|0.0262|0.0524|
+|t-Test|0.0423|0.0847|
+
+Wenn wir einseitig testen, ist der p-Wert halb so gross wie beim zweiseitigen Testen.
+
+
+# Übung 3 {.tabset}
+
+Ein Gefängnisaufenthalt ist mit psychischem Stress verbunden. Eine Möglichkeit, diesen Stress abzubauen ist sportliche Betätigung. Ein Studie hat den Stresslevel von 26 Gefängnissinsassen bei Ein- und Austritt mittels Fragebogen untersucht (je höher der Stresslevel desto grösser der Stress). Ein Teil der Gefangenen erhielt ein sportliches Training.   
+
+Laden Sie die Datei `prisonStress.csv` [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter.   
+
+Der Datensatz umfasst 5 Variablen    
+
+Variable | Beschreibung
+-------- | ------------
+Subject | anonyme ID
+Group | Gruppe sport oder control
+PSSbefore | Stresslevel (Assessment-Score) bei Eintritt
+PSSafter | Stresslevel (Assessment-Score) bei Austritt
+Diff | Paarweise Differenzen (PSSafter - PSSbefore)
+
+## Aufgabe
+
+1. Laden Sie den Datensatz in `R` und kategorisieren Sie die Variablen.    
+2. Frage: Haben beide Gruppen bei Eintritt den gleichen Stresslevel?    
+3. Frage: Haben beide Gruppen bei Austritt den gleichen Stresslevel?        
+4. Frage: Besteht ein Unterschied im Stresslevel zwischen Ein- und Austritt in der Kontrollgruppe?      
+5. Frage: Besteht ein Unterschied im Stresslevel zwischen Ein- und Austritt in der Sportgruppe?    
+6. Frage: Hat Sport einen Effekt auf den Stresslevel im Vergleich zu einer Kontrollgruppe, die keinen Sport macht?  
+
+Führen Sie für alle Fragen sowohl einen nichtparametrischen (Wilcoxon) als auch einen parametrischen (t-Test) Test durch.  
+
+## Lösung 1
+
+```{r}
+prison <- import("../data/prisonStress.csv")
+str(prison)
+
+# Die Variable Group ist nominal und wird als factor kategorisiert
+prison$Group <- factor(prison$Group)
+str(prison)
+```
+
+## Lösung 2
+
+Fragestellung: Haben die Gruppen *Sport* und *Control* bei Eintritt den gleichen Stresslevel?  
+
+1. Hypothesen    
+
+   + $H_0$ Es besteht kein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Eintritt, $\mu_{con,before} = \mu_{sport,before}$  
+   + $H_A$ Es besteht ein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Eintritt, $\mu_{con,before} \neq \mu_{sport,before}$    
+  
+
+```{r}
+# Deskriptive Statistik nach Subsets
+sport <- subset(prison, Group == "Sport")
+control <- subset(prison, Group == "Control")
+
+summary(sport$PSSbefore)
+summary(control$PSSbefore)
+
+boxplot(prison$PSSbefore ~ prison$Group)
+```
+
+2. Das Signifikanzniveau legen wir bei $\alpha = 0.05$ fest.  
+3. Die Daten sind unabhängig (wir vergleichen zwei unterschiedliche Gruppen).  
+4. Die Prüfgrösse ist die Differenz der Mittelwerte der beiden Gruppen $\mu_{con,before} - \mu_{sport,before}$   
+5. Der Stichprobenumfang pro Gruppe ist n < 30, was für den Man-Whitney-U-Test spricht.   
+6. Die Verteilung der Prüfgrösse anhand der Box im Boxplot ergibt eine leicht rechtssteile Verteilung in der Kontrollgruppe und etwa Normalverteilung in der Sportgruppe. Die QQ-Plots sind wenig aussagekräftig. Die Streuung der Daten ist unterschiedlich.   
+
+```{r}
+# QQ-Plot für Sportgruppe
+qqnorm(sport$PSSbefore)
+qqline(sport$PSSbefore, col = "blue")
+
+# QQ-Plot für Controlgruppe
+qqnorm(control$PSSbefore)
+qqline(control$PSSbefore, col = "blue")
+
+```
+
+* Die Prüfung der Testbedingungen legt nichtparametrische Verfahren zur statistischen Analyse nahe.   
+
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen   
+
+```{r}
+wilcox.test(PSSbefore ~ Group, data = prison, alternative = "two.sided")
+```
+
+Interpretation des Wilcoxon Rangsummentests (= Mann-Whitney-U-Test): Die Warnung können Sie ignorieren ;). Die Teststatistik **W** interpretieren wir nicht. Die Wahrscheinlichkeit für den Wert der Teststatistik oder einen noch extremeren Wert beträgt 12.5% (**p = 0.1249**).  
+
+```{r}
+t.test(PSSbefore ~ Group, data = prison, alternative = "two.sided")
+```
+Interpretation des Zweistichproben-t-Tests: Die Teststatistik beträgt **t = -2.0064**. Dieser Wert liegt in der Nähe der "magischen Grenze" von -2. Allerdings liegen hier kleine Stichprobenumfänge vor, wodurch die Kurve der t-Verteilung an den Enden sehr flach verläuft und der kritische Wert für die 2.5% Grenze weiter als -2.0 liegt. Anzahl Freiheitsgrade **df** interpretieren wir beim Welch-Test nicht. Die Wahrscheinlichkeit für den Wert der Teststatistik t oder einen noch extremeren Wert unter der Nullhypothese beträgt 6.1% (**p = 0.06112**). Die Sportgruppe hat bei Eintritt im Durchschnitt einen etwas höheren Stresslevel (23.9) als die Controlgruppe (16.4). Die durchschnittliche Differenz des Stresslevels zwischen den beiden Gruppen (Control minus Sport) beträgt -7.560 [95%-CI: -15.534, 0.395]. Dieses 95%-Konfidenzintervall schliesst 0 ein und unterstützt die Ergebnisse aus den Hypothesentests. *Für die Formulierung des Resultats verwenden wir nur die Angaben zum 95%-Konfidenzintervall, da wir uns für den Mann-Whitney-U-Test als korrekten Test entschieden haben!*
+
+<br />
+
+8. Resultat, Schlussfolgerung    
+
+*Der Stresslevel bei Eintritt ins Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt um -7.560 [-15.534, 0.395] Punkte tiefer als in der Sportgruppe (n = 15). Es liegt jedoch keine Evidenz dafür vor, dass sich die beiden Gruppen im Stresslevel bei Eintritt ins Gefängnis signifikant unterscheiden, Man-Whitney-U = 52.5, p = 0.1249. *    
+
+<br />
+
+## Lösung 3  
+
+Fragestellung: Haben beide Gruppen bei Austritt den gleichen Stresslevel? Das ist die ähnliche Fragestellung wie Frage 2. Versuchen Sie diese Aufgabe möglichst ohne Hilfsmittel zu bearbeiten.    
+
+1. Hypothesen    
+
+   + $H_0$ Es besteht kein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Austritt, $\mu_{con,after} = \mu_{sport,after}$  
+   + $H_A$ Es besteht ein Unterschied im Stresslevel der Gruppen Sport und Kontrolle bei Austritt, $\mu_{con,after} \neq \mu_{sport,after}$     
+2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.  
+3. Die Daten sind unabhängig.   
+4. Die Prüfgrösse ist $\mu_{con,after} - \mu_{sport,after}$.  
+5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Man-Whitney-U-Test spricht.                    
+
+```{r}
+# Die Subsets sport und control haben wir schon unter Lösung 1 gemacht
+summary(sport$PSSafter)
+summary(control$PSSafter)
+
+boxplot(prison$PSSafter ~ prison$Group)
+```
+
+<br />
+
+6. Die Verteilung der Prüfgrösse anhand der Box im Boxplot ergibt eine leicht rechtssteile Verteilung in beiden Gruppen. Die QQ-Plots sind wenig aussagekräftig. Die Streuung der Daten ist ähnlich.    
+
+```{r}
+# QQ-Plot für Sportgruppe
+qqnorm(sport$PSSafter)
+qqline(sport$PSSafter, col = "blue")
+
+# QQ-Plot für Controlgruppe
+qqnorm(control$PSSafter)
+qqline(control$PSSafter, col = "blue")
+
+```
+
+* Die Prüfung der Testbedingungen (n < 30, rechtssteile Verteilungen) legt nichtparametrische Verfahren zur statistischen Analyse nahe.   
+<br />
+
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen   
+
+
+```{r}
+wilcox.test(PSSafter ~ Group, data = prison, alternative = "two.sided")
+t.test(PSSafter ~ Group, data = prison, alternative = "two.sided")
+```
+
+8. Schlussfolgerung    
+
+*Der Stresslevel bei Austritt aus dem Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt um 3.727 [95%-CI: -2.069, 9.523] Punkte höher als in der Sportgruppe (n = 15). Es liegt keine Evidenz dafür vor, dass sich die beiden Gruppen im Stresslevel bei Austritt aus dem Gefängnis signifikant unterscheiden, Man-Whitney-U-Test W = 108.5, p = 0.185.*  
+
+<br />
+
+## Lösung 4
+
+Fragestellung: Besteht ein Unterschied im Stresslevel zwischen Ein- und Austritt in der Kontrollgruppe?   
+
+<br />
+
+
+1. Hypothesen    
+
+   + $H_0$ Es besteht kein Unterschied im Stresslevel in der Kontrollgruppe zwischen Ein- und Austritt, $\mu_{con,diff}=0}$ (Mittelwert der paarweisen Differenzen!)   
+   + $H_A$ Es besteht ein Unterschied im Stresslevel in der Kontrollgruppe bei Eintritt, $\mu_{con,diff} \neq 0$$    
+
+2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.    
+3. Die Daten sind gepaart (2 Messungen pro Proband:in).      
+4. Die Prüfgrösse ist $\mu_{con,diff}$. Die paarweisen Differenzen sind in der Variablen `prison$Diff` berechnet. Wir arbeiten hier nur mit dem Subset `control`.  
+5. Der Stichprobenumfang ist n = 11, was für den Wilcoxon-Vorzeichenrang-Test spricht. *Hinweis: Bei gepaarten Daten darf ein parametrischer Test bereits bei einem Stichprobenumfang von n = 12 oder mehr durchgeführt werden.*      
+
+```{r}
+# Das subset control wurde bereits in Lösung 1 erstellt
+summary(control$Diff)
+
+boxplot(control$Diff)
+```
+
+<br />
+
+6. Die Verteilung der Prüfgrösse `Diff` anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen.   
+
+```{r, results='asis'}
+## QQ-Plot für Diff in der Gruppe Control
+qqnorm(control$Diff)
+qqline(control$Diff, col = "blue")
+```
+
+* Die Prüfung der Testbedingungen (n < 12) legt nichtparametrische Verfahren zur statistischen Analyse nahe. Wir führen aber auch den t-Test für gepaarte Daten durch, um das 95%-Konfidenzintervall zu berechnen.  
+
+<br />
+
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen   
+  
+   
+```{r}
+wilcox.test(control$PSSafter, control$PSSbefore, 
+            paired = TRUE, alternative = "two.sided")
+```
+
+
+```{r, eval=FALSE}
+t.test(control$PSSafter, control$PSSbefore, 
+       paired = TRUE, alternative = "two.sided")
+```
+
+<br />
+
+8. Schlussfolgerung    
+
+*Der Stresslevel bei Austritt aus dem Gefängnis ist in der Kontrollgruppe (n = 11) im Durchschnitt um 7.634 [95%-CI: 1.161, 13.567] Punkte höher als beim Eintritt. Es liegt Evidenz dafür vor, dass sich der durchschnittliche Stresslevel in der Kontrollgruppe beim Aufenthalt im Gefängnis signifikant erhöht hat, Wilcoxon Vorzeichenrang-Test V = 47.5, p = 0.047.*  
+
+<br />
+<br />
+
+## Lösung 5
+
+Fragestellung: Besteht ein Unterschied im Stresslevel zwischen Ein- und Austritt in der Sportgruppe? Das ist die ähnliche Fragestellung wie Frage 4. Versuchen Sie diese Aufgabe möglichst ohne Hilfsmittel zu bearbeiten.  
+
+<br />
+
+1. Hypothesen   
+
+   + $H_0$ Es besteht kein Unterschied im Stresslevel in der Sportgruppe zwischen Ein- und Austritt, $\mu_{sport,diff}=0}$ (Mittelwert der paarweisen Differenzen!)
+   + $H_A$ Es besteht ein Unterschied im Stresslevel in der Kontrollgruppe bei Eintritt, $\mu_{sport,diff} \neq 0$$   
+
+2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.  
+3. Die Daten sind gepaart (2 Messungen pro Proband)   
+4. Die Prüfgrösse ist $\mu_{sport,diff}$    
+5. Der Stichprobenumfang in der Sportgruppe ist n = 15. Bei gepaarten Daten darf ein parametrischer Test bereits bei einem Stichprobenumfang von n = 12 oder mehr durchgeführt werden.  
+
+```{r}
+# Das subset sport wurde bereits in Lösung 1 erstellt
+summary(sport$Diff)
+
+boxplot(sport$Diff)
+```
+
+<br />
+
+6. Die Verteilung der Prüfgrösse `Diff` anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen.   
+
+```{r, results='asis'}
+# QQ-Plot für Diff in der Sportgruppe
+qqnorm(sport$Diff)
+qqline(sport$Diff, col = "blue")
+```
+
+* Die Prüfung der Testbedingungen legt ein parametrisches Verfahren zur statistischen Analyse nahe.   
+
+<br />
+
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen  
+
+   
+```{r, results='asis'}
+t.test(sport$PSSafter, sport$PSSbefore, 
+       paired = TRUE, alternative = "two.sided")
+```
+
+<br />
+
+8. Schlussfolgerung    
+
+*Der Stresslevel bei Austritt aus dem Gefängnis ist in der Sportgruppe (n = 15) im Durchschnitt  um -3.933 [95%-CI: -7.076, -0.790] Punkte tiefer als beim Eintritt. Es liegt Evidenz dafür vor, dass sich der Stresslevel beim Aufenthalt im Gefängnis in der Sportgruppe signifikant senkt, t = -2.684, df = 14, p = 0.0178.*  
+
+**Hinweis:** Bei den Übungen 4 und 5 können Sie die Tests auch als Einstichproben-Test für die die paarweisen Differenzen `Diff` und den Nullwert 0 durchführen. Das Ergebnis ist identisch.
+
+```{r}
+t.test(sport$Diff, mu = 0, alternative = "two.sided")
+```
+
+<br />
+<br />
+
+## Lösung 6
+
+Fragestellung: Hat Sport einen Effekt auf den Stresslevel im Vergleich zu einer Kontrollgruppe, die keinen Sport macht?   
+
+1. Hypothesen    
+
+   + $H_0$ Sport hat keinen Effekt, $\mu_{diff,sport} = \mu_{diff,con}$   
+   + $H_A$ Sport hat einen Effekt, $\mu_{diff,sport} \neq \mu_{diff,con}$   
+
+2. Das Signifikanzniveau legen wir bei $\alpha = .05$ fest.    
+
+3. Die Daten sind unabhängig.   
+
+4. Die Prüfgrösse ist $\mu_{diff,sport} = \mu_{diff,con}$    
+
+5. Der Stichprobenumfang pro Gruppe ist n < 30, was für Man-Whitney-U-Test spricht. In diesem Fall ist es nicht mehr nötig QQ-Plots zu erstellen, wir machen es übungshalber trotzdem ;).       
+
+```{r, results='asis'}
+summary(control$Diff)
+summary(sport$Diff)
+
+boxplot(prison$Diff ~ prison$Group)
+```
+
+<br />
+
+6. Die Verteilung der Daten in beiden Gruppen anhand von Boxplot und QQ-Plot ist auf Grund der geringen Datenmenge wenig zuverlässig zu interpretieren; es scheint aber nichts dagegen zu sprechen, dass die Daten aus einer normalverteilten Population stammen.   
+
+```{r, results='asis'}
+## QQ-Plot für Diff in der Controlgruppe
+qqnorm(control$Diff)
+qqline(control$Diff, col = "blue")
+
+## QQ-Plot für Diff in der Controlgruppe
+qqnorm(sport$Diff)
+qqline(sport$Diff, col = "blue")
+```
+
+* Die Prüfung der Testbedingungen legt nichtparametrische Verfahren zur statistischen Analyse nahe.   
+
+<br />
+
+7. Vertrauensintervalle für die Prüfgrösse und Teststatistik bestimmen   
+  
+```{r}
+wilcox.test(Diff ~ Group, data = prison, alternative = "two.sided")
+t.test(Diff ~ Group, data = prison, alternative = "two.sided")
+```
+
+<br />
+
+8. Schlussfolgerung    
+
+*Untersucht wurde der Effekt von Sport auf den Stresslevel bei Gefängnisinsassen, die in eine Sport- (n = 15) und eine Kontrollgruppe (n = 11) eingeteilt wurden. In der Kontrollgruppe hat der Stresslevel um 7.364 Punkte zugenommen und in der Sportgruppe um durchschnittlich -3.933 Punkte abgenommen. Im Durchschnitt vermindert sich der Stresslevel in der Sportgruppe um 11.297 [4.608, 17.985] Punkte im Vergleich zur Contorlgruppe. Die Daten liefern Evidenz dafür, dass sich Sport günstig auf den Stresslevel im Gefängnis auswirkt, Man-Whitney-U-Test W = 138, p = .0042.* 
+
+<br />
+<br />
+

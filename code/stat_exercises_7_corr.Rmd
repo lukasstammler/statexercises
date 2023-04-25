@@ -252,8 +252,8 @@ Besteht ein Zusammenhang zwischen Körpergrösse und Schuhgrösse bei den Physio
 
 1. Formulieren Sie Ihre Hypothesen.  
 
-* $H_0$: Es besteht kein Zusammenhang zwischen Schuhgrösse und Körpergewicht.    
-* $H_A$: Es besteht ein Zusammenhang zwischen Schuhgrösse und Körpergewicht.
+* $H_0$: Es besteht kein Zusammenhang zwischen Schuhgrösse und Körpergrösse.    
+* $H_A$: Es besteht ein Zusammenhang zwischen Schuhgrösse und Körpergrösse.
 <br />
 
 2. Beschreiben Sie die interessierenden Variablen deskriptiv inkl. Grafik (verwenden Sie für die Grafik das jamovi-Modul `scatr`).

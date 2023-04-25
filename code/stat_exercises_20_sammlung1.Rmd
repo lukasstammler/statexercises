@@ -585,7 +585,7 @@ $p = 0.033$. Da $p < \alpha$ verwerfen wir die $H_0$ zugunsten von $H_A$. Die Da
 
 <br/>
 
-# Übung 5 {.tabset}
+# Übung 9 {.tabset}
 
 In einer durchgeführten soziologischen Umfrage war eine der Fragen "Wieviel Zeit bleibt Ihnen an einem gewöhnlichen Arbeitstag für Freizeitaktivität und Entspannung?". Die Befrugung wurde bei 1154 zufällig ausgewählten Erwachsenen durchgeführt. Das Resultat auf diese Frage ergab ein 95%-Vertrauensintervall von 3.53 bis 3.83 Stunden.   
 
@@ -631,7 +631,7 @@ b) Wir können zu 95% darauf vertrauen, dass das Intervall [3.53, 3.83] die durc
 
 c) Das Konfidenzintervall von [3.53, 3.83] Stunden beinhaltet die durchschnittliche Anzahl Stunden, welche der erwachsenen Bevölkerung, aus der die Stichprobe stammt, für Freizeitaktivitäten und Entspannung zur Verfügung steht.   
 
-*FALSCH: Es besteht eine Wahrscheinlichkeit von 5%, dass 95%-Konfidenzintervall den wahren Mittelwert in der Bevölkerung nicht enthält.*    
+*FALSCH: In 5 von 100 Stichproben mit dem gleichen Stichprobenumfang enthält das  95%-Konfidenzintervall den wahren Mittelwert in der Bevölkerung nicht. Wir können also nicht zu 100%, sondern nur zu 95% darauf vertrauen, dass das 95%-Konfidenzintervall die wahre Populationskennzahl enthält.*    
 
 d) Die Studie liefert statistisch signifikante Evidenz dafür, dass der erwachsenen Bevölkerung, aus der die Stichprobe stammt, im Durchschnitt 3.6 Stunden Zeit für Freizeitaktivitäten und Erholung an einem normalen Arbeitstag zur Verfügung steht. (Signifikanzniveau $\alpha = 0.05$)  
 
@@ -647,7 +647,7 @@ f) Das Konfidenzintervall von [3.53, 3.83] Stunden liefert statistisch signifika
 
 <br/>
 
-# Übung 9 {.tabset} 
+# Übung 10 {.tabset} 
 
 Entscheiden Sie für jedes der folgenden Szenarios, ob es sich um verbundene (abhängige) oder unabhängige Daten handelt.
 
@@ -679,7 +679,7 @@ e) In Aufgabe d) haben Sie die Differenz der Muskelumfänge in beiden in beiden 
 
 <br/>
 
-# Übung 10 {.tabset}
+# Übung 11 {.tabset}
 
 Hat Passivrauchen bei Kindern einen Einfluss auf die Lungenfunktion? Für diese Studie wurden 23 Kinder im Alter von 5-9 Jahren untersucht, deren Eltern regelmässig zuhause rauchen. Die Ergebnisse werden mit einer zweiten Gruppe von 20 Kindern in ähnlichem Alter verglichen, deren Eltern nicht rauchen. Die Kinder wurden aus den beiden Populationen zufällig ausgewählt. Die Daten sind in `passivrauchen.csv` abgelegt.  
 
@@ -714,7 +714,7 @@ a) Vergleichen Sie die Mittelwerte der beiden Gruppen und führen Sie einen Hypo
 - Hypothesen:
 
 $H_0: \mu_{passivrauchen} = \mu_{nicht-passivrauchen}$   
-$H_0: \mu_{passivrauchen} \neq \mu_{nicht-passivrauchen}$   
+$H_A: \mu_{passivrauchen} \neq \mu_{nicht-passivrauchen}$   
 
 - Kennzahlen   
 
@@ -742,21 +742,22 @@ jmv::ttestIS(
   data = passivrauchen,
   vars = FEV,
   mann = TRUE,
-  meanDiff = TRUE
+  meanDiff = TRUE,
+  ci = TRUE
 )
 ```
 
-*Der $p$-Wert des Mann-Whitney-U-Tests beträgt 0.316. Da $p > \alpha$ haben wir nicht ausreichend Evidenz, um $H_0$ auf dem Signifikanzniveau $\alpha = 0.05$ zu verwerfen. Im Durchschnitt (Median) haben Kinder von rauchenden Eltern eine um -1.41 l [-0.492, 0.170] geringere FEV.*   
+*Der $p$-Wert des Mann-Whitney-U-Tests beträgt 0.316. Da $p > \alpha$ haben wir nicht ausreichend Evidenz, um $H_0$ auf dem Signifikanzniveau $\alpha = 0.05$ zu verwerfen. Im Durchschnitt (Median) haben Kinder von rauchenden Eltern eine um -0.141 l [-0.492, 0.170] geringere FEV.*   
 
 b) Formulieren Sie eine Zusammenfassung der Studie in einfachen Worten.  
 
-*Hat Passivrauchen in einem Elternhaus, in dem die Eltern rauchen, einen Effekt auf die Lungenfunktion der Kinder. Zu dieser Frage wurde eine Studie durchgeführt, in der das maximale forcierte expiratorische Lungenvolumen FEV von Kindern aus einem Elternhaus mit rauchenden Eltern verglichen wurde mit dem FEV von Kindern, deren Eltern nicht rauchen. Das durchschnittliche FEV bei Kindern, deren Eltern rauchen, beträgt 2.041 l (s = 0.574 l) und bei Kindern, deren Elten nicht rauchen 2.217 l (s = 0.414 l). Im Durchschnitt (Median) haben Kinder von rauchenden Eltern eine um -1.41 l [-0.492, 0.170] geringere FEV, Mann-Whitney-U = 188, p = 0.316. Aus den vorliegenden Daten kann nicht geschlossen werden, dass Passivrauchen zuhause mit einer Verschlechterung der Lungenfunktion der Kinder einhergeht.*   
+*Hat Passivrauchen in einem Elternhaus, in dem die Eltern rauchen, einen Effekt auf die Lungenfunktion der Kinder. Zu dieser Frage wurde eine Studie durchgeführt, in der das maximale forcierte expiratorische Lungenvolumen FEV von Kindern aus einem Elternhaus mit rauchenden Eltern verglichen wurde mit dem FEV von Kindern, deren Eltern nicht rauchen. Das durchschnittliche FEV bei Kindern, deren Eltern rauchen, beträgt 2.041 l (s = 0.574 l) und bei Kindern, deren Elten nicht rauchen 2.217 l (s = 0.414 l). Im Durchschnitt (Median) haben Kinder von rauchenden Eltern eine um -0.141 l [-0.492, 0.170] geringere FEV, Mann-Whitney-U = 188, p = 0.316. Aus den vorliegenden Daten kann nicht geschlossen werden, dass Passivrauchen zuhause mit einer Verschlechterung der Lungenfunktion der Kinder einhergeht.*   
 
 Überlegung: Wir wissen aus zahlreichen Studien, dass Passivrauchen bei Kindern die Lungenfunktion ungünstig beeinflusst. Ein möglicher Confounder in dieser Studie könnte das verfügbare Haushaltseinkommen sein. Kinder in finanziell besser gestellten Verhältnissen haben besseren Zugang zu medizinischer Versorgung und die Wahrscheinlichkeit, dass die Eltern rauchen, ist geringer. Um diesen Aspekt zu berücksichtigen, müssten die Gruppen in der Studie zusätzlich nach den Einkommensverhältnissen stratifiziert werden.   
 
 <br/>
 
-# Übung 11 {.tabset}  
+# Übung 12 {.tabset}  
 
 Sie werden von einem engagierten Umweltschützer um statistische Beratung angefragt. Er arbeitet an einer Analyse zur Klimaerwärmung. Er ist im Besitz von Durchschnittstemperaturen im Januar von 200 Orten in Europa und USA aus den Jahren 2008 und 2018. Er schlägt folgendes Vorgehen vor: Für jeden Ort möchte er einen zweiseitigen Hypothesentest durchführen, um die Durchschnittstemperaturen im Januar von 2008 und 2018 zu vergleichen. Das Signifikanzniveau möchte er auf $\alpha = 0.05$ festlegen. Sein Plan ist, Evidenz dafür vorzulegen, dass an den gemessenen Orten die durchschnittliche Temperatur angestiegen ist. Um seinem Anliegen mehr Gewicht zu verleihen, würde er in seiner Arbeit nur die statistisch signifikanten Resultate publizieren.  
 

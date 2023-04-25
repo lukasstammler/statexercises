@@ -1,0 +1,159 @@
+---
+title: "Unbiased Sample Variance"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 4
+    fig_width: 4
+    fig_align: "center"
+    highlight: pygments
+    theme: yeti
+    code_download: true
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+```
+
+
+# Populationsvarianz vs. Stichprobenvarianz 
+
+Eine öfter wiederkehrende Frage ist, weshalb bei der Varianz einer Stichprobe als Divisor nicht $n$ sondern $n - 1$ eingesetzt ist. Mit einer Stichprobe schätzen wir auf die Kennzahlen einer Population. Erfahrungsgemäss unterschätzt die Stichprobenvarianz mit Divisor $n$ die Varianz in der Population ^[Begründung: Die Abweichung von Extremwerten vom Mittelwert wird im Quadrat in die Berechnung der Populationsvarianz einbezogen; durch die Quadrierung dieser Abweichung erhalten Extremwerte ein grosses Gewicht bei der Berechnung der Populationsvarianz. Da Extremwerte wesentlich seltener vorkommen als Werte im Zentrum der Verteilung, ist die Wahrscheinlichkeit, dass Extremwerte in einer Zufallsstichprobe vorkommen eher klein, wodurch die Stichprobenvarianz typischerweise kleiner ist, als die Populationsvarianz. <br> ]. Das kann sogar mathematisch bewiesen werden und wer sich das antun will, kann das hier im schlauen [Wikipedia: Bessel's correction](https://en.wikipedia.org/wiki/Bessel%27s_correction) nachlesen. Aber ehrlich gesagt, wer will sich das antun? Vielleicht hilft folgende Überlegung: Die Populationsvarianz spielt in der Inferenzstatistik eine enorm wichtige Rolle, daher ist es von Bedeutung, dass sie möglichst genau aus einer Stichprobe geschätzt werden kann. Wenn ich den Divisor $n$ durch $n - 1$ ersetze, erhalte ich generell immer eine etwas grössere Stichprobenvarianz, weil der Dividend (die Quadratsumme der Abweichungen in der Stichprobe ... schon wird's kompliziert) durch eine etwas kleinere Zahl geteilt wird. Wenn ich demnach $n - 1$ verwende, korrigiere ich für die Erfahrung, dass eine Stichprobe die Varianz im Durchschnitt unterschätzt.   
+
+Dass dieses Vorgehen in der Regel eine etwas genauere Schätzung der Varianz erlaubt, können wir anhand einer einfachen Simulation am Computer zeigen.  
+
+Hier nochmals die Formeln für die Berechnung der Varianzen:
+
+Populationsvarianz (var.pop)
+
+$$\sigma^2 = \frac{\Sigma_{x=1}^N(x_i - \mu)}{N}$$
+
+Stichprobenvarianz (var.n, mit Divisor n) 
+
+$$s^2_n = \frac{\Sigma_{x=1}^n(x_i - \bar{x})}{n}$$
+
+Stichprobenvarianz (var.unbiased, mit Divisor n-1) 
+
+$$s^2_{n-1} = \frac{\Sigma_{x=1}^n(x_i - \bar{x})}{n-1}$$
+
+# Simulation 1
+
+Wir simulieren eine Population mit N = 10000, $\mu = 100$ und $s = 15$
+
+```{r, fig.dim=c(6, 5), fig.align='center'}
+set.seed(1234)
+pop <- rnorm(10000, mean = 100, sd = 15)
+mu <- round(mean(pop), 2)
+sigma <- round(sd(pop), 2)
+titel <- paste("Population mit mu =", mu, ", sigma = ", sigma, ", N = 10'000" )
+
+hist(pop,
+     main = titel,
+     ylab = "Häufigkeit",
+     xlab = "",
+     col = "steelblue")
+
+var.pop <- sum((pop - mean(pop))^2)/length(pop)
+var.pop <- round(var.pop, 4)
+```
+
+## Stichproben
+
+Wir ziehen 25 Zufallsstichproben im Umfang von n = 50 aus der Population und berechnen die 
+Varianz der Stichprobe `var.n` und die unbiased Varianz `var.unbiased`. `var.pop` = Populationsvarianz = `r var.pop`.
+
+```{r}
+var.n.fun <- function(x)  {
+  var.n <- sum((x - mean(x))^2)/length(x)
+  return(var.n)
+}
+# var.n.fun(x)
+  
+var.unbiased.fun <- function(x) {
+  var.unbiased <- sum((x - mean(x))^2)/(length(x) - 1)
+  return(var.unbiased)
+}
+# var.unbiased.fun(x)
+
+var.n <- vector()
+var.unbiased <- vector()
+
+for (i in 1:25) {
+  y <- sample(pop, size = 30)
+  var.n[i] <- var.n.fun(y)
+  var.unbiased[i] <- var.unbiased.fun(y)
+}
+
+result <- tibble(
+  var.pop = rep(var.pop, 25),
+  var.n = var.n,
+  var.unbiased = var.unbiased
+)
+
+
+kable(result, caption = "25 samples, n = 30") %>% 
+  kable_styling(full_width = FALSE)
+
+m.var.n <- mean(result$var.n)
+m.var.ub <- mean(result$var.unbiased)
+
+result.summary <- tibble(
+  var.pop = var.pop,
+  mean.var.n = m.var.n,
+  mean.var.ub = m.var.ub
+)
+
+result.summary %>% 
+  kable(caption = "Zusammenfassung") %>% 
+  kable_styling(full_width = FALSE)
+```
+
+# Simulation mit 1000 Stichproben mit n = 100
+
+Die Stichproben ziehen wir aus der gleichen Population wie bei Simulation 1.
+
+```{r}
+var.n <- vector()
+var.unbiased <- vector()
+
+for (i in 1:1000) {
+  y <- sample(pop, size = 100)
+  var.n[i] <- var.n.fun(y)
+  var.unbiased[i] <- var.unbiased.fun(y)
+}
+
+result <- tibble(
+  var.pop = rep(var.pop, 1000),
+  var.n = var.n,
+  var.unbiased = var.unbiased
+)
+
+
+kable(result[1:10,], caption = "Erste 10 Samples von 1000, n = 100") %>% 
+  kable_styling(full_width = FALSE)
+
+m.var.n <- mean(result$var.n)
+m.var.ub <- mean(result$var.unbiased)
+
+result.summary <- tibble(
+  var.pop = var.pop,
+  mean.var.n = m.var.n,
+  mean.var.ub = m.var.ub
+)
+
+result.summary %>% 
+  kable(caption = "Zusammenfassung") %>% 
+  kable_styling(full_width = FALSE)
+```
+
+Wir sehen bei beiden Simulationen, dass beide Arten, die Stichprobenvarianz zu berechnen, die Populationsvarianz unterschätzen. Allerdings liegt die Berechnung der Varianz mit dem Divisor $n - 1$ (`mean.var.ub`) im Durchschnitt näher bei der wahren Populationsvarianz als die Berechnung mit dem Divisor $n$ (`mean.var.n`). 
+
+<br>
+<br>
