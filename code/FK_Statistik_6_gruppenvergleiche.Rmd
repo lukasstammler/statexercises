@@ -53,7 +53,7 @@ Eine Kaffeekette betreibt eine Filiale in Basel und eine Filiale in Bern. Die Be
 
 Als erstes sammeln Sie Daten: Sie kaufen an beiden Standorten 20 Becher Caffè Latte mittlerer Grösse. Sie messen jeweils die Mengen in ml.
 
-Laden Sie die Datei `caffe.csv`  [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter.
+Laden Sie die Datei `caffe.csv`  [hier](https://moodle.bfh.ch/mod/folder/view.php?id=1690433) herunter.
 
 
 Der Datensatz umfasst zwei Variablen:     
@@ -206,7 +206,7 @@ Wenn wir einseitig testen, ist der p-Wert halb so gross wie beim zweiseitigen Te
 
 Ein Gefängnisaufenthalt ist mit psychischem Stress verbunden. Eine Möglichkeit, diesen Stress abzubauen ist sportliche Betätigung. Ein Studie hat den Stresslevel von 26 Gefängnissinsassen bei Ein- und Austritt mittels Fragebogen untersucht (je höher der Stresslevel desto grösser der Stress). Ein Teil der Gefangenen erhielt ein sportliches Training.   
 
-Laden Sie die Datei `prisonStress.csv` [hier](https://github.com/lukasstammler/statexercises/tree/main/data) herunter.   
+Laden Sie die Datei `prisonStress.csv` [hier](https://moodle.bfh.ch/mod/folder/view.php?id=1690433) herunter.   
 
 Der Datensatz umfasst 5 Variablen    
 
